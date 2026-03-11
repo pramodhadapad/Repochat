@@ -19,8 +19,13 @@ const app = express();
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:3000',
-    methods: ['GET', 'POST']
+    origin: [
+      'http://localhost:5173',
+      'http://localhost:3000',
+      process.env.CLIENT_URL || 'https://repochat-ai.vercel.app'
+    ].filter(Boolean),
+    methods: ['GET', 'POST'],
+    credentials: true
   }
 });
 
