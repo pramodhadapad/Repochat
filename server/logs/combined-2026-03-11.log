@@ -1,0 +1,70 @@
+{"level":"info","message":"Server running on port 5000","service":"repochat-backend","timestamp":"2026-03-11 01:22:32"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:22:32"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:22:32"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:22:32"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:22:32"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:22:33"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:22:33"}
+{"level":"warn","message":"Redis reconnection failed after 5 attempts. Operating without cache.","service":"repochat-backend","timestamp":"2026-03-11 01:22:34"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:22:34"}
+{"level":"warn","message":"Could not connect to Redis (redis://localhost:6379). Caching will be disabled. Error: Redis max retries reached","service":"repochat-backend","timestamp":"2026-03-11 01:22:34"}
+{"level":"info","message":"Server running on port 5000","service":"repochat-backend","timestamp":"2026-03-11 01:33:25"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:33:25"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:33:25"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:33:26"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:33:26"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:33:26"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:33:26"}
+{"level":"warn","message":"Redis reconnection failed after 5 attempts. Operating without cache.","service":"repochat-backend","timestamp":"2026-03-11 01:33:27"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:33:27"}
+{"level":"warn","message":"Could not connect to Redis (redis://localhost:6379). Caching will be disabled. Error: Redis max retries reached","service":"repochat-backend","timestamp":"2026-03-11 01:33:27"}
+{"level":"info","message":"Server running on port 5000","service":"repochat-backend","timestamp":"2026-03-11 01:48:43"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:48:43"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:48:43"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:48:43"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:48:43"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:48:43"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:48:44"}
+{"level":"warn","message":"Redis reconnection failed after 5 attempts. Operating without cache.","service":"repochat-backend","timestamp":"2026-03-11 01:48:44"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 01:48:44"}
+{"level":"warn","message":"Could not connect to Redis (redis://localhost:6379). Caching will be disabled. Error: Redis max retries reached","service":"repochat-backend","timestamp":"2026-03-11 01:48:44"}
+{"level":"info","message":"Server running on port 5000","service":"repochat-backend","timestamp":"2026-03-11 02:02:53"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:02:53"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:02:53"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:02:53"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:02:53"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:02:53"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:02:54"}
+{"level":"warn","message":"Redis reconnection failed after 5 attempts. Operating without cache.","service":"repochat-backend","timestamp":"2026-03-11 02:02:54"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:02:54"}
+{"level":"warn","message":"Could not connect to Redis (redis://localhost:6379). Caching will be disabled. Error: Redis max retries reached","service":"repochat-backend","timestamp":"2026-03-11 02:02:54"}
+{"level":"info","message":"Server running on port 5000","service":"repochat-backend","timestamp":"2026-03-11 02:21:59"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:21:59"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:21:59"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:22:00"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:22:00"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:22:00"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:22:01"}
+{"level":"warn","message":"Redis reconnection failed after 5 attempts. Operating without cache.","service":"repochat-backend","timestamp":"2026-03-11 02:22:01"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 02:22:01"}
+{"level":"warn","message":"Could not connect to Redis (redis://localhost:6379). Caching will be disabled. Error: Redis max retries reached","service":"repochat-backend","timestamp":"2026-03-11 02:22:01"}
+{"level":"info","message":"Server running on port 5000","service":"repochat-backend","timestamp":"2026-03-11 10:49:24"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 10:49:24"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 10:49:24"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 10:49:24"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 10:49:24"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 10:49:25"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 10:49:25"}
+{"level":"warn","message":"Redis reconnection failed after 5 attempts. Operating without cache.","service":"repochat-backend","timestamp":"2026-03-11 10:49:26"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 10:49:26"}
+{"level":"warn","message":"Could not connect to Redis (redis://localhost:6379). Caching will be disabled. Error: Redis max retries reached","service":"repochat-backend","timestamp":"2026-03-11 10:49:26"}
+{"level":"info","message":"Server running on port 5000","service":"repochat-backend","timestamp":"2026-03-11 11:19:25"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 11:19:25"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 11:19:25"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 11:19:25"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 11:19:25"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 11:19:26"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 11:19:26"}
+{"level":"warn","message":"Redis reconnection failed after 5 attempts. Operating without cache.","service":"repochat-backend","timestamp":"2026-03-11 11:19:27"}
+{"level":"error","message":"Redis Client Error: ","service":"repochat-backend","timestamp":"2026-03-11 11:19:27"}
+{"level":"warn","message":"Could not connect to Redis (redis://localhost:6379). Caching will be disabled. Error: Redis max retries reached","service":"repochat-backend","timestamp":"2026-03-11 11:19:27"}

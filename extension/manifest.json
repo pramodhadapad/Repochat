@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "RepoChat Connector",
+  "version": "1.0.0",
+  "description": "Chat with your GitHub repositories using AI instantly.",
+  "permissions": ["activeTab", "storage"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*/*"],
+      "js": ["content.js"],
+      "css": ["content.css"]
+    }
+  ],
+  "icons": {
+    "128": "icon128.png"
+  }
+}

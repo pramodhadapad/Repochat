@@ -1,0 +1,117 @@
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992309122,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992309125,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992377211,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992377215,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile called","data":{"apiKey":true},"timestamp":1772992377264,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992377274,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772992391259,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992529362,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"chat.routes.js:entry","message":"POST /message","data":{"userId":"69ac920acfddb735424fc293","hasApiKey":true,"provider":"openai","model":"gpt-4o"},"timestamp":1772992535156,"hypothesisId":"H2"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992686410,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992686413,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992693779,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992693781,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992693790,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"chat.routes.js:entry","message":"POST /message","data":{"userId":"69ac920acfddb735424fc293","hasApiKey":true,"provider":"openai","model":"gpt-4o"},"timestamp":1772992721997,"hypothesisId":"H2"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992849053,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992849055,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992849109,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992849115,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992856884,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992856885,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992857074,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992857077,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992872124,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992872126,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992873077,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772992873079,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992925901,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992925902,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992937467,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992937469,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992965920,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772992965923,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772993056301,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772993056303,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772993249731,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772993249733,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772993336566,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772993336568,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772993365252,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772993365254,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772993365264,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"chat.routes.js:entry","message":"POST /message","data":{"userId":"69ac920acfddb735424fc293","hasApiKey":true,"provider":"openai","model":"gpt-4o"},"timestamp":1772993373410,"hypothesisId":"H2"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772993468604,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"chat.routes.js:entry","message":"POST /message","data":{"userId":"69ac920acfddb735424fc293","hasApiKey":true,"provider":"openai","model":"gpt-4o"},"timestamp":1772993474009,"hypothesisId":"H2"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772993683049,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772993683052,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772993951344,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772993951346,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772994061509,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772994061512,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772994081574,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772994081576,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772994912482,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772994912484,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772994944084,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772994944086,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772995504542,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772995504551,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772995504543,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"chat.routes.js:entry","message":"POST /message","data":{"userId":"69ac920acfddb735424fc293","hasApiKey":true,"provider":"openai","model":"gpt-4o"},"timestamp":1772995517093,"hypothesisId":"H2"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772995531704,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"chat.routes.js:entry","message":"POST /message","data":{"userId":"69ac920acfddb735424fc293","hasApiKey":true,"provider":"openai","model":"gpt-4o"},"timestamp":1772995536471,"hypothesisId":"H2"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772996079521,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772996079526,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772996080019,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772996080022,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772996584125,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772996584128,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772996793204,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772996793205,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772997073772,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772997073775,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772997082660,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772997082676,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772997082663,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997088821,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997090956,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997092534,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997092826,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997093145,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997093494,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997093813,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997094134,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997094424,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997094745,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997095066,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997095384,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997095706,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997096026,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997096345,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997096664,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997096986,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997097335,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997097653,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997097946,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"chat.routes.js:entry","message":"POST /message","data":{"userId":"69ac920acfddb735424fc293","hasApiKey":true,"provider":"openai","model":"gpt-4o"},"timestamp":1772997098613,"hypothesisId":"H2"}
+{"sessionId":"217282","location":"ChatService.chat:beforeEmbedding","message":"before generateEmbedding","data":{"provider":"openai"},"timestamp":1772997098617,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997098618,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"chat.routes.js:entry","message":"POST /message","data":{"userId":"69ac920acfddb735424fc293","hasApiKey":true,"provider":"openai","model":"gpt-4o"},"timestamp":1772997116439,"hypothesisId":"H2"}
+{"sessionId":"217282","location":"ChatService.chat:beforeEmbedding","message":"before generateEmbedding","data":{"provider":"openai"},"timestamp":1772997116444,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997116445,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"chat.routes.js:entry","message":"POST /message","data":{"userId":"69ac920acfddb735424fc293","hasApiKey":true,"provider":"openai","model":"gpt-4o"},"timestamp":1772997143090,"hypothesisId":"H2"}
+{"sessionId":"217282","location":"ChatService.chat:beforeEmbedding","message":"before generateEmbedding","data":{"provider":"openai"},"timestamp":1772997143094,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997143095,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997210610,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997214464,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772997318436,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":true,"hasUser":true,"userApiKey":true},"timestamp":1772997318439,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"chat.routes.js:entry","message":"POST /message","data":{"userId":"69ac920acfddb735424fc293","hasApiKey":true,"provider":"openai","model":"gpt-4o"},"timestamp":1772997323799,"hypothesisId":"H2"}
+{"sessionId":"217282","location":"ChatService.chat:beforeEmbedding","message":"before generateEmbedding","data":{"provider":"openai"},"timestamp":1772997323803,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"EmbeddingService.generateEmbedding:entry","message":"generateEmbedding","data":{"hasApiKey":true,"provider":"openai"},"timestamp":1772997323804,"hypothesisId":"H5"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772997330241,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772997782232,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772997782234,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772997782741,"hypothesisId":"H1"}
+{"sessionId":"217282","location":"App.jsx:fetchUser","message":"getProfile skipped","data":{"hasToken":false,"hasUser":false},"timestamp":1772997782743,"hypothesisId":"H1"}
