@@ -15,7 +15,7 @@ const CollabLoader = () => {
         const token = JSON.parse(localStorage.getItem('repochat-storage') || '{}')?.state?.token;
         if (!token) {
           toast.error('Please login to join the collaboration.');
-          navigate('/');
+          navigate('/login');
           return;
         }
 

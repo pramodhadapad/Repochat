@@ -97,6 +97,14 @@ function App() {
             } 
           />
           <Route 
+            path="/login" 
+            element={
+              <GuestRoute>
+                <Landing />
+              </GuestRoute>
+            } 
+          />
+          <Route 
             path="/dashboard" 
             element={
               <ProtectedRoute>
@@ -152,7 +160,7 @@ function App() {
               </ProtectedRoute>
             } 
           />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
       </Router>
     </ThemeProvider>

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Registered Users</h1>
+    <div style="margin-bottom: 20px;">
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">&larr; Back to Dashboard</a>
+    </div>
+
+    <table style="width: 100%; background: white; border-collapse: collapse; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+        <tr style="background: #0056b3; color: white; text-align: left;">
+            <th style="padding: 12px;">ID</th>
+            <th style="padding: 12px;">Full Name</th>
+            <th style="padding: 12px;">Username</th>
+            <th style="padding: 12px;">Email</th>
+            <th style="padding: 12px;">Phone</th>
+            <th style="padding: 12px;">Role</th>
+            <th style="padding: 12px;">Joined Date</th>
+        </tr>
+        {% for user in users %}
+        <tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 12px;">#{{ user['id'] }}</td>
+            <td style="padding: 12px;">{{ user['full_name'] }}</td>
+            <td style="padding: 12px;">{{ user['username'] }}</td>
+            <td style="padding: 12px;">{{ user['email'] }}</td>
+            <td style="padding: 12px;">{{ user['phone'] }}</td>
+            <td style="padding: 12px;">
+                <span
+                    style="padding: 4px 8px; border-radius: 4px; background: {% if user['role'] == 'admin' %}#d4edda{% else %}#e2e6ea{% endif %}; color: {% if user['role'] == 'admin' %}#155724{% else %}#383d41{% endif %};">
+                    {{ user['role'] }}
+                </span>
+            </td>
+            <td style="padding: 12px;">{{ user['created_at'] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

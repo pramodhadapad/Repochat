@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h1>Manage Services</h1>
+        <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+
+    <div class="form-container" style="max-width: 100%; margin-bottom: 20px;">
+        <h3>Add New Service</h3>
+        <form method="post" action="{{ url_for('admin_services') }}" enctype="multipart/form-data"
+            style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <input type="text" name="service_name" placeholder="Service Name" required style="padding: 10px; flex: 1;">
+            <input type="number" name="price" placeholder="Price" required style="padding: 10px; width: 100px;">
+            <input type="text" name="description" placeholder="Description" required style="padding: 10px; flex: 2;">
+            <input type="file" name="image" accept="image/*" style="padding: 7px;">
+            <button type="submit" class="btn btn-primary">Add Service</button>
+        </form>
+    </div>
+
+    <table style="width: 100%; border-collapse: collapse; background: white;">
+        <thead>
+            <tr style="background: #0056b3; color: white; text-align: left;">
+                <th style="padding: 12px; border: 1px solid #ddd;">ID</th>
+                <th style="padding: 12px; border: 1px solid #ddd;">Name</th>
+                <th style="padding: 12px; border: 1px solid #ddd;">Price</th>
+                <th style="padding: 12px; border: 1px solid #ddd;">Description</th>
+                <th style="padding: 12px; border: 1px solid #ddd;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in services %}
+            <tr>
+                <td style="padding: 12px; border: 1px solid #ddd;">{{ row['id'] }}</td>
+                <td style="padding: 12px; border: 1px solid #ddd;">{{ row['service_name'] }}</td>
+                <td style="padding: 12px; border: 1px solid #ddd;">₹{{ row['price'] }}</td>
+                <td style="padding: 12px; border: 1px solid #ddd;">{{ row['description'] }}</td>
+                <td style="padding: 12px; border: 1px solid #ddd;">
+                    <a href="{{ url_for('delete_service', id=row['id']) }}" style="color: red;"
+                        onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

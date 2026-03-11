@@ -1,0 +1,8 @@
+ID    Service Name                   Image URL
+------------------------------------------------------------
+1     AC Installation                ac_install.jpg
+2     AC Repair & Service            ac_install.jpg
+3     Washing Machine Repair         washing_machine.jpg
+4     Refrigerator Repair            ac_repair.jpg
+5     Computer/Laptop Service        computer_repair.jpg
+6     Projector Service              projector.jpg

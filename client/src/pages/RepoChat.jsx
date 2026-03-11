@@ -38,12 +38,10 @@ const SourceControlPanel = () => (
     </div>
 );
 
-import useNavigationGuard from '../hooks/useNavigationGuard';
 
 const RepoChat = () => {
   const { repoId } = useParams();
   const navigate = useNavigate();
-  useNavigationGuard();
   const { currentRepo, setCurrentRepo, user } = useStore();
   
   const [activeFile, setActiveFile] = useState(null);

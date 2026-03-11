@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useStore from '../../store/useStore';
 import { repoService } from '../../services/api';
 import { Search, Bell, Settings, Sun, Moon, LogOut, RefreshCw } from 'lucide-react';
@@ -6,9 +7,18 @@ import toast from 'react-hot-toast';
 import LogoutModal from '../auth/LogoutModal';
 
 const TopBar = () => {
+  const navigate = useNavigate();
   const { user, theme, setTheme, currentRepo, logout, setCurrentRepo } = useStore();
   const [reindexLoading, setReindexLoading] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [avatarError, setAvatarError] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    window.history.replaceState(null, '', '/login');
+    navigate('/login', { replace: true });
+    setShowLogoutModal(false);
+  };
 
   const handleRetryIndexing = async () => {
     if (!currentRepo || currentRepo.status !== 'failed') return;
@@ -57,13 +67,13 @@ const TopBar = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        <button 
+        <button
           onClick={toggleTheme}
           className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-900 transition-colors"
         >
           {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
         </button>
-        
+
         <div className="h-8 w-px bg-slate-800 mx-2"></div>
 
         <div className="flex items-center gap-3 pl-2 group cursor-pointer">
@@ -71,14 +81,23 @@ const TopBar = () => {
             <div className="text-sm font-medium text-slate-200">{user?.name}</div>
             <div className="text-xs text-slate-500">{user?.email}</div>
           </div>
-          <img 
-            src={user?.avatar || 'https://api.dicebear.com/7.x/avataaars/svg'} 
-            alt="Avatar" 
-            className="w-10 h-10 rounded-xl bg-slate-800 ring-2 ring-primary-500/20"
-          />
+
+          {/* Avatar: shows photo if valid, else shows first letter of name */}
+          {user?.avatar && !avatarError ? (
+            <img
+              src={user.avatar}
+              alt="Avatar"
+              className="w-10 h-10 rounded-xl bg-slate-800 ring-2 ring-primary-500/20 object-cover"
+              onError={() => setAvatarError(true)}
+            />
+          ) : (
+            <div className="w-10 h-10 rounded-xl bg-primary-600 ring-2 ring-primary-500/20 flex items-center justify-center text-white font-bold text-sm">
+              {user?.name?.charAt(0).toUpperCase() || 'U'}
+            </div>
+          )}
         </div>
-        
-        <button 
+
+        <button
           onClick={() => setShowLogoutModal(true)}
           className="p-2 text-slate-400 hover:text-red-400 rounded-lg hover:bg-slate-900 transition-colors"
           title="Logout"
@@ -90,12 +109,8 @@ const TopBar = () => {
       <LogoutModal
         isOpen={showLogoutModal}
         onClose={() => setShowLogoutModal(false)}
-        onConfirm={() => {
-          logout();
-          setShowLogoutModal(false);
-        }}
+        onConfirm={handleLogout}
       />
-
     </header>
   );
 };

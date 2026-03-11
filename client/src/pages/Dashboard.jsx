@@ -10,11 +10,9 @@ import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import ParticlesBackground from '../components/common/ParticlesBackground';
-import useNavigationGuard from '../hooks/useNavigationGuard';
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  useNavigationGuard();
   const { user, setCurrentRepo } = useStore();
   const [showImport, setShowImport] = useState(false);
   const [repos, setRepos] = useState([]);

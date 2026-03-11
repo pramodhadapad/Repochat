@@ -4,11 +4,9 @@ import TopBar from '../components/layout/TopBar';
 import useStore from '../store/useStore';
 import { LogOut, Settings as SettingsIcon, Bell, Shield, Moon, Sun, Globe } from 'lucide-react';
 import toast from 'react-hot-toast';
-import useNavigationGuard from '../hooks/useNavigationGuard';
 
 const Settings = () => {
   const navigate = useNavigate();
-  useNavigationGuard();
   const { theme, setTheme, logout } = useStore();
 
   const toggleTheme = () => {
@@ -20,7 +18,8 @@ const Settings = () => {
   const handleLogout = () => {
     if (window.confirm('Are you sure you want to logout?')) {
       logout();
-      navigate('/');
+      window.history.replaceState(null, '', '/login');
+      navigate('/login', { replace: true });
       toast.success('Logged out successfully');
     }
   };

@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container" style="max-width: 800px;">
+    <h1 style="text-align: center; color: var(--primary-color); margin: 2rem 0;">Contact Us</h1>
+
+    <div class="form-container"
+        style="max-width: 100%; margin: 0 auto 3rem auto; display: flex; flex-direction: column; gap: 2rem;">
+
+        <div style="text-align: center;">
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                We are here to help you with all your electronics and appliance needs.
+            </p>
+
+            <div style="background: #eef; padding: 2rem; border-radius: 8px; margin-bottom: 2rem;">
+                <h3 style="color: var(--primary-color); margin-bottom: 1rem;">Get in Touch</h3>
+                <p style="margin-bottom: 15px;">
+                    <i class="fas fa-phone-alt" style="color: var(--secondary-color); margin-right: 10px;"></i>
+                    <strong>Mobile:</strong> <a href="tel:+918123372428"
+                        style="color: inherit; text-decoration: none;">+91 81233 72428</a>
+                </p>
+                <p style="margin-bottom: 15px;">
+                    <i class="fas fa-phone-alt" style="color: var(--secondary-color); margin-right: 10px;"></i>
+                    <strong>Mobile:</strong> <a href="tel:+918197430985"
+                        style="color: inherit; text-decoration: none;">+91 81974 30985</a>
+                </p>
+                <p>
+                    <i class="fas fa-map-marker-alt" style="color: var(--secondary-color); margin-right: 10px;"></i>
+                    <strong>Note:</strong> We provide doorstep services.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

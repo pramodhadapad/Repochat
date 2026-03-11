@@ -1,0 +1,242 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div style="padding: 40px 0;">
+    <div style="max-width: 800px; margin: 0 auto;">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="margin-bottom: 10px;">Book a Service</h1>
+            <p style="color: var(--text-medium);">Follow the steps to schedule your service</p>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="glass-card"
+            style="padding: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; position: relative;">
+            <div class="progress-step active">
+                <div class="step-circle">1</div>
+                <span>Service</span>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">2</div>
+                <span>Details</span>
+            </div>
+            <div class="progress-step">
+                <div class="step-circle">3</div>
+                <span>Confirm</span>
+            </div>
+            <!-- Line -->
+            <div
+                style="position: absolute; top: 40px; left: 50px; right: 50px; height: 2px; background: #e2e8f0; z-index: -1;">
+            </div>
+        </div>
+
+        <form id="bookingForm" action="{{ url_for('booking') }}" method="POST" class="glass-card slide-up"
+            style="padding: 40px;">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+            <!-- Hidden Fields for Payment -->
+            <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+
+            <!-- STEP 1: Service Selection -->
+            <div id="step-1" class="wizard-step">
+                <h3 style="margin-bottom: 20px;">Select Service</h3>
+
+                <div class="form-group">
+                    <label class="form-label">Choose Category/Service</label>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                        {% for service in services %}
+                        <label style="cursor: pointer;">
+                            <input type="radio" name="service_id" value="{{ service.id }}"
+                                data-price="{{ service.price }}" {% if service.id==selected_service %}checked{% endif %}
+                                required style="display: none;" class="service-radio">
+                            <div class="service-card-select"
+                                style="border: 2px solid #e2e8f0; padding: 15px; border-radius: 10px; text-align: center; transition: all 0.3s;">
+                                <h4 style="font-size: 1rem; margin-bottom: 5px;">{{ service.service_name }}</h4>
+                                <span style="color: var(--primary-color); font-weight: 600;">${{ service.price }}</span>
+                            </div>
+                        </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div style="text-align: right; margin-top: 30px;">
+                    <button type="button" class="btn btn-primary btn-next">Next Step <i
+                            class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- STEP 2: Date & Details -->
+            <div id="step-2" class="wizard-step" style="display: none;">
+                <h3 style="margin-bottom: 20px;">Schedule & Address</h3>
+
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Preferred Date</label>
+                        <input type="date" name="booking_date" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Preferred Time</label>
+                        <select name="booking_time" class="form-control" required>
+                            <option value="">Select Time Slot</option>
+                            <option value="09:00 AM">09:00 AM</option>
+                            <option value="10:00 AM">10:00 AM</option>
+                            <option value="11:00 AM">11:00 AM</option>
+                            <option value="12:00 PM">12:00 PM</option>
+                            <option value="02:00 PM">02:00 PM</option>
+                            <option value="04:00 PM">04:00 PM</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Service Address</label>
+                    <textarea name="address" class="form-control" rows="3" placeholder="Enter full address"
+                        required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Special Notes (Optional)</label>
+                    <textarea name="notes" class="form-control" rows="2"
+                        placeholder="Any specific instructions?"></textarea>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                    <button type="button" class="btn btn-secondary btn-prev"><i class="fas fa-arrow-left"></i>
+                        Previous</button>
+                    <button type="button" class="btn btn-primary btn-next">Review <i
+                            class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+
+            <!-- STEP 3: Confirmation -->
+            <div id="step-3" class="wizard-step" style="display: none;">
+                <h3 style="margin-bottom: 20px;">Confirm Details</h3>
+
+                <div
+                    style="background: rgba(56, 189, 248, 0.1); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
+                    <p id="confirm-service-name"><strong>Service:</strong> <span>Loading...</span></p>
+                    <p id="confirm-price"><strong>Total Price:</strong> <span>$0.00</span></p>
+                    <p style="margin-top: 10px; font-size: 0.9rem; color: var(--text-medium);">Payment will be initiated
+                        securely via Razorpay.</p>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-top: 30px;">
+                    <button type="button" class="btn btn-secondary btn-prev"><i class="fas fa-arrow-left"></i>
+                        Previous</button>
+                    <button type="button" id="pay-btn" class="btn btn-primary">Pay & Confirm <i
+                            class="fas fa-credit-card"></i></button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<style>
+    .step-circle {
+        width: 40px;
+        height: 40px;
+        background: #e2e8f0;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        color: var(--text-medium);
+        margin: 0 auto 5px;
+        z-index: 1;
+        position: relative;
+    }
+
+    .progress-step {
+        text-align: center;
+        flex: 1;
+        z-index: 2;
+    }
+
+    .progress-step.active .step-circle {
+        background: var(--primary-color);
+        color: white;
+        box-shadow: 0 0 0 4px rgba(30, 58, 138, 0.2);
+    }
+
+    .progress-step.completed .step-circle {
+        background: var(--accent-color);
+        color: white;
+    }
+
+    .service-radio:checked+.service-card-select {
+        border-color: var(--primary-color);
+        background: rgba(30, 58, 138, 0.05);
+        box-shadow: 0 4px 12px rgba(30, 58, 138, 0.1);
+    }
+</style>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Confirm Details Updater ---
+        const updateSummary = () => {
+            const selectedRadio = document.querySelector('input[name="service_id"]:checked');
+            if (selectedRadio) {
+                const serviceName = selectedRadio.nextElementSibling.querySelector('h4').innerText;
+                const price = selectedRadio.getAttribute('data-price');
+                document.querySelector('#confirm-service-name span').innerText = serviceName;
+                document.querySelector('#confirm-price span').innerText = '$' + price;
+            }
+        };
+
+        const btnNext = document.querySelectorAll('.btn-next');
+        btnNext.forEach(btn => btn.addEventListener('click', updateSummary));
+
+
+        // --- Razorpay Payment Logic ---
+        const payBtn = document.getElementById('pay-btn');
+        payBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+
+            const selectedRadio = document.querySelector('input[name="service_id"]:checked');
+            if (!selectedRadio) { alert('Please select a service'); return; }
+            const amount = selectedRadio.getAttribute('data-price');
+
+            // 1. Create Order
+            try {
+                const response = await fetch("{{ url_for('create_order') }}", {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ amount: amount })
+                });
+
+                const order = await response.json();
+                if (order.error) {
+                    alert('Payment Initialization Failed: ' + order.error + '. Submitting without payment.');
+                    // Fallback submit
+                    document.getElementById('bookingForm').submit();
+                    return;
+                }
+
+                // 2. Open Checkout
+                const options = {
+                    "key": "{{ razorpay_key }}", // From Jinja
+                    "amount": order.amount,
+                    "currency": "INR",
+                    "name": "ServeNow",
+                    "description": "Service Booking",
+                    "order_id": order.id,
+                    "handler": function (response) {
+                        // 3. Submit Form with Payment ID
+                        document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+                        document.getElementById('bookingForm').submit();
+                    },
+                    "theme": { "color": "#1E3A8A" }
+                };
+                const rzp1 = new Razorpay(options);
+                rzp1.open();
+
+            } catch (err) {
+                console.error(err);
+                alert('An unexpected error occurred. Proceeding manually.');
+                document.getElementById('bookingForm').submit();
+            }
+        });
+    });
+</script>
+{% endblock %}

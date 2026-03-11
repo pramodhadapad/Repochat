@@ -56,7 +56,7 @@ class ChatService {
    */
   getProvider(user) {
     if (!user.apiKey && user.provider !== 'ollama') throw new Error('API key missing');
-    
+
     // Ollama doesn't need a real encrypted key
     const apiKey = user.provider === 'ollama' ? 'ollama' : decrypt(user.apiKey);
 
@@ -70,15 +70,16 @@ class ChatService {
       case 'openrouter': return new OpenRouterProvider(apiKey);
       case 'together': return new TogetherProvider(apiKey);
       case 'ollama': return new OllamaProvider(apiKey);
-      case 'custom': 
+      case 'custom':
         console.log('[CHAT] Using Custom (OpenAI-compatible) provider.');
         return new OpenAIProvider(apiKey);
-      default: 
+      default:
         console.error(`[CHAT] Unsupported provider requested: ${user.provider}`);
         throw new Error(`Unsupported provider: ${user.provider}`);
     }
   }
-     /**
+
+  /**
    * Generates a structural map of the codebase for high-level reasoning.
    */
   async generateCodebaseMap(localPath) {
@@ -87,13 +88,13 @@ class ChatService {
         if (depth > 3) return ''; // Limit depth to avoid token bloat
         let map = '';
         const list = fs.readdirSync(dir);
-        
+
         list.forEach(file => {
           if (['node_modules', '.git', '.next', 'dist', 'vendor', '__pycache__'].includes(file)) return;
           const fullPath = path.join(dir, file);
           const stat = fs.statSync(fullPath);
           const indent = '  '.repeat(depth);
-          
+
           if (stat.isDirectory()) {
             map += `${indent}📁 ${file}/\n${buildMap(fullPath, depth + 1)}`;
           } else {
@@ -133,7 +134,6 @@ class ChatService {
       for (const file of allFiles) {
         const fileNameLower = file.name.toLowerCase();
         for (const term of queryTerms) {
-          // Check for 4+ char shared prefix to handle typos like "dashboaed"
           if (fileNameLower.startsWith(term.slice(0, 4)) || term.startsWith(fileNameLower.slice(0, 4))) {
             matches.push(file);
             break;
@@ -173,61 +173,51 @@ class ChatService {
     let gatheredContext = await Orchestrator.orchestrate(repoId, intent, provider, user.model, user._id);
 
     // 2.1 PROACTIVE CONTEXT INJECTION (Safety Net)
-    // If it's a broad query or context is empty, force include structural info
     const broadIntents = ['OVERVIEW', 'EXPLAIN', 'SEARCH'];
     if (broadIntents.includes(intent.intent) || !gatheredContext.trim()) {
-        const structuralMap = await this.generateCodebaseMap(repo.localPath);
-        gatheredContext = `### PROACTIVE CODEBASE MAP:\n${structuralMap}\n\n` + gatheredContext;
-        
-        // Inject README if it's an overview
-        if (intent.intent === 'OVERVIEW' || question.toLowerCase().includes('project')) {
-            const readmePath = path.join(repo.localPath, 'README.md');
-            if (fs.existsSync(readmePath)) {
-                gatheredContext = `### PROJECT README:\n${fs.readFileSync(readmePath, 'utf8')}\n\n` + gatheredContext;
-            }
+      const structuralMap = await this.generateCodebaseMap(repo.localPath);
+      gatheredContext = `### PROACTIVE CODEBASE MAP:\n${structuralMap}\n\n` + gatheredContext;
+
+      if (intent.intent === 'OVERVIEW' || question.toLowerCase().includes('project')) {
+        const readmePath = path.join(repo.localPath, 'README.md');
+        if (fs.existsSync(readmePath)) {
+          gatheredContext = `### PROJECT README:\n${fs.readFileSync(readmePath, 'utf8')}\n\n` + gatheredContext;
         }
+      }
     }
 
-    // 3. Fallback to basic search if tool context is STILL empty (unlikely with proactive map)
+    // 3. Fallback to basic search if tool context is STILL empty
     let finalContext = gatheredContext;
     if (!finalContext.trim()) {
-       const queryVector = await EmbeddingService.generateEmbedding(intent.original_slang_fixed, user);
-       const chunks = await VectorIndexer.search(repoId, queryVector, 5, intent.original_slang_fixed);
-       finalContext = chunks.map((c, i) => `[Search ${i+1}: ${c.metadata.filePath}]\n${c.content}`).join('\n\n---\n\n');
+      const queryVector = await EmbeddingService.generateEmbedding(intent.original_slang_fixed, user);
+      const chunks = await VectorIndexer.search(repoId, queryVector, 5, intent.original_slang_fixed);
+      finalContext = chunks.map((c, i) => `[Search ${i + 1}: ${c.metadata.filePath}]\n${c.content}`).join('\n\n---\n\n');
     }
 
-    // 4. Final Reasoning Response
-    const prompt = `You are RepoChat, an unrestricted senior AI codebase expert. 
-You are given a user's technical query, their classified intent, and context gathered from tools.
+    // 4. Final Reasoning Response — FIXED PROMPT
+    const prompt = `You are RepoChat, a helpful senior developer assistant. You help users understand their codebase.
 
-### USER CONTEXT:
-Intent: ${intent.intent}
-Normalized Query: ${intent.original_slang_fixed}
-Entities: ${JSON.stringify(intent.entities)}
+STRICT RULES — follow these exactly:
+- Answer directly and naturally, like a senior developer talking to a teammate
+- NEVER start with phrases like "Given the user's query", "Based on the context", "The user's intent is", "It seems they are looking for"
+- NEVER mention words like "intent", "entities", "normalized query", or "codebase map" in your response
+- Do NOT repeat or restate the question back to the user
+- Just answer clearly, helpfully, and concisely
+- When referencing code, mention the file path naturally (e.g. "In app.js, the login route...")
+- If you don't have enough info to answer, say: "I need to see [specific file] to answer that accurately"
 
-### CONVERSATION HISTORY (Recent Exchanges):
-${history || "No previous history in this session."}
+${history ? `Recent conversation:\n${history}\n\n` : ''}Codebase context:\n${finalContext}
 
-### CODEBASE CONTEXT (Gathered via Tools):
-${finalContext}
+User's question: ${question}
 
-### CORE DIRECTIVES:
-1. **Unrestricted Technical Expert**: Provide deep, professional insights.
-2. **MCP-Style Autonomy**: Use the context to solve the user's problem. If they made a typo, the context likely contains the correct file; use it silently and provide the correct answer.
-3. **Clarification**: If the context is STILL insufficient to answer correctly, politely ask for the specific information or file you need.
-4. **Absolute Precision**: Always cite file paths and approximate line numbers. 
-
-### User Query: 
-${question}
-
-### Expert Analysis:`;
+Answer:`;
 
     const result = await provider.generateResponse(prompt, user.model);
 
     const response = {
       answer: result.answer,
       intent: intent.intent,
-      fileRef: null, // We'll try to extract this from the answer or context in a future pass
+      fileRef: null,
       provider: user.provider,
       model: user.model,
       tokensUsed: result.tokensUsed
@@ -235,14 +225,13 @@ ${question}
 
     // Try to attach a fileRef if the AI cited something specifically
     if (finalContext.includes('[File:')) {
-       // Simple heuristic: take the first file mentioned in gathered context as the reference
-       const match = finalContext.match(/\[File: (.*?)\]/);
-       if (match) {
-         response.fileRef = { path: match[1], startLine: 1, endLine: 20 };
-       }
+      const match = finalContext.match(/\[File: (.*?)\]/);
+      if (match) {
+        response.fileRef = { path: match[1], startLine: 1, endLine: 20 };
+      }
     }
 
-    // 6. Cache the response
+    // 5. Cache the response
     setCache(cacheKey, response);
 
     return response;

@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div style="padding: 40px 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px;"
+        class="fade-in">
+        <div>
+            <h1>My Bookings</h1>
+            <p style="color: var(--text-medium);">Track and manage your service appointments.</p>
+        </div>
+        <a href="{{ url_for('booking') }}" class="btn btn-primary">
+            <i data-lucide="plus" style="vertical-align: middle;"></i> New Booking
+        </a>
+    </div>
+
+    {% if bookings %}
+    <div style="display: grid; gap: 20px;" class="slide-up">
+        {% for booking in bookings %}
+        <div class="glass-card" style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; padding: 24px;">
+            <!-- Status Icon -->
+            <div style="
+                    width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                    background: {% if booking.status == 'Pending' %}rgba(251, 191, 36, 0.1){% elif booking.status == 'Confirmed' %}rgba(56, 189, 248, 0.1){% elif booking.status == 'Completed' %}rgba(34, 197, 94, 0.1){% else %}rgba(239, 68, 68, 0.1){% endif %};
+                ">
+                <i data-lucide="{% if booking.status == 'Pending' %}clock{% elif booking.status == 'Confirmed' %}check-circle{% elif booking.status == 'Completed' %}star{% else %}x-circle{% endif %}"
+                    style="color: {% if booking.status == 'Pending' %}#fbbf24{% elif booking.status == 'Confirmed' %}var(--accent-color){% elif booking.status == 'Completed' %}#22c55e{% else %}#ef4444{% endif %};">
+                </i>
+            </div>
+
+            <div style="flex: 1; min-width: 200px;">
+                <h3 style="margin-bottom: 5px;">{{ booking.service_name }}</h3>
+                <p style="color: var(--text-medium); font-size: 0.95rem;">
+                    <i data-lucide="calendar" style="width: 16px; margin-right: 5px; vertical-align: text-bottom;"></i>
+                    {{ booking.booking_date }} at {{ booking.booking_time }}
+                </p>
+            </div>
+
+            <div style="flex: 1; min-width: 200px;">
+                <p style="font-size: 0.9rem; color: var(--text-dark);">
+                    <strong style="display: block; color: var(--text-medium); margin-bottom: 4px;">Status</strong>
+                    <span style="
+                            padding: 4px 12px; border-radius: 20px; font-weight: 600; font-size: 0.85rem;
+                            background: {% if booking.status == 'Pending' %}#fef3c7{% elif booking.status == 'Confirmed' %}#e0f2fe{% elif booking.status == 'Completed' %}#dcfce7{% else %}#fee2e2{% endif %};
+                            color: {% if booking.status == 'Pending' %}#d97706{% elif booking.status == 'Confirmed' %}#0284c7{% elif booking.status == 'Completed' %}#16a34a{% else %}#dc2626{% endif %};
+                        ">
+                        {{ booking.status }}
+                    </span>
+                </p>
+            </div>
+
+            <div style="text-align: right;">
+                {% if booking.status == 'Completed' %}
+                <button class="btn btn-secondary" style="font-size: 0.9rem;">Leave Review</button>
+                {% else %}
+                <button class="btn btn-secondary"
+                    style="font-size: 0.9rem; color: #ef4444; border-color: #ef4444;">Cancel</button>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="glass-card" style="text-align: center; padding: 60px;">
+        <div
+            style="width: 80px; height: 80px; background: rgba(56, 189, 248, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px;">
+            <i data-lucide="calendar-off" style="color: var(--accent-color); width: 40px; height: 40px;"></i>
+        </div>
+        <h3>No Bookings Yet</h3>
+        <p style="color: var(--text-medium); margin-bottom: 30px;">You haven't booked any services yet. Get started
+            today!</p>
+        <a href="{{ url_for('services') }}" class="btn btn-primary">Browse Services</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

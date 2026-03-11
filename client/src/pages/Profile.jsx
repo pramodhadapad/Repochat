@@ -5,10 +5,8 @@ import useStore from '../store/useStore';
 import { keyService } from '../services/api';
 import { User, Mail, Shield, Save, Key, Trash2, Loader2, CheckCircle2 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import useNavigationGuard from '../hooks/useNavigationGuard';
 
 const Profile = () => {
-  useNavigationGuard();
   const { user, setUser } = useStore();
   const [loading, setLoading] = useState(false);
   const [apiKey, setApiKey] = useState('');

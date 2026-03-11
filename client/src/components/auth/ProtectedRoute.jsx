@@ -1,13 +1,18 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import useStore from '../../store/useStore';
+import useDisableBackNavigation from '../../hooks/useDisableBackNavigation';
 
 const ProtectedRoute = ({ children }) => {
   const { user, token } = useStore();
   const location = useLocation();
 
+  // Apply back-navigation guard on ALL protected routes
+  useDisableBackNavigation();
+
+  // Token check happens on every render — no token means redirect to /login
   if (!token) {
-    return <Navigate to="/" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   // Handle the "in-between" state: we have a token but are still fetching the user
