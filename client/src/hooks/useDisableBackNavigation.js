@@ -21,34 +21,74 @@ const useDisableBackNavigation = () => {
     // 1. History Jail Setup — push current state to trap back/forward
     window.history.pushState(null, '', window.location.href);
 
-    const handlePopState = () => {
+    const handlePopState = (e) => {
       // Double-check token is still valid before blocking
       const currentToken = useStore.getState().token;
-      if (!currentToken) return; // Token gone — allow navigation
+      if (!currentToken) return;
 
+      // Force stay on current page
       window.history.pushState(null, '', window.location.href);
+      
       toast('Please use the Logout button to leave the platform.', {
         icon: '🔒',
         duration: 3000,
-        id: 'nav-guard-toast'
+        id: 'nav-guard-toast',
+        style: {
+          background: '#1e293b',
+          color: '#fff',
+          borderRadius: '10px',
+        }
       });
     };
 
-    // 2. BeforeUnload (Exit Confirmation)
+    // 2. Block Keyboard Shortcuts (Alt + Arrow Keys, Backspace, Cmd+[ / Cmd+])
+    const handleKeyDown = (e) => {
+      const currentToken = useStore.getState().token;
+      if (!currentToken) return;
+
+      // Alt + Left Arrow (Back) or Alt + Right Arrow (Forward)
+      const isAltNav = e.altKey && (e.keyCode === 37 || e.keyCode === 39);
+      
+      // Cmd + [ (Back) or Cmd + ] (Forward) for Mac users
+      const isMetaNav = e.metaKey && (e.keyCode === 219 || e.keyCode === 221);
+
+      if (isAltNav || isMetaNav) {
+        e.preventDefault();
+        toast.error('Navigation keys are disabled. Please use the app UI.', { id: 'nav-key-toast' });
+        return false;
+      }
+
+      // Backspace (can act as "Back" button in some browsers if not in an input)
+      if (e.keyCode === 8) {
+        const tag = e.target.tagName.toLowerCase();
+        const isInput = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
+        if (!isInput) {
+          e.preventDefault();
+          return false;
+        }
+      }
+    };
+
+    // 3. BeforeUnload (Exit Confirmation)
     const handleBeforeUnload = (e) => {
       const currentToken = useStore.getState().token;
-      if (!currentToken) return; // Token gone — allow tab close
+      if (!currentToken) return;
 
       const message = 'Are you sure you want to leave? Please log out to exit securely.';
       e.returnValue = message;
       return message;
     };
 
+    // Initialize the jail
+    window.history.pushState(null, '', window.location.href);
+
     window.addEventListener('popstate', handlePopState);
+    window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [token]);

@@ -16,7 +16,7 @@ const GuestRoute = ({ children }) => {
   useEffect(() => {
     if (token) {
       console.log('[AUTH] GuestRoute detected authenticated user. Rewriting history...');
-      // Replace the history entry to prevent back navigation to login
+      // Replace the history entry to ensure they can't "stick" to this page
       window.history.replaceState(null, '', '/dashboard');
     }
   }, [token]);

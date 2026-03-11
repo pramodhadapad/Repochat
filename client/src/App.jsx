@@ -38,11 +38,11 @@ function App() {
       window.history.replaceState({}, document.title, window.location.pathname);
     }
 
-    // Root-level protection: If navigating to '/' while authenticated, redirect to dashboard
-    if (token && window.location.pathname === '/') {
-        console.log('[AUTH] Authenticated user detected on guest route. Redirecting to dashboard...');
+    // Root-level protection: If navigating to guest routes while authenticated, 
+    // GuestRoute component handles the redirect. We just ensure state is ready.
+    if (token && (window.location.pathname === '/' || window.location.pathname === '/login')) {
+        console.log('[AUTH] Authenticated user on guest route. Redirecting...');
         window.history.replaceState(null, '', '/dashboard');
-        // This is a direct DOM manipulation to ensure no flicker, while the GuestRoute component handles the React side
     }
 
     setIsReady(true);
