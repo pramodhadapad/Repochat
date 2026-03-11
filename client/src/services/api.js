@@ -1,8 +1,7 @@
 import axios from 'axios';
 import useStore from '../store/useStore';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 const api = axios.create({
   baseURL: API_URL,
   withCredentials: true,
@@ -95,11 +94,11 @@ export const repoService = {
   getCommitSummary: (id) => api.get(`/repo/${id}/commits/summary`),
   getFileContent: (id, path) => api.get(`/repo/${id}/file`, { params: { path } }),
   getFileTree: (id) => api.get(`/repo/${id}/tree`),
-  uploadFolder: (formData) => api.post('/repo/upload-folder', formData, { 
-    headers: { 'Content-Type': 'multipart/form-data' } 
+  uploadFolder: (formData) => api.post('/repo/upload-folder', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
   }),
-  uploadFile: (formData) => api.post('/repo/upload-file', formData, { 
-    headers: { 'Content-Type': 'multipart/form-data' } 
+  uploadFile: (formData) => api.post('/repo/upload-file', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' }
   }),
   saveSnippet: (repoId, snippet) => api.post(`/repo/${repoId}/snippets`, snippet),
   deleteSnippet: (repoId, snippetId) => api.delete(`/repo/${repoId}/snippets/${snippetId}`),

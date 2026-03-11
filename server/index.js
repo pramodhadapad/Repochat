@@ -44,16 +44,11 @@ const collabService = new CollaborationService(io);
 app.use(helmet());
 app.use(compression());
 app.use(cors({
-  origin: (origin, callback) => {
-    // Allow requests with no origin (server-to-server, Postman, etc.)
-    if (!origin) return callback(null, true);
-    // Allow any localhost/127.0.0.1 origin (any port)
-    if (/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) {
-      return callback(null, true);
-    }
-    console.warn(`[CORS] Blocked origin: ${origin}`);
-    callback(new Error('Not allowed by CORS'));
-  },
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://repochat-ai.vercel.app'
+  ],
   credentials: true
 }));
 app.use(express.json());
