@@ -5,11 +5,10 @@ import ApiKeySetup from '../components/features/ApiKeySetup';
 import RepoImport from '../components/features/RepoImport';
 import useStore from '../store/useStore';
 import { repoService } from '../services/api';
-import { Plus, Github, Clock, ExternalLink, Trash2, Loader2, BookPlus, FolderUp, FileUp } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import ParticlesBackground from '../components/common/ParticlesBackground';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -18,12 +17,12 @@ const Dashboard = () => {
   const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [uploadLoading, setUploadLoading] = useState(false);
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
   const folderInputRef = useRef(null);
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    // 1. Fetch repositories
     const fetchRepos = async () => {
       try {
         const response = await repoService.getRepos();
@@ -38,13 +37,15 @@ const Dashboard = () => {
   }, []);
 
   const handleDeleteRepo = async (id) => {
-    if (window.confirm('Are you sure you want to delete this repository?')) {
-      try {
-        await repoService.deleteRepo(id);
-        setRepos(repos.filter(r => r._id !== id));
-      } catch (error) {
-        console.error('Delete failed:', error);
-      }
+    try {
+      await repoService.deleteRepo(id);
+      setRepos(repos.filter(r => r._id !== id));
+      toast.success('Repository deleted successfully');
+      setConfirmDeleteId(null);
+    } catch (error) {
+      console.error('Delete failed:', error);
+      toast.error('Failed to delete repository');
+      setConfirmDeleteId(null);
     }
   };
 
@@ -57,7 +58,6 @@ const Dashboard = () => {
         error: 'Failed to generate README.'
       }
     ).then(() => {
-      // Refresh current list state
       setRepos(repos.map(r => r._id === id ? { ...r, hasReadme: true } : r));
     });
   };
@@ -66,52 +66,42 @@ const Dashboard = () => {
     const files = Array.from(e.target.files);
     if (files.length === 0) return;
 
-    // Check browser support for webkitdirectory
     if (!files[0].webkitRelativePath) {
       toast.error('Your browser doesn\'t support folder uploads. Please use Chrome, Firefox, or Edge.', {
-        duration: 5000,
-        icon: '🌐'
+        duration: 5000, icon: '🌐'
       });
       return;
     }
 
-    // Check if user has API key set
     if (!user?.apiKey) {
       toast.error('Please add your LLM API key in Dashboard (Backend Security Setup) before uploading files.', {
-        duration: 5000,
-        icon: '🔑'
+        duration: 5000, icon: '🔑'
       });
       return;
     }
 
-    // Validate total file size
     const totalSize = files.reduce((sum, file) => sum + file.size, 0);
-    const maxSize = 100 * 1024 * 1024; // 100MB
+    const maxSize = 100 * 1024 * 1024;
     if (totalSize > maxSize) {
       toast.error(`Folder size ${(totalSize / 1024 / 1024).toFixed(1)}MB exceeds 100MB limit.`, {
-        duration: 5000,
-        icon: '📁'
+        duration: 5000, icon: '📁'
       });
       return;
     }
 
-    // Check individual file sizes
     const oversizedFiles = files.filter(file => file.size > maxSize);
     if (oversizedFiles.length > 0) {
       toast.error(`Some files exceed 100MB limit. Largest file: ${(Math.max(...oversizedFiles.map(f => f.size)) / 1024 / 1024).toFixed(1)}MB`, {
-        duration: 5000,
-        icon: '⚠️'
+        duration: 5000, icon: '⚠️'
       });
       return;
     }
 
     const formData = new FormData();
-    // Get the root folder name from the first file's webkitRelativePath
     const rootFolderName = files[0].webkitRelativePath?.split('/')[0] || 'uploaded-project';
     formData.append('projectName', rootFolderName);
 
     files.forEach((file) => {
-      // Use webkitRelativePath to preserve folder structure
       formData.append('project', file, file.webkitRelativePath);
     });
 
@@ -135,7 +125,6 @@ const Dashboard = () => {
       }
     ).finally(() => {
         setUploadLoading(false);
-        // Clear input so same folder can be re-uploaded if needed
         if (folderInputRef.current) folderInputRef.current.value = '';
     });
   };
@@ -144,32 +133,26 @@ const Dashboard = () => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Check if user has API key set
     if (!user?.apiKey) {
       toast.error('Please add your LLM API key in Dashboard (Backend Security Setup) before uploading files.', {
-        duration: 5000,
-        icon: '🔑'
+        duration: 5000, icon: '🔑'
       });
       return;
     }
 
-    // Validate file size
-    const maxSize = 100 * 1024 * 1024; // 100MB
+    const maxSize = 100 * 1024 * 1024;
     if (file.size > maxSize) {
       toast.error(`File size ${(file.size / 1024 / 1024).toFixed(1)}MB exceeds 100MB limit.`, {
-        duration: 5000,
-        icon: '📄'
+        duration: 5000, icon: '📄'
       });
       return;
     }
 
-    // Check file type
     const allowedExtensions = /\.(js|jsx|ts|tsx|py|java|cpp|c|h|cs|php|rb|go|rs|swift|kt|scala|html|css|scss|less|json|xml|yaml|yml|md|txt|sql|sh|bat|ps1|vue|svelte|astro|toml|ini|cfg|conf|log|gitignore|eslintrc|prettierrc|babelrc|dockerfile|makefile|cmake|gradle|pom|xml|properties|env|example|lock|sum|mod|go|rs|toml|yaml|yml|md|txt|sql|sh|bat|ps1)$/i;
     
     if (!allowedExtensions.test(file.name)) {
       toast.error(`File type "${file.name.split('.').pop()}" not supported. Please upload code files, documents, or configuration files.`, {
-        duration: 5000,
-        icon: '⚠️'
+        duration: 5000, icon: '⚠️'
       });
       return;
     }
@@ -198,74 +181,116 @@ const Dashboard = () => {
     ).finally(() => setUploadLoading(false));
   };
 
+  const getStatusBadge = (status) => {
+    switch (status) {
+      case 'ready':
+        return (
+          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-green-500/10 text-green-500 flex items-center gap-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+            Ready
+          </span>
+        );
+      case 'indexing':
+        return (
+          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-[#0db9f2]/10 text-[#0db9f2] flex items-center gap-1">
+            <span className="material-symbols-outlined text-[14px] animate-spin">progress_activity</span>
+            Indexing
+          </span>
+        );
+      case 'failed':
+        return (
+          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-red-500/10 text-red-500 flex items-center gap-1">
+            Failed
+          </span>
+        );
+      default:
+        return (
+          <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-slate-500/10 text-slate-400 flex items-center gap-1">
+            {status || 'Unknown'}
+          </span>
+        );
+    }
+  };
+
+  const readyRepos = repos.filter(r => r.status === 'ready').length;
+  const indexingRepos = repos.filter(r => r.status === 'indexing').length;
+
   return (
-    <div className="relative flex bg-white dark:bg-slate-950 min-h-screen text-slate-900 dark:text-white transition-colors duration-300">
-      <ParticlesBackground />
+    <div className="relative flex min-h-screen bg-[#f5f8f8] dark:bg-gradient-to-br dark:from-[#0a1418] dark:via-[#0d1b20] dark:to-[#0a1418] text-slate-900 dark:text-slate-100 font-['Inter',sans-serif]">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar />
         
-        <main className="flex-1 p-8 overflow-y-auto">
+        <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-8 overflow-y-auto">
+          {/* API Key Setup Card */}
           {user && !user.apiKey && (
-            <div className="mb-8">
-              <ApiKeySetup />
-            </div>
+            <section className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/5 dark:bg-slate-900/40 backdrop-blur-md p-6 sm:p-10 shadow-[0_20px_25px_-5px_rgba(0,0,0,0.2),0_10px_10px_-5px_rgba(0,0,0,0.1)]">
+              <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#0db9f2]/20 rounded-full blur-[100px] pointer-events-none" />
+              <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
+              <div className="relative">
+                <ApiKeySetup />
+              </div>
+            </section>
           )}
 
-          <div className="flex items-center justify-between mb-8">
+          {/* Repositories Header */}
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold mb-2">My Repositories</h1>
-              <p className="text-slate-400">Manage and chat with your indexed codebases.</p>
+              <h3 className="text-2xl font-bold">Your Repositories</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm">Manage and chat with your synchronized codebases</p>
             </div>
-            <div className="flex items-center gap-3">
-              <input 
-                type="file" 
-                ref={folderInputRef} 
-                onChange={handleFolderUpload} 
-                webkitdirectory="" 
-                directory="" 
-                multiple
-                className="hidden" 
-              />
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                onChange={handleFileUpload} 
-                className="hidden" 
-              />
 
+            {/* Hidden file inputs */}
+            <input 
+              type="file" 
+              ref={folderInputRef} 
+              onChange={handleFolderUpload} 
+              webkitdirectory="" 
+              directory="" 
+              multiple
+              className="hidden" 
+            />
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              onChange={handleFileUpload} 
+              className="hidden" 
+            />
+
+            <div className="flex items-center gap-3">
               <button 
                 onClick={() => fileInputRef.current.click()}
-                className="px-4 py-3 bg-slate-900 border border-slate-800 hover:border-primary-500/50 text-slate-300 font-bold rounded-2xl transition-all flex items-center gap-2"
+                className="px-4 py-2 rounded-lg border border-white/[0.08] bg-white/5 backdrop-blur-md text-slate-300 font-semibold flex items-center gap-2 hover:bg-white/10 hover:border-[#0db9f2]/40 transition-all text-sm"
                 disabled={uploadLoading}
               >
-                <FileUp className="w-5 h-5" />
+                <span className="material-symbols-outlined text-sm">upload_file</span>
                 Upload File
               </button>
 
               <button 
                 onClick={() => folderInputRef.current.click()}
-                className="px-4 py-3 bg-slate-900 border border-slate-800 hover:border-primary-500/50 text-slate-300 font-bold rounded-2xl transition-all flex items-center gap-2"
+                className="px-4 py-2 rounded-lg border border-white/[0.08] bg-white/5 backdrop-blur-md text-slate-300 font-semibold flex items-center gap-2 hover:bg-white/10 hover:border-[#0db9f2]/40 transition-all text-sm"
                 disabled={uploadLoading}
               >
-                <FolderUp className="w-5 h-5" />
+                <span className="material-symbols-outlined text-sm">drive_folder_upload</span>
                 Upload Folder
               </button>
 
               <button 
                 onClick={() => setShowImport(true)}
-                className="px-6 py-3 bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-2xl transition-all flex items-center gap-2 shadow-lg shadow-primary-600/20"
+                className="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:opacity-90 transition-opacity"
                 disabled={uploadLoading}
               >
-                <Plus className="w-5 h-5" />
-                Import Repository
+                <span className="material-symbols-outlined text-sm">add</span>
+                Import Repo
               </button>
             </div>
           </div>
 
+          {/* Repository Grid */}
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4">
-              <Loader2 className="w-10 h-10 text-primary-500 animate-spin" />
+              <Loader2 className="w-10 h-10 text-[#0db9f2] animate-spin" />
               <p className="text-slate-500 uppercase tracking-widest text-xs font-bold">Waking up indexer...</p>
             </div>
           ) : (
@@ -278,67 +303,160 @@ const Dashboard = () => {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
-                    className="glass p-6 rounded-3xl hover:border-primary-500/50 transition-all group flex flex-col"
+                    className="group border border-white/[0.08] bg-white/5 dark:bg-slate-900/30 backdrop-blur-md rounded-2xl p-6 hover:border-[#0db9f2]/40 hover:bg-white/10 transition-all duration-300 flex flex-col hover:-translate-y-1 hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.2),0_10px_10px_-5px_rgba(0,0,0,0.1)]"
                   >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center group-hover:bg-primary-600/20 transition-colors">
-                        <Github className="w-6 h-6 text-slate-400 group-hover:text-primary-400" />
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="p-2 rounded-lg bg-[#0db9f2]/10 text-[#0db9f2]">
+                        <span className="material-symbols-outlined">folder_special</span>
                       </div>
-                      <div className="flex gap-2">
-                         <a 
-                           href={repo.url} 
-                           target="_blank" 
-                           rel="noopener noreferrer"
-                           className="p-2 text-slate-500 hover:text-white rounded-lg hover:bg-slate-800 transition-colors"
-                         >
-                           <ExternalLink className="w-4 h-4" />
-                         </a>
-                         <button 
-                           onClick={() => handleDeleteRepo(repo._id)}
-                           className="p-2 text-slate-500 hover:text-red-400 rounded-lg hover:bg-slate-800 transition-colors"
-                          >
-                           <Trash2 className="w-4 h-4" />
-                         </button>
+                      {getStatusBadge(repo.status)}
+                    </div>
+
+                    <h4 className="text-lg font-bold mb-1 truncate">{repo.name}</h4>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 truncate">{repo.owner}</p>
+
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="flex items-center gap-1 text-xs text-slate-500">
+                        <span className="material-symbols-outlined text-sm">history</span>
+                        {new Date(repo.createdAt).toLocaleDateString()}
                       </div>
                     </div>
-                    
-                    <h3 className="text-xl font-bold mb-1 truncate">{repo.name}</h3>
-                    <p className="text-sm text-slate-500 mb-6 truncate">{repo.owner}</p>
-                    
-                    {!repo.hasReadme && (
+
+                    {/* Generate README if needed */}
+                    {!repo.hasReadme && repo.status === 'ready' && (
                       <button 
                         onClick={(e) => {
                           e.stopPropagation();
                           handleGenerateReadme(repo._id);
                         }}
-                        className="mb-6 flex items-center gap-2 px-3 py-2 bg-slate-900 border border-slate-800 rounded-xl text-xs text-slate-400 hover:text-white hover:border-primary-500/50 transition-all w-fit"
+                        className="mb-4 flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/[0.08] rounded-xl text-xs text-slate-400 hover:text-white hover:border-[#0db9f2]/50 transition-all w-fit"
                       >
-                        <BookPlus className="w-4 h-4 text-primary-400" />
+                        <span className="material-symbols-outlined text-sm text-[#0db9f2]">auto_stories</span>
                         Generate README
                       </button>
                     )}
-                    
-                    <div className="mt-auto flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-xs text-slate-400">
-                        <Clock className="w-3 h-3" />
-                        {new Date(repo.createdAt).toLocaleDateString()}
-                      </div>
-                      <button 
-                        onClick={() => {
-                          setCurrentRepo(repo);
-                          navigate(`/repo/${repo._id}`);
-                        }}
-                        className="text-primary-400 font-bold text-sm hover:text-primary-300 transition-colors"
-                      >
-                        Open Chat →
-                      </button>
+
+                    <div className="mt-auto flex gap-2">
+                      {confirmDeleteId === repo._id ? (
+                        <div className="flex gap-2 w-full animate-in zoom-in duration-200">
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(null); }}
+                            className="flex-1 bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-bold py-2 rounded-lg text-sm transition-colors"
+                          >
+                            Cancel
+                          </button>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); handleDeleteRepo(repo._id); }}
+                            className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded-lg text-sm transition-colors flex items-center justify-center gap-1 shadow-lg shadow-red-500/20"
+                          >
+                            <span className="material-symbols-outlined text-[16px]">delete_forever</span>
+                            Confirm
+                          </button>
+                        </div>
+                      ) : repo.status === 'ready' ? (
+                        <>
+                          <button 
+                            onClick={() => {
+                              setCurrentRepo(repo);
+                              navigate(`/repo/${repo._id}`);
+                            }}
+                            className="flex-1 bg-[#0db9f2]/10 hover:bg-[#0db9f2]/20 text-[#0db9f2] font-bold py-2 rounded-lg text-sm transition-colors flex items-center justify-center gap-2"
+                          >
+                            <span className="material-symbols-outlined text-sm">chat</span>
+                            Open
+                          </button>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(repo._id); }}
+                            className="px-3 border border-red-500/20 hover:bg-red-500/10 text-red-500 py-2 rounded-lg text-sm transition-colors"
+                          >
+                            <span className="material-symbols-outlined text-sm">delete</span>
+                          </button>
+                        </>
+                      ) : repo.status === 'indexing' ? (
+                        <div className="flex gap-2 w-full">
+                          <button 
+                            className="flex-1 bg-slate-100 dark:bg-slate-800 text-slate-400 cursor-not-allowed font-bold py-2 rounded-lg text-sm flex items-center justify-center gap-2"
+                            disabled
+                          >
+                            <span className="material-symbols-outlined text-sm animate-spin">progress_activity</span>
+                            Processing...
+                          </button>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(repo._id); }}
+                            className="px-3 border border-red-500/20 hover:bg-red-500/10 text-red-500 py-2 rounded-lg text-sm transition-colors"
+                            title="Delete repository"
+                          >
+                            <span className="material-symbols-outlined text-sm">delete</span>
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex gap-2 w-full">
+                          <button 
+                            onClick={() => handleDeleteRepo(repo._id)}
+                            className="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded-lg text-sm transition-colors flex items-center justify-center gap-2"
+                          >
+                            <span className="material-symbols-outlined text-sm">refresh</span>
+                            Retry
+                          </button>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); setConfirmDeleteId(repo._id); }}
+                            className="px-3 border border-red-200 dark:border-red-900/50 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500 py-2 rounded-lg text-sm transition-colors"
+                          >
+                            <span className="material-symbols-outlined text-sm">delete</span>
+                          </button>
+                        </div>
+                      )}
                     </div>
                   </motion.div>
                 ))}
               </AnimatePresence>
             </div>
           )}
+
+          {/* Dashboard Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
+            <div className="bg-white/5 dark:bg-slate-900/30 border border-white/[0.08] backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]">
+              <div className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase mb-1">Total Repos</div>
+              <div className="text-2xl font-bold">{repos.length}</div>
+              <div className="h-0.5 w-full bg-slate-500/20 mt-3 rounded-full overflow-hidden">
+                <div className="h-full bg-slate-400 w-1/2" />
+              </div>
+            </div>
+            <div className="bg-white/5 dark:bg-slate-900/30 border border-white/[0.08] backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]">
+              <div className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase mb-1">Ready</div>
+              <div className="text-2xl font-bold text-green-500">{readyRepos}</div>
+              <div className="h-0.5 w-full bg-green-500/20 mt-3 rounded-full overflow-hidden">
+                <div className="h-full bg-green-500" style={{ width: repos.length ? `${(readyRepos / repos.length) * 100}%` : '0%' }} />
+              </div>
+            </div>
+            <div className="bg-white/5 dark:bg-slate-900/30 border border-white/[0.08] backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]">
+              <div className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase mb-1">Indexing</div>
+              <div className="text-2xl font-bold text-[#0db9f2]">{indexingRepos}</div>
+              <div className="h-0.5 w-full bg-[#0db9f2]/20 mt-3 rounded-full overflow-hidden">
+                <div className="h-full bg-[#0db9f2]" style={{ width: repos.length ? `${(indexingRepos / repos.length) * 100}%` : '0%' }} />
+              </div>
+            </div>
+            <div className="bg-white/5 dark:bg-slate-900/30 border border-white/[0.08] backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]">
+              <div className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase mb-1">API Status</div>
+              <div className="text-2xl font-bold text-green-500">{user?.apiKey ? 'Active' : 'Setup'}</div>
+              <div className="h-0.5 w-full bg-green-500/20 mt-3 rounded-full overflow-hidden">
+                <div className={`h-full ${user?.apiKey ? 'bg-green-500 w-full' : 'bg-amber-500 w-1/4'}`} />
+              </div>
+            </div>
+          </div>
         </main>
+
+        {/* Footer */}
+        <footer className="border-t border-slate-200 dark:border-slate-800 py-6 mt-auto bg-black/10 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-500">
+            <p>&copy; 2026 RepoChat Dashboard. Build with precision.</p>
+            <div className="flex gap-6">
+              <a className="hover:text-[#0db9f2] transition-colors" href="#">Documentation</a>
+              <a className="hover:text-[#0db9f2] transition-colors" href="#">Support</a>
+              <a className="hover:text-[#0db9f2] transition-colors" href="#">API Status</a>
+            </div>
+          </div>
+        </footer>
       </div>
 
       {/* Import Modal */}
@@ -348,7 +466,6 @@ const Dashboard = () => {
           <div className="relative w-full max-w-lg">
             <RepoImport onClose={() => {
               setShowImport(false);
-              // Refresh repos after import
               window.location.reload(); 
             }} />
           </div>

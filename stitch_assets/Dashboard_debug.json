@@ -1,0 +1,24 @@
+{
+  "content": [
+    {
+      "text": "{\"name\":\"projects/17312601772201490516/screens/dd9cbb0a583f436d8c4fc46c2a08f58e\",\"title\":\"Premium Dashboard\",\"screenshot\":{\"name\":\"projects/17312601772201490516/files/a03df893663e4a25bf7140f9a7b62ef4\",\"downloadUrl\":\"https://lh3.googleusercontent.com/aida/AOfcidVEXqAdnwlu-bDk6sjflEnGZkXwvzHJY0Ko3omKOmaXtWvbdhvN5xAWt8olKqfiGAq-TarggPSTFqF4UpcHtyasetrff1t0qSp_NKPT7FCXIpo5nIm_yQpEFHp0wEEI1qchSv4c5nxUj6wssP7l-mUO4swqdapwThW-rlP9fWDXOvUlic2dW15uHnVfQRhr5ngk7yMlY-UnTeXkVL8XruwiZbL3HKVWzzv-MGwJgfbYyBhEcZ0mpg-FupjB\"},\"htmlCode\":{\"name\":\"projects/17312601772201490516/files/12583588094644ffa96dae5f278a9f55\",\"downloadUrl\":\"https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzJlYWQ2NDVmODM4MTQ0NWM4MWU2YzBkZGRmYmY5MDY3EgsSBxDcicO32QsYAZIBJAoKcHJvamVjdF9pZBIWQhQxNzMxMjYwMTc3MjIwMTQ5MDUxNg&filename=&opi=89354086\",\"mimeType\":\"text/html\"},\"width\":\"2560\",\"height\":\"2048\",\"deviceType\":\"DESKTOP\"}",
+      "type": "text"
+    }
+  ],
+  "structuredContent": {
+    "deviceType": "DESKTOP",
+    "height": "2048",
+    "htmlCode": {
+      "downloadUrl": "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzJlYWQ2NDVmODM4MTQ0NWM4MWU2YzBkZGRmYmY5MDY3EgsSBxDcicO32QsYAZIBJAoKcHJvamVjdF9pZBIWQhQxNzMxMjYwMTc3MjIwMTQ5MDUxNg&filename=&opi=89354086",
+      "mimeType": "text/html",
+      "name": "projects/17312601772201490516/files/12583588094644ffa96dae5f278a9f55"
+    },
+    "name": "projects/17312601772201490516/screens/dd9cbb0a583f436d8c4fc46c2a08f58e",
+    "screenshot": {
+      "downloadUrl": "https://lh3.googleusercontent.com/aida/AOfcidVEXqAdnwlu-bDk6sjflEnGZkXwvzHJY0Ko3omKOmaXtWvbdhvN5xAWt8olKqfiGAq-TarggPSTFqF4UpcHtyasetrff1t0qSp_NKPT7FCXIpo5nIm_yQpEFHp0wEEI1qchSv4c5nxUj6wssP7l-mUO4swqdapwThW-rlP9fWDXOvUlic2dW15uHnVfQRhr5ngk7yMlY-UnTeXkVL8XruwiZbL3HKVWzzv-MGwJgfbYyBhEcZ0mpg-FupjB",
+      "name": "projects/17312601772201490516/files/a03df893663e4a25bf7140f9a7b62ef4"
+    },
+    "title": "Premium Dashboard",
+    "width": "2560"
+  }
+}

@@ -51,7 +51,7 @@ const RepoImport = ({ onClose }) => {
   };
 
   return (
-    <div className="bg-slate-900 border border-slate-800 p-8 rounded-[40px] shadow-2xl">
+    <div className="bg-slate-900 text-slate-100 border border-slate-800 p-8 rounded-[40px] shadow-2xl">
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-2xl font-bold">Import Repository</h2>
         <button onClick={onClose} className="p-2 text-slate-400 hover:text-white rounded-full hover:bg-slate-800 transition-colors">

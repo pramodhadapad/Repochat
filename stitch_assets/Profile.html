@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0db9f2",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#101e22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>RepoChat - Profile</title>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-slate-900 via-background-dark to-background-dark">
+<div class="relative flex min-h-screen w-full flex-col overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 px-6 py-4 lg:px-20">
+<div class="flex items-center gap-3">
+<div class="text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">terminal</span>
+</div>
+<h2 class="text-xl font-bold leading-tight tracking-tight">RepoChat</h2>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center rounded-lg p-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="flex items-center justify-center rounded-lg p-2 bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="flex flex-1 justify-center py-10 px-6">
+<div class="layout-content-container flex flex-col max-w-2xl flex-1 gap-8">
+<!-- Profile Header Section -->
+<section class="flex flex-col items-center text-center gap-4">
+<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+<div class="relative size-32 rounded-full p-1 bg-gradient-to-tr from-primary/40 to-primary shadow-[0_0_30px_-10px_rgba(13,185,242,0.5)]">
+<div class="w-full h-full rounded-full border-2 border-background-dark overflow-hidden bg-slate-800">
+<img alt="User Profile Picture" class="w-full h-full object-cover" data-alt="Professional headshot of a smiling man" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqb-lp8TJwG9JwV9Auj1CUetlY1tHh25seEgVkH28U0lWeL11an2ddO4ZuBCi86lZADep77fMzAYqt9-P_J52VjQBTnsvDmHbD-sD81ogT7T2Y0aj_MidjhG41BsgGKXWQEA3R76SR7fFo9OoRF_EvYAlPwN8R7Vwy_LsEvEaw6l13rO5YGGqCEIMgiqErwWWB8LU-H75NLFARY6W64fN-JqQmdwBpqkh5q_kCvincYdH62hLi5z-lj6nOqSNc4hjmSrXabEe0CEHT"/>
+</div>
+</div>
+<button class="absolute bottom-0 right-0 bg-primary text-background-dark rounded-full p-2 border-2 border-background-light dark:border-background-dark shadow-lg">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+<h1 class="text-3xl font-bold tracking-tight">Pramod Hadapad</h1>
+<p class="text-slate-500 dark:text-slate-400 font-medium">pramodhadapad@gmail.com</p>
+<div class="flex items-center justify-center gap-2 mt-2">
+<span class="px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full uppercase tracking-wider">Verified Account</span>
+<span class="text-slate-400 dark:text-slate-500 text-sm italic">via Google / GitHub</span>
+</div>
+</div>
+</section>
+<!-- AI Configuration Section -->
+<section class="flex flex-col gap-4">
+<h2 class="text-xl font-bold px-1">AI Provider Configuration</h2>
+<div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+<div class="p-6 flex flex-col @container">
+<div class="flex flex-col @xl:flex-row gap-6 items-start">
+<div class="w-full @xl:w-48 aspect-video @xl:aspect-square bg-gradient-to-br from-primary/40 to-primary rounded-lg flex items-center justify-center" data-alt="Abstract glowing blue neural network pattern">
+<span class="material-symbols-outlined text-5xl text-background-dark">bolt</span>
+</div>
+<div class="flex-1 space-y-4">
+<div>
+<p class="text-primary font-semibold text-sm uppercase tracking-widest mb-1">Active Engine</p>
+<h3 class="text-xl font-bold">Groq (LPU)</h3>
+<p class="text-slate-500 dark:text-slate-400 mt-2 text-sm leading-relaxed">
+                                                High-speed language processing unit optimized for real-time chat interactions.
+                                            </p>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-background-dark font-bold rounded-lg hover:brightness-110 transition-all text-sm">
+<span class="material-symbols-outlined text-lg">key</span>
+<span>Change API Key</span>
+</button>
+</div>
+</div>
+<!-- Provider Selector -->
+<div class="mt-8">
+<p class="text-sm font-medium text-slate-500 dark:text-slate-400 mb-3">Switch Provider</p>
+<div class="flex bg-black/40 backdrop-blur-md p-1.5 rounded-xl border border-white/5">
+<label class="flex-1 cursor-pointer">
+<input class="peer hidden" name="provider" type="radio" value="Claude"/>
+<div class="flex bg-black/40 backdrop-blur-md p-1.5 rounded-xl border border-white/5">
+                                                Claude
+                                            </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="peer hidden" name="provider" type="radio" value="OpenAI"/>
+<div class="flex bg-black/40 backdrop-blur-md p-1.5 rounded-xl border border-white/5">
+                                                OpenAI
+                                            </div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input checked="" class="peer hidden" name="provider" type="radio" value="Groq"/>
+<div class="flex bg-black/40 backdrop-blur-md p-1.5 rounded-xl border border-white/5">
+                                                Groq
+                                            </div>
+</label>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Actions -->
+<section class="flex flex-col gap-4 mt-10 border-t border-white/5 pt-10 pb-12">
+<button class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-white/5 backdrop-blur-lg border border-white/10 text-slate-300 font-bold rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all shadow-lg">
+<span class="material-symbols-outlined text-primary">manage_accounts</span>
+<span>Global Account Settings</span>
+</button>
+<button class="flex items-center justify-center gap-3 w-full py-4 px-6 bg-red-500/10 border border-red-500/20 text-red-500 font-bold rounded-2xl hover:bg-red-500/20 hover:border-red-500/40 transition-all shadow-[0_4px_20px_-10px_rgba(239,68,68,0.5)]">
+<span class="material-symbols-outlined">logout</span>
+<span>Sign Out of Session</span>
+</button>
+<p class="text-center text-xs text-slate-400 dark:text-slate-500 mt-4">
+                            RepoChat v2.4.1 • <a class="underline" href="#">Privacy Policy</a> • <a class="underline" href="#">Terms of Service</a>
+</p>
+</section>
+</div>
+</main>
+</div>
+</div>
+</body></html>

@@ -87,8 +87,12 @@ function walkFiles(dir, fileList = []) {
  * @param {string} localPath - The path to the directory to remove.
  */
 function cleanupRepo(localPath) {
-  if (fs.existsSync(localPath)) {
-    fs.rmSync(localPath, { recursive: true, force: true });
+  try {
+    if (fs.existsSync(localPath)) {
+      fs.rmSync(localPath, { recursive: true, force: true });
+    }
+  } catch (err) {
+    console.error(`[Cleanup] Failed to remove dir ${localPath}:`, err.message);
   }
 }
 

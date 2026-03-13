@@ -3,7 +3,6 @@ import Sidebar from '../components/layout/Sidebar';
 import TopBar from '../components/layout/TopBar';
 import useStore from '../store/useStore';
 import { keyService } from '../services/api';
-import { User, Mail, Shield, Save, Key, Trash2, Loader2, CheckCircle2 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 const Profile = () => {
@@ -11,137 +10,126 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
   const [apiKey, setApiKey] = useState('');
 
-
   return (
-    <div className="flex bg-slate-950 min-h-screen">
+    <div className="relative flex min-h-screen bg-[#f5f8f8] dark:bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] dark:from-slate-900 dark:via-[#101e22] dark:to-[#101e22] text-slate-900 dark:text-slate-100 font-['Inter',sans-serif]">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar />
         
-        <main className="flex-1 p-8 overflow-y-auto">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl font-bold mb-8">Account Settings</h1>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {/* Left Side: Avatar & Basic Info */}
-              <div className="space-y-6">
-                <div className="glass p-8 rounded-3xl flex flex-col items-center text-center">
-                   <img 
-                    src={user?.avatar || 'https://api.dicebear.com/7.x/avataaars/svg'} 
-                    alt="Avatar" 
-                    className="w-32 h-32 rounded-[40px] bg-slate-800 ring-4 ring-primary-500/20 mb-6"
-                  />
-                  <h3 className="text-xl font-bold mb-1">{user?.name}</h3>
-                  <p className="text-sm text-slate-500">{user?.email}</p>
-                </div>
-
-                <div className="glass p-6 rounded-3xl space-y-4">
-                  <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest px-2">Account Status</h4>
-                  <div className="flex justify-between px-2">
-                    <span className="text-slate-400">Membership</span>
-                    <span className="font-bold text-primary-400">Pro Developer</span>
-                  </div>
-                  <div className="flex justify-between px-2">
-                    <span className="text-slate-400">Vector Storage</span>
-                    <span className="font-bold">Unlimited</span>
+        <main className="flex flex-1 justify-center py-10 px-6 overflow-y-auto">
+          <div className="flex flex-col max-w-2xl flex-1 gap-8">
+            {/* Profile Header Section */}
+            <section className="flex flex-col items-center text-center gap-4">
+              <div className="relative">
+                <div className="size-32 rounded-full p-1 bg-gradient-to-tr from-[#0db9f2]/40 to-[#0db9f2] shadow-[0_0_30px_-10px_rgba(13,185,242,0.5)]">
+                  <div className="w-full h-full rounded-full border-2 border-[#101e22] overflow-hidden bg-slate-800">
+                    <img
+                      alt="User Profile Picture"
+                      className="w-full h-full object-cover"
+                      src={user?.avatar || 'https://api.dicebear.com/7.x/avataaars/svg'}
+                    />
                   </div>
                 </div>
               </div>
-
-
-              {/* Right Side: Configuration Form */}
-              <div className="md:col-span-2 space-y-8">
-                <div className="glass p-8 rounded-[40px] space-y-6">
-                  <div className="flex items-center gap-3 mb-2">
-                    <User className="w-5 h-5 text-primary-400" />
-                    <h3 className="text-xl font-bold">Profile Details</h3>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-500 ml-1">Display Name</label>
-                      <input 
-                        type="text" 
-                        defaultValue={user?.name}
-                        className="w-full h-14 bg-slate-900 border border-slate-800 rounded-2xl px-6 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label className="text-sm font-medium text-slate-500 ml-1">Email Address</label>
-                      <input 
-                        type="email" 
-                        defaultValue={user?.email}
-                        disabled
-                        className="w-full h-14 bg-slate-800 border border-slate-800 rounded-2xl px-6 text-slate-500 cursor-not-allowed"
-                      />
-                    </div>
-                    <div className="space-y-2 col-span-2">
-                      <label className="text-sm font-medium text-slate-500 ml-1">Account Password (Optional)</label>
-                      <input 
-                        type="password" 
-                        placeholder="••••••••••••"
-                        className="w-full h-14 bg-slate-900 border border-slate-800 rounded-2xl px-6 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
-                      />
-                      <p className="text-[10px] text-slate-500 px-2 italic">Add a local password for non-OAuth login attempts.</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="glass p-8 rounded-[40px] space-y-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <div className="flex items-center gap-3">
-                      <Shield className="w-5 h-5 text-indigo-400" />
-                      <h3 className="text-xl font-bold">Linked Accounts</h3>
-                    </div>
-                    <button className="text-xs font-bold text-primary-400 hover:text-primary-300 transition-colors uppercase tracking-widest">
-                      + Add Another Account
-                    </button>
-                  </div>
-                  
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-slate-900/50 border border-slate-800 rounded-2xl">
-                      <div className="flex gap-3 items-center">
-                         <div className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center text-xs font-bold">G</div>
-                         <div>
-                            <div className="text-sm font-bold text-slate-300">Google Account</div>
-                            <div className="text-xs text-slate-500">{user?.email}</div>
-                         </div>
-                      </div>
-                      <span className="text-[10px] font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded border border-green-400/20 uppercase">Connected</span>
-                    </div>
-
-                    <div className="flex items-center justify-between p-4 bg-slate-950 border border-dashed border-slate-800 rounded-2xl opacity-50">
-                      <div className="flex gap-3 items-center">
-                         <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-xs font-bold">GH</div>
-                         <div>
-                            <div className="text-sm font-bold text-slate-400">GitHub Account</div>
-                            <div className="text-xs text-slate-500 italic">Not Linked</div>
-                         </div>
-                      </div>
-                      <button className="text-[10px] font-bold text-slate-500 hover:text-white transition-colors uppercase underline">Link ID</button>
-                    </div>
-                  </div>
-                </div>
-
-
-
-                <div className="flex justify-end pt-4">
-                   <button 
-                    onClick={() => toast.success('Profile settings updated')}
-                    className="px-10 py-4 bg-primary-600 hover:bg-primary-500 text-white font-bold rounded-2xl transition-all shadow-xl shadow-primary-600/30 flex items-center gap-2"
-                   >
-                      <Save className="w-5 h-5" />
-                      Save Changes
-                   </button>
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight">{user?.name}</h1>
+                <p className="text-slate-500 dark:text-slate-400 font-medium">{user?.email}</p>
+                <div className="flex items-center justify-center gap-2 mt-2">
+                  <span className="px-3 py-1 bg-[#0db9f2]/10 text-[#0db9f2] text-xs font-semibold rounded-full uppercase tracking-wider">Verified Account</span>
+                  <span className="text-slate-400 dark:text-slate-500 text-sm italic">via Google / GitHub</span>
                 </div>
               </div>
-            </div>
+            </section>
+
+            {/* AI Configuration Section */}
+            <section className="flex flex-col gap-4">
+              <h2 className="text-xl font-bold px-1">AI Provider Configuration</h2>
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+                <div className="p-6 flex flex-col">
+                  <div className="flex flex-col sm:flex-row gap-6 items-start">
+                    <div className="w-full sm:w-48 aspect-video sm:aspect-square bg-gradient-to-br from-[#0db9f2]/40 to-[#0db9f2] rounded-lg flex items-center justify-center">
+                      <span className="material-symbols-outlined text-5xl text-[#101e22]">bolt</span>
+                    </div>
+                    <div className="flex-1 space-y-4">
+                      <div>
+                        <p className="text-[#0db9f2] font-semibold text-sm uppercase tracking-widest mb-1">Active Engine</p>
+                        <h3 className="text-xl font-bold">{user?.apiKey ? 'Groq (LPU)' : 'Not Configured'}</h3>
+                        <p className="text-slate-500 dark:text-slate-400 mt-2 text-sm leading-relaxed">
+                          High-speed language processing unit optimized for real-time chat interactions.
+                        </p>
+                      </div>
+                      <button 
+                        onClick={() => toast('API key management coming soon!', { icon: '🔑' })}
+                        className="flex items-center gap-2 px-4 py-2 bg-[#0db9f2] text-[#101e22] font-bold rounded-lg hover:brightness-110 transition-all text-sm"
+                      >
+                        <span className="material-symbols-outlined text-lg">key</span>
+                        <span>Change API Key</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Profile Details */}
+            <section className="flex flex-col gap-4">
+              <h2 className="text-xl font-bold px-1">Profile Details</h2>
+              <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl p-6 space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-500 ml-1">Display Name</label>
+                    <input 
+                      type="text" 
+                      defaultValue={user?.name}
+                      className="w-full h-14 bg-black/20 border border-white/[0.08] rounded-xl px-6 focus:outline-none focus:ring-2 focus:ring-[#0db9f2]/50 text-slate-900 dark:text-white backdrop-blur-sm"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-500 ml-1">Email Address</label>
+                    <input 
+                      type="email" 
+                      defaultValue={user?.email}
+                      disabled
+                      className="w-full h-14 bg-black/20 border border-white/[0.08] rounded-xl px-6 text-slate-800 dark:text-slate-500 cursor-not-allowed backdrop-blur-sm"
+                    />
+                  </div>
+                </div>
+
+                {/* Linked Accounts */}
+                <div className="space-y-4 mt-6">
+                  <h4 className="text-sm font-bold text-slate-400 uppercase tracking-widest">Linked Accounts</h4>
+                  <div className="flex items-center justify-between p-4 bg-black/20 border border-white/[0.08] rounded-xl">
+                    <div className="flex gap-3 items-center">
+                      <div className="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center text-xs font-bold">G</div>
+                      <div>
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-300">Google Account</div>
+                        <div className="text-xs text-slate-500">{user?.email}</div>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-bold text-green-400 bg-green-400/10 px-2 py-1 rounded border border-green-400/20 uppercase">Connected</span>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Footer Actions */}
+            <section className="flex flex-col gap-4 mt-10 border-t border-white/5 pt-10 pb-12">
+              <button 
+                onClick={() => toast.success('Profile settings updated')}
+                className="flex items-center justify-center gap-3 w-full py-4 px-6 bg-white/5 backdrop-blur-lg border border-white/10 text-slate-900 dark:text-slate-300 font-bold rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all shadow-lg"
+              >
+                <span className="material-symbols-outlined text-[#0db9f2]">manage_accounts</span>
+                <span>Save Profile Settings</span>
+              </button>
+              <p className="text-center text-xs text-slate-400 dark:text-slate-500 mt-4">
+                RepoChat v2.4.1 • <a className="underline hover:text-[#0db9f2] transition-colors" href="#">Privacy Policy</a> • <a className="underline hover:text-[#0db9f2] transition-colors" href="#">Terms of Service</a>
+              </p>
+            </section>
           </div>
         </main>
       </div>
     </div>
   );
 };
-
 
 export default Profile;

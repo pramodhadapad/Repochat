@@ -1,0 +1,24 @@
+{
+  "content": [
+    {
+      "text": "{\"name\":\"projects/17312601772201490516/screens/9abb4a2f94dd49e7b722a6fcf6cdcb0c\",\"title\":\"Premium Collab Loader\",\"screenshot\":{\"name\":\"projects/17312601772201490516/files/3eb13ab505c34c089920e461d3b60f57\",\"downloadUrl\":\"https://lh3.googleusercontent.com/aida/AOfcidUF-qBKuqiIp5xk3lAGEPWZcAgSUj8NRXoaWBXnsdhUT9TQNm-8qfQ5YrKpzSApe58VZeaAbFbMfVnG9S_ABCETsub5wHfkkFErg6Z5bwOwu2WXrsSmaOF1sEKr1_-VSAWlDZrN8DXx66gFbMOW-3k_rluAI43ApJcbXoXbToWgXCgOiZYxZvNnugOH1P8IJpG4Mjbf3Hk5oAOysNPTYEQhLh7PCP93cA53HwRA1PnFauYZAa1eR3275oPb\"},\"htmlCode\":{\"name\":\"projects/17312601772201490516/files/c36c8f0e572d40d39897f44a6a9d6d70\",\"downloadUrl\":\"https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzQ2ODJjYThlNGI3YjRhNmI5OWYwZjBkN2JhZjU1MTE4EgsSBxDcicO32QsYAZIBJAoKcHJvamVjdF9pZBIWQhQxNzMxMjYwMTc3MjIwMTQ5MDUxNg&filename=&opi=89354086\",\"mimeType\":\"text/html\"},\"width\":\"2560\",\"height\":\"2048\",\"deviceType\":\"DESKTOP\"}",
+      "type": "text"
+    }
+  ],
+  "structuredContent": {
+    "deviceType": "DESKTOP",
+    "height": "2048",
+    "htmlCode": {
+      "downloadUrl": "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzQ2ODJjYThlNGI3YjRhNmI5OWYwZjBkN2JhZjU1MTE4EgsSBxDcicO32QsYAZIBJAoKcHJvamVjdF9pZBIWQhQxNzMxMjYwMTc3MjIwMTQ5MDUxNg&filename=&opi=89354086",
+      "mimeType": "text/html",
+      "name": "projects/17312601772201490516/files/c36c8f0e572d40d39897f44a6a9d6d70"
+    },
+    "name": "projects/17312601772201490516/screens/9abb4a2f94dd49e7b722a6fcf6cdcb0c",
+    "screenshot": {
+      "downloadUrl": "https://lh3.googleusercontent.com/aida/AOfcidUF-qBKuqiIp5xk3lAGEPWZcAgSUj8NRXoaWBXnsdhUT9TQNm-8qfQ5YrKpzSApe58VZeaAbFbMfVnG9S_ABCETsub5wHfkkFErg6Z5bwOwu2WXrsSmaOF1sEKr1_-VSAWlDZrN8DXx66gFbMOW-3k_rluAI43ApJcbXoXbToWgXCgOiZYxZvNnugOH1P8IJpG4Mjbf3Hk5oAOysNPTYEQhLh7PCP93cA53HwRA1PnFauYZAa1eR3275oPb",
+      "name": "projects/17312601772201490516/files/3eb13ab505c34c089920e461d3b60f57"
+    },
+    "title": "Premium Collab Loader",
+    "width": "2560"
+  }
+}

@@ -209,11 +209,13 @@ router.get('/:id', protect, cacheResponse(300), async (req, res) => {
  */
 router.delete('/:id', protect, async (req, res) => {
   try {
-    const repo = await Repo.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    const repo = await Repo.findById(req.params.id);
     if (!repo) {
-      return res.status(404).json({ error: 'REPO_NOT_FOUND', message: 'Repo not found' });
+      // If it's already missing, return success so frontend removes the stuck card
+      return res.status(200).json({ message: 'Repo already missing or deleted' });
     }
 
+    await Repo.findByIdAndDelete(req.params.id);
     if (repo.localPath) cleanupRepo(repo.localPath);
     await VectorIndexer.deleteCollection(repo._id);
     await clearCachePattern(`:${req.user._id.toString()}:/api/repo`);

@@ -194,6 +194,10 @@ class ChatService {
       finalContext = chunks.map((c, i) => `[Search ${i + 1}: ${c.metadata.filePath}]\n${c.content}`).join('\n\n---\n\n');
     }
 
+    if (!finalContext.trim()) {
+      finalContext = "WARNING: No relevant code context found in the user's repository. Do not invent details.";
+    }
+
     // 4. Final Reasoning Response — FIXED PROMPT
     const prompt = `You are RepoChat, a helpful senior developer assistant. You help users understand their codebase.
 
@@ -204,7 +208,7 @@ STRICT RULES — follow these exactly:
 - Do NOT repeat or restate the question back to the user
 - Just answer clearly, helpfully, and concisely
 - When referencing code, mention the file path naturally (e.g. "In app.js, the login route...")
-- If you don't have enough info to answer, say: "I need to see [specific file] to answer that accurately"
+- If the Codebase context below says no context was found, gracefully tell the user you don't have enough info in the indexed files. DO NOT invent a project like "my-app" or assume any file structures.
 
 ${history ? `Recent conversation:\n${history}\n\n` : ''}Codebase context:\n${finalContext}
 

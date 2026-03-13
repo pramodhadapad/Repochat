@@ -1,0 +1,24 @@
+{
+  "content": [
+    {
+      "text": "{\"name\":\"projects/17312601772201490516/screens/f8b7f777bf3e4d3e9f27d2a371a17438\",\"title\":\"Premium Landing Page\",\"screenshot\":{\"name\":\"projects/17312601772201490516/files/a32e2d8ed3294e24b71f7415defcde19\",\"downloadUrl\":\"https://lh3.googleusercontent.com/aida/AOfcidWxlt3hD9X8X3bC9N5Y0a8uLxeLW8abMUV-muiNj5dH8yEFU9Y_BP2MbwKv64Iyonzi5XljwmPnGnN3_7YTmbEDMvnUh8iCE9J1mGW-f6tqDnPc_Z3ciuSAXd-heEnEVno4cHoX_VkZ1RowD0JrZfDi3zPDeYvc8UV5BJszCyuFVpra9PD3EMaaFVSSNSTniR0s40UmIU0kZVHpHts_kcaPvf38aZcEKA_nOXF_rkFZaVROmQWMhg3zKhZ4\"},\"htmlCode\":{\"name\":\"projects/17312601772201490516/files/85bc3e7d22784fb4b1c96e5964800b65\",\"downloadUrl\":\"https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzQwNmUxNDUwOGIyNDQyMzlhNDYyZjdkZDZmMjEzN2Y2EgsSBxDcicO32QsYAZIBJAoKcHJvamVjdF9pZBIWQhQxNzMxMjYwMTc3MjIwMTQ5MDUxNg&filename=&opi=89354086\",\"mimeType\":\"text/html\"},\"width\":\"2560\",\"height\":\"4208\",\"deviceType\":\"DESKTOP\"}",
+      "type": "text"
+    }
+  ],
+  "structuredContent": {
+    "deviceType": "DESKTOP",
+    "height": "4208",
+    "htmlCode": {
+      "downloadUrl": "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzQwNmUxNDUwOGIyNDQyMzlhNDYyZjdkZDZmMjEzN2Y2EgsSBxDcicO32QsYAZIBJAoKcHJvamVjdF9pZBIWQhQxNzMxMjYwMTc3MjIwMTQ5MDUxNg&filename=&opi=89354086",
+      "mimeType": "text/html",
+      "name": "projects/17312601772201490516/files/85bc3e7d22784fb4b1c96e5964800b65"
+    },
+    "name": "projects/17312601772201490516/screens/f8b7f777bf3e4d3e9f27d2a371a17438",
+    "screenshot": {
+      "downloadUrl": "https://lh3.googleusercontent.com/aida/AOfcidWxlt3hD9X8X3bC9N5Y0a8uLxeLW8abMUV-muiNj5dH8yEFU9Y_BP2MbwKv64Iyonzi5XljwmPnGnN3_7YTmbEDMvnUh8iCE9J1mGW-f6tqDnPc_Z3ciuSAXd-heEnEVno4cHoX_VkZ1RowD0JrZfDi3zPDeYvc8UV5BJszCyuFVpra9PD3EMaaFVSSNSTniR0s40UmIU0kZVHpHts_kcaPvf38aZcEKA_nOXF_rkFZaVROmQWMhg3zKhZ4",
+      "name": "projects/17312601772201490516/files/a32e2d8ed3294e24b71f7415defcde19"
+    },
+    "title": "Premium Landing Page",
+    "width": "2560"
+  }
+}

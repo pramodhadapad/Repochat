@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><style>
+    @keyframes slow-spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    @keyframes reverse-spin {
+        from { transform: rotate(360deg); }
+        to { transform: rotate(0deg); }
+    }
+    @keyframes fade-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .animate-slow-spin { animation: slow-spin 8s linear infinite; }
+    .animate-reverse-spin { animation: reverse-spin 4s linear infinite; }
+    .animate-fade-in-up { animation: fade-in-up 0.8s ease-out forwards; }
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+    .text-shimmer {
+        background: linear-gradient(90deg, #94a3b8 0%, #0db9f2 50%, #94a3b8 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: shimmer 3s linear infinite;
+    }
+    @keyframes shimmer {
+        to { background-position: 200% center; }
+    }
+</style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0db9f2",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#101e22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<title>RepoChat - Loading Session</title>
+</head>
+<body class="bg-[#050b0d] font-display text-slate-100 antialiased overflow-hidden">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="relative z-20 flex items-center justify-between border-b border-white/5 px-6 py-4 lg:px-10 bg-background-dark/40 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<div class="text-primary">
+<svg class="w-8 h-8" fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_logo)">
+<path clip-rule="evenodd" d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor" fill-rule="evenodd"></path>
+</g>
+<defs>
+<clippath id="clip0_logo"><rect fill="white" height="48" width="48"></rect></clippath>
+</defs>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight">RepoChat</h2>
+</div>
+<button class="flex items-center justify-center rounded-lg h-10 w-10 bg-primary/10 hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-slate-400">close</span>
+</button>
+</header>
+<!-- Main Loading Content -->
+<main class="flex flex-1 flex-col items-center justify-center px-6"><div class="glass-panel w-full max-w-xl p-12 rounded-3xl text-center relative z-10 animate-fade-in-up">
+<!-- Sophisticated Spinner -->
+<div class="relative mb-16 flex justify-center">
+<!-- Outer Glow Ring -->
+<div class="absolute h-40 w-40 rounded-full border border-primary/20 blur-md"></div>
+<!-- Outer Spinning Ring -->
+<div class="h-40 w-40 rounded-full border-[1px] border-primary/20 border-t-primary/80 animate-slow-spin shadow-[0_0_15px_rgba(13,185,242,0.3)]"></div>
+<!-- Middle Reverse Ring -->
+<div class="absolute top-4 left-4 h-32 w-32 rounded-full border-[1px] border-dashed border-primary/30 animate-reverse-spin"></div>
+<!-- Inner Pulsing Glow -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="h-20 w-20 rounded-full bg-primary/10 animate-pulse blur-xl"></div>
+</div>
+<!-- Central Icon -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-background-dark/80 p-4 rounded-full border border-primary/20">
+<span class="material-symbols-outlined text-primary text-4xl leading-none animate-spin" style="animation-duration: 3s;">sync</span>
+</div>
+</div>
+</div>
+<!-- Textual Information -->
+<div class="space-y-4 mb-10">
+<h1 class="text-4xl font-bold tracking-tight text-white">Loading session<span class="animate-pulse">...</span></h1>
+<p class="text-shimmer text-lg font-medium">Connecting to high-performance shared repo</p>
+</div>
+<!-- Progress Bar Section -->
+<div class="max-w-xs mx-auto space-y-6">
+<div class="relative">
+<div class="w-full bg-white/5 rounded-full h-1 overflow-hidden backdrop-blur-sm">
+<div class="bg-gradient-to-r from-primary/50 to-primary h-full rounded-full transition-all duration-1000 shadow-[0_0_10px_#0db9f2]" style="width: 65%;"></div>
+</div>
+<div class="absolute -right-12 top-1/2 -translate-y-1/2 text-xs font-mono text-primary/80">65%</div>
+</div>
+<div class="flex flex-col gap-2 opacity-80">
+<p class="text-slate-300 text-sm font-medium">Initializing collaborative environment</p>
+<p class="text-slate-500 text-xs italic">Synchronizing workspace components...</p>
+</div>
+</div>
+</div></main>
+<!-- Footer / Decorative Elements -->
+<footer class="relative z-20 p-8 text-center">
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/5 border border-primary/10">
+<span class="flex h-2 w-2 rounded-full bg-primary animate-ping"></span>
+<span class="text-xs font-semibold uppercase tracking-widest text-primary/80">Securing Connection</span>
+</div>
+</footer>
+<!-- Background Decorative Gradients -->
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(13,185,242,0.1),transparent_40%),radial-gradient(circle_at_80%_70%,rgba(13,185,242,0.05),transparent_40%)] pointer-events-none"></div>
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(13,185,242,0.1),transparent_40%),radial-gradient(circle_at_80%_70%,rgba(13,185,242,0.05),transparent_40%)] pointer-events-none"></div>
+</div>
+</body></html>

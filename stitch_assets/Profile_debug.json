@@ -1,0 +1,24 @@
+{
+  "content": [
+    {
+      "text": "{\"name\":\"projects/17312601772201490516/screens/604d6d6812664e0785cff60f7ffa1de6\",\"title\":\"Premium Profile Page\",\"screenshot\":{\"name\":\"projects/17312601772201490516/files/9229590c141e441994961582281ec338\",\"downloadUrl\":\"https://lh3.googleusercontent.com/aida/AOfcidUfhqC3ykrQN29yx58iuK5MH5UTDrczD3-zodKQD01kHCH4B1EfDLRX-zwCeMxWJdVQjEC_fA3IIxk_AXCZgw2tyPITPnQOnB29IgiGzoGtiF5zZu4oLYa7hSjT6_ZlyH5PKX9zJM_UwyH3Bw3El5iDNhAlYro6Jy6ot88DIO24f9B0wT3CZ2sR64nCdbz-qZESt5w08tvfVbP2HHi-sgx3VnA04DWJuQUc5Rv4pD50-jAUbdujjQRyvWqO\"},\"htmlCode\":{\"name\":\"projects/17312601772201490516/files/6403f7306ae24bf591a3f0122d5bc9b6\",\"downloadUrl\":\"https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sX2IxYWI4NGU5ZTNkZDQ0ZDg4MDVjMDQzNmNmYjQ5YzVmEgsSBxDcicO32QsYAZIBJAoKcHJvamVjdF9pZBIWQhQxNzMxMjYwMTc3MjIwMTQ5MDUxNg&filename=&opi=89354086\",\"mimeType\":\"text/html\"},\"width\":\"2560\",\"height\":\"2336\",\"deviceType\":\"DESKTOP\"}",
+      "type": "text"
+    }
+  ],
+  "structuredContent": {
+    "deviceType": "DESKTOP",
+    "height": "2336",
+    "htmlCode": {
+      "downloadUrl": "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sX2IxYWI4NGU5ZTNkZDQ0ZDg4MDVjMDQzNmNmYjQ5YzVmEgsSBxDcicO32QsYAZIBJAoKcHJvamVjdF9pZBIWQhQxNzMxMjYwMTc3MjIwMTQ5MDUxNg&filename=&opi=89354086",
+      "mimeType": "text/html",
+      "name": "projects/17312601772201490516/files/6403f7306ae24bf591a3f0122d5bc9b6"
+    },
+    "name": "projects/17312601772201490516/screens/604d6d6812664e0785cff60f7ffa1de6",
+    "screenshot": {
+      "downloadUrl": "https://lh3.googleusercontent.com/aida/AOfcidUfhqC3ykrQN29yx58iuK5MH5UTDrczD3-zodKQD01kHCH4B1EfDLRX-zwCeMxWJdVQjEC_fA3IIxk_AXCZgw2tyPITPnQOnB29IgiGzoGtiF5zZu4oLYa7hSjT6_ZlyH5PKX9zJM_UwyH3Bw3El5iDNhAlYro6Jy6ot88DIO24f9B0wT3CZ2sR64nCdbz-qZESt5w08tvfVbP2HHi-sgx3VnA04DWJuQUc5Rv4pD50-jAUbdujjQRyvWqO",
+      "name": "projects/17312601772201490516/files/9229590c141e441994961582281ec338"
+    },
+    "title": "Premium Profile Page",
+    "width": "2560"
+  }
+}

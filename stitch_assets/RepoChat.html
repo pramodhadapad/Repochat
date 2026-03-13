@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RepoChat - Code Editor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0db9f2",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#101e22",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .glass-panel { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border-right: 1px solid rgba(255, 255, 255, 0.05); }
+        .glass-panel-right { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(12px); border-left: 1px solid rgba(255, 255, 255, 0.05); }
+        .code-syntax-keyword { color: #ff7b72; font-weight: 600; }
+        .code-syntax-func { color: #d2a8ff; }
+        .code-syntax-string { color: #a5d6ff; }
+        .code-syntax-comment { color: #8b949e; font-style: italic; }
+        .code-syntax-type { color: #79c0ff; }
+        .code-syntax-const { color: #ffa657; }
+        .activity-btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .activity-btn:hover { transform: scale(1.1); color: #0db9f2; }
+        .status-item { transition: background 0.2s ease; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }</style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 h-screen flex flex-col overflow-hidden">
+<!-- Top Menu Bar -->
+<header class="flex items-center justify-between px-4 py-1 bg-slate-900 border-b border-white/5 text-xs h-8 z-30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-lg">terminal</span>
+<div class="flex gap-4">
+<a class="hover:text-primary" href="#">File</a>
+<a class="hover:text-primary" href="#">Edit</a>
+<a class="hover:text-primary" href="#">Selection</a>
+<a class="hover:text-primary" href="#">View</a>
+<a class="hover:text-primary" href="#">Go</a>
+<a class="hover:text-primary" href="#">Run</a>
+<a class="hover:text-primary" href="#">Terminal</a>
+<a class="hover:text-primary" href="#">Help</a>
+</div>
+</div>
+<div class="flex-1 flex justify-center font-medium">
+            RepoChat — Editor.tsx
+        </div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary">remove</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary">check_box_outline_blank</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-red-500">close</span>
+</div>
+</header>
+<!-- Top Bar (Secondary) -->
+<div class="flex items-center justify-between px-4 py-2 bg-slate-900/80 backdrop-blur-md border-b border-white/5 h-14 z-30 shadow-md">
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 bg-primary/10 px-3 py-1 rounded-lg border border-primary/20">
+<span class="material-symbols-outlined text-primary text-sm">folder_open</span>
+<span class="text-sm font-semibold text-primary">repo-chat-main</span>
+</div>
+<span class="bg-emerald-500/20 text-emerald-500 text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider">Synced</span>
+</div>
+<div class="flex-1 max-w-xl mx-8">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm">search</span>
+<input class="w-full bg-slate-200/50 dark:bg-slate-800/50 border-none rounded-lg pl-10 pr-4 py-1.5 text-sm focus:ring-1 focus:ring-primary" placeholder="Search in repository..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-slate-400">light_mode</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-gradient-to-tr from-primary to-cyan-400 border-2 border-slate-200 dark:border-slate-800 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="User avatar placeholder" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJmBAZ7z1DAep899vr6J_VFy0EVtTYhXNtRVEhhNQ_12XZTLrcmpDGtv9uoXYDhQg4oy8q1kjk2fEU27dcQ8fO4GdcioIdo0QXxMfOnYcYKstyxX9J82Skhq-e7o9uv3veeAH5u3_mczFcaZopPw9hDoM9sQAUbWnHzyO4gJZ-ClA_5Za1DzvVrxLz0Cf7mCpryYENTF8OA_XEWA38w6klHtuxNGsxbG7Xv9qHZNyyuyYGcWwNpj5NHpNxcyuwH9Zt6xL9s_ZLfMf_"/>
+</div>
+</div>
+</div>
+<!-- Main Content Area -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Activity Bar (Far Left) -->
+<aside class="w-12 flex flex-col items-center py-4 gap-6 bg-slate-900/90 backdrop-blur-md border-r border-white/5 z-20">
+<button class="activity-btn text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">content_copy</span>
+</button>
+<button class="activity-btn text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">search</span>
+</button>
+<button class="activity-btn text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_tree</span>
+</button>
+<button class="activity-btn text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">play_arrow</span>
+</button>
+<button class="activity-btn text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">extension</span>
+</button>
+<div class="mt-auto flex flex-col gap-6">
+<button class="activity-btn text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+<button class="activity-btn text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</aside>
+<!-- Sidebar (File Explorer) -->
+<aside class="w-64 glass-panel flex flex-col z-10 shadow-2xl">
+<div class="p-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest flex justify-between items-center">
+<span>Explorer</span>
+<span class="material-symbols-outlined text-sm cursor-pointer">more_horiz</span>
+</div>
+<div class="flex-1 overflow-y-auto py-2">
+<!-- Root Folder -->
+<div class="flex items-center gap-2 px-4 py-1 text-slate-400">
+<span class="material-symbols-outlined text-sm">expand_more</span>
+<span class="text-xs font-semibold uppercase">Repo-Chat-Project</span>
+</div>
+<!-- Src Folder -->
+<div class="pl-6">
+<div class="flex items-center gap-2 px-2 py-1 hover:bg-primary/5 cursor-pointer rounded">
+<span class="material-symbols-outlined text-sm text-slate-400">expand_more</span>
+<span class="material-symbols-outlined text-sm text-amber-500">folder</span>
+<span class="text-sm">src</span>
+</div>
+<div class="pl-6 border-l border-slate-200 dark:border-slate-800 ml-3">
+<div class="flex items-center gap-2 px-2 py-1 hover:bg-primary/5 cursor-pointer rounded">
+<span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+<span class="material-symbols-outlined text-sm text-blue-400">folder</span>
+<span class="text-sm">components</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1 hover:bg-primary/5 cursor-pointer rounded">
+<span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+<span class="material-symbols-outlined text-sm text-blue-400">folder</span>
+<span class="text-sm">pages</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1 hover:bg-primary/5 cursor-pointer rounded">
+<span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+<span class="material-symbols-outlined text-sm text-blue-400">folder</span>
+<span class="text-sm">services</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1 bg-primary/20 border-l-2 border-primary -ml-[1px]">
+<span class="material-symbols-outlined text-sm text-blue-400">description</span>
+<span class="text-sm font-medium text-primary">Editor.tsx</span>
+</div>
+</div>
+</div>
+<!-- Server Folder -->
+<div class="pl-6 mt-2">
+<div class="flex items-center gap-2 px-2 py-1 hover:bg-primary/5 cursor-pointer rounded">
+<span class="material-symbols-outlined text-sm text-slate-400">expand_more</span>
+<span class="material-symbols-outlined text-sm text-amber-500">folder</span>
+<span class="text-sm">server</span>
+</div>
+<div class="pl-6 border-l border-slate-200 dark:border-slate-800 ml-3">
+<div class="flex items-center gap-2 px-2 py-1 hover:bg-primary/5 cursor-pointer rounded">
+<span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+<span class="material-symbols-outlined text-sm text-blue-400">folder</span>
+<span class="text-sm">routes</span>
+</div>
+<div class="flex items-center gap-2 px-2 py-1 hover:bg-primary/5 cursor-pointer rounded">
+<span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+<span class="material-symbols-outlined text-sm text-blue-400">folder</span>
+<span class="text-sm">services</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Center (Code Editor) -->
+<main class="flex-1 flex flex-col bg-[#0d1117] overflow-hidden relative shadow-inner">
+<div class="flex bg-slate-900/50 backdrop-blur-sm overflow-x-auto no-scrollbar border-b border-white/5">
+<div class="flex items-center gap-2 px-4 py-2 bg-[#0d1117] border-t-2 border-primary text-sm min-w-[140px] shadow-[0_-4px_10px_rgba(13,185,242,0.1)]">
+<span class="material-symbols-outlined text-sm text-blue-400">description</span>
+<span>Editor.tsx</span>
+<span class="material-symbols-outlined text-xs ml-auto cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 rounded">close</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 text-sm min-w-[140px] cursor-pointer border-r border-slate-200 dark:border-slate-800">
+<span class="material-symbols-outlined text-sm text-primary">description</span>
+<span>ChatPanel.tsx</span>
+<span class="material-symbols-outlined text-xs ml-auto">close</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 hover:bg-slate-200 dark:hover:bg-slate-800 text-slate-500 text-sm min-w-[140px] cursor-pointer border-r border-slate-200 dark:border-slate-800">
+<span class="material-symbols-outlined text-sm text-amber-500">javascript</span>
+<span>App.js</span>
+<span class="material-symbols-outlined text-xs ml-auto">close</span>
+</div>
+</div>
+<div class="flex-1 p-4 font-mono text-sm leading-relaxed overflow-y-auto">
+<div class="flex gap-4">
+<div class="text-slate-600 text-right select-none w-8">
+                        1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15
+                    </div>
+<div class="flex-1"><span class="code-syntax-keyword">import</span> React <span class="code-syntax-keyword">from</span> <span class="code-syntax-string">'react'</span>;<br/><span class="code-syntax-keyword">import</span> { CodeEditor } <span class="code-syntax-keyword">from</span> <span class="code-syntax-string">'./components/Editor'</span>;<br/><br/><span class="code-syntax-keyword">const</span> <span class="code-syntax-func">RepoChat</span> = () =&gt; {<br/>  <span class="code-syntax-keyword">const</span> [<span class="code-syntax-const">code</span>, <span class="code-syntax-func">setCode</span>] = React.<span class="code-syntax-func">useState</span>(<span class="code-syntax-string">''</span>);<br/><br/>  <span class="code-syntax-keyword">return</span> (<br/>    &lt;<span class="code-syntax-type">div</span> <span class="code-syntax-func">className</span>=<span class="code-syntax-string">"flex h-screen"</span>&gt;<br/>      &lt;<span class="code-syntax-type">CodeEditor</span> <br/>        <span class="code-syntax-func">value</span>={<span class="code-syntax-const">code</span>}<br/>        <span class="code-syntax-func">onChange</span>={<span class="code-syntax-func">setCode</span>}<br/>      /&gt;<br/>    &lt;/<span class="code-syntax-type">div</span>&gt;<br/>  );<br/>};<br/><br/><span class="code-syntax-keyword">export default</span> RepoChat;</div>
+</div>
+</div>
+</main>
+<!-- Right Panel (Chat Window) -->
+<aside class="w-80 flex flex-col glass-panel-right z-10 shadow-2xl">
+<div class="p-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+<span class="text-sm font-bold">AI Assistant</span>
+</div>
+<button class="p-1 hover:bg-slate-200 dark:hover:bg-slate-800 rounded">
+<span class="material-symbols-outlined text-sm">refresh</span>
+</button>
+</div>
+<!-- Message History -->
+<div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+<!-- AI Welcome Message -->
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+</div>
+<div class="bg-white dark:bg-slate-800 p-3 rounded-xl rounded-tl-none border border-slate-200 dark:border-slate-700 shadow-sm">
+<p class="text-sm leading-relaxed">Hello! Ask me anything about this repository. I can help with code explanation, debugging, or writing new features.</p>
+</div>
+</div>
+<!-- User Message -->
+<div class="flex gap-3 flex-row-reverse">
+<div class="w-8 h-8 rounded-lg bg-slate-200 dark:bg-slate-700 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-slate-500 text-sm">person</span>
+</div>
+<div class="bg-primary text-white p-3 rounded-xl rounded-tr-none shadow-sm">
+<p class="text-sm">Explain the logic in Editor.tsx</p>
+</div>
+</div>
+<!-- AI Response -->
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary text-sm">auto_awesome</span>
+</div>
+<div class="bg-white dark:bg-slate-800 p-3 rounded-xl rounded-tl-none border border-slate-200 dark:border-slate-700 shadow-sm">
+<p class="text-sm leading-relaxed">The <code class="bg-slate-100 dark:bg-slate-900 px-1 rounded">Editor.tsx</code> component uses React state to manage the current code buffer. It imports a custom <code class="bg-slate-100 dark:bg-slate-900 px-1 rounded">CodeEditor</code> sub-component...</p>
+</div>
+</div>
+</div>
+<!-- Chat Input -->
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="relative bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden focus-within:ring-1 focus-within:ring-primary">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-sm p-3 resize-none" placeholder="Message AI Assistant..." rows="3"></textarea>
+<div class="flex justify-between items-center p-2 bg-slate-50 dark:bg-slate-900">
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-lg text-slate-400 cursor-pointer hover:text-primary">attach_file</span>
+<span class="material-symbols-outlined text-lg text-slate-400 cursor-pointer hover:text-primary">image</span>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-white p-1.5 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- Bottom Status Bar -->
+<footer class="h-6 bg-primary text-white flex items-center justify-between px-3 text-[11px] font-medium">
+<div class="flex items-center h-full">
+<div class="flex items-center gap-1 px-3 hover:bg-white/10 h-full cursor-pointer transition-colors status-item">
+<span class="material-symbols-outlined text-[14px]">account_tree</span>
+<span>main*</span>
+</div>
+<div class="flex items-center gap-1 px-3 hover:bg-white/10 h-full cursor-pointer transition-colors status-item">
+<span class="material-symbols-outlined text-[14px]">sync</span>
+<span>0 errors</span>
+</div>
+<div class="flex items-center gap-1 px-3 hover:bg-white/10 h-full cursor-pointer transition-colors status-item">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+<span>2 warnings</span>
+</div>
+</div>
+<div class="flex items-center h-full">
+<div class="px-3 hover:bg-white/10 h-full flex items-center cursor-pointer">Spaces: 2</div>
+<div class="px-3 hover:bg-white/10 h-full flex items-center cursor-pointer uppercase">UTF-8</div>
+<div class="px-3 hover:bg-white/10 h-full flex items-center cursor-pointer">TypeScript JSX</div>
+<div class="px-3 hover:bg-white/10 h-full flex items-center cursor-pointer">
+<span class="material-symbols-outlined text-[14px]">notifications</span>
+</div>
+</div>
+</footer>
+</body></html>

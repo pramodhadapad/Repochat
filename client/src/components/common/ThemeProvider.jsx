@@ -1,11 +1,10 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
+import useStore from '../../store/useStore';
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'dark';
-  });
+  const { theme, setTheme } = useStore();
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -15,7 +14,7 @@ export const ThemeProvider = ({ children }) => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'));
+    setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (

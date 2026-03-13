@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useStore from '../../store/useStore';
+import { useTheme } from '../common/ThemeProvider';
 import { repoService } from '../../services/api';
 import { Search, Bell, Settings, Sun, Moon, LogOut, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -8,7 +9,8 @@ import LogoutModal from '../auth/LogoutModal';
 
 const TopBar = () => {
   const navigate = useNavigate();
-  const { user, theme, setTheme, currentRepo, logout, setCurrentRepo } = useStore();
+  const { user, currentRepo, logout, setCurrentRepo } = useStore();
+  const { theme, toggleTheme } = useTheme();
   const [reindexLoading, setReindexLoading] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [avatarError, setAvatarError] = useState(false);
@@ -37,14 +39,8 @@ const TopBar = () => {
     }
   };
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-    document.documentElement.classList.toggle('dark', newTheme === 'dark');
-  };
-
   return (
-    <header className="h-16 border-b border-slate-800 bg-slate-950 flex items-center justify-between px-6 sticky top-0 z-30">
+    <header className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex items-center justify-between px-6 sticky top-0 z-30">
       <div className="flex items-center gap-4">
         <div className="text-lg font-bold truncate max-w-[300px]">
           {currentRepo ? currentRepo.name : 'RepoChat Dashboard'}

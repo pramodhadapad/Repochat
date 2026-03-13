@@ -1,10 +1,9 @@
 import { useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore';
-import { Github, MessageSquare, Zap, Globe, Shield, Sun, Moon } from 'lucide-react';
+import { Github, Sun, Moon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useTheme } from '../components/common/ThemeProvider';
 import LogoutModal from '../components/auth/LogoutModal';
-import ParticlesBackground from '../components/common/ParticlesBackground';
 import { useState, useEffect } from 'react';
 
 const Landing = () => {
@@ -17,7 +16,6 @@ const Landing = () => {
   if (token) return null;
 
   useEffect(() => {
-    // If user is already logged in, we stay on landing but flag the modal for any login clicks
     if (user) {
       // We don't auto-open, but we'll show it if they try to "Get Started"
     }
@@ -50,127 +48,196 @@ const Landing = () => {
     setShowLogoutModal(false);
   };
 
-
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white overflow-hidden selection:bg-primary-500/30 transition-colors duration-300">
+    <div className="relative min-h-screen w-full flex flex-col overflow-x-hidden bg-[#f5f8f8] dark:bg-[#101e22] font-['Inter',sans-serif] text-slate-900 dark:text-slate-100 antialiased">
       <LogoutModal
         isOpen={showLogoutModal}
         onClose={() => setShowLogoutModal(false)}
         onConfirm={handleConfirmLogout}
       />
 
-      <ParticlesBackground />
+      {/* Animated Blob Background */}
+      <div className="absolute top-0 -left-4 w-72 h-72 bg-[#0db9f2]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" />
+      <div className="absolute top-0 -right-4 w-72 h-72 bg-purple-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" style={{ animationDelay: '2s' }} />
+      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-blue-500/10 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob" style={{ animationDelay: '4s' }} />
 
-      {/* Abstract Background Shapes */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-        <div className="absolute top-[10%] left-[10%] w-72 h-72 bg-primary-600/10 dark:bg-primary-600/20 blur-[120px] rounded-full animate-pulse-slow"></div>
-        <div className="absolute bottom-[20%] right-[10%] w-96 h-96 bg-indigo-600/10 dark:bg-indigo-600/20 blur-[120px] rounded-full animate-pulse-slow" style={{ animationDelay: '1s' }}></div>
-      </div>
+      {/* Particle Effect Overlay */}
+      <div className="absolute inset-0 particle-bg pointer-events-none" />
 
-      {/* Navbar */}
-      <nav className="relative z-10 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-primary-600 rounded-xl flex items-center justify-center font-bold text-xl text-white shadow-lg shadow-primary-600/20">
-            R
+      <div className="layout-container flex h-full grow flex-col relative z-10">
+        {/* Top Navigation */}
+        <header className="flex items-center justify-between px-6 py-4 lg:px-20 sticky top-0 z-50 backdrop-blur-md bg-[#f5f8f8]/80 dark:bg-[#101e22]/80 border-b border-slate-200 dark:border-white/5">
+          <div className="flex items-center gap-3">
+            <div className="text-[#0db9f2]">
+              <span className="material-symbols-outlined text-4xl">account_tree</span>
+            </div>
+            <h2 className="text-slate-900 dark:text-white text-xl font-bold tracking-tight">RepoChat</h2>
           </div>
-          <span className="text-2xl font-bold tracking-tight">RepoChat</span>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <button
-            onClick={toggleTheme}
-            className="p-2.5 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
-            aria-label="Toggle Theme"
-          >
-            {theme === 'dark' ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-slate-600" />}
-          </button>
-          <button
-            onClick={user ? () => navigate('/dashboard') : handleLoginClick}
-            className="px-6 py-2.5 bg-slate-900 dark:bg-white text-white dark:text-black font-semibold rounded-full hover:bg-slate-800 dark:hover:bg-slate-200 transition-colors shadow-lg"
-          >
-            {user ? 'Dashboard' : 'Sign In'}
-          </button>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <main className="relative z-10 max-w-7xl mx-auto px-6 pt-20 pb-32 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight mb-8">
-            Chat with any <span className="bg-gradient-to-r from-primary-500 to-indigo-500 bg-clip-text text-transparent">Git Repo</span> <br />
-            instantly in your Words...!
-          </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed">
-            Paste a Git URL, we index the entire codebase using AI, and you start asking questions.
-            Accurate, hallucination-free, and always cited to the exact line number.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              className="p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? <Sun className="w-5 h-5 text-yellow-400" /> : <Moon className="w-5 h-5 text-slate-600" />}
+            </button>
             <button
               onClick={user ? () => navigate('/dashboard') : handleLoginClick}
-              className="w-full sm:w-auto px-10 py-4 bg-primary-600 text-white font-bold rounded-2xl hover:bg-primary-500 transition-all shadow-xl shadow-primary-600/30 flex items-center justify-center gap-2 group"
+              className="flex min-w-[100px] cursor-pointer items-center justify-center rounded-lg h-10 px-5 bg-[#0db9f2] text-[#101e22] text-sm font-bold transition-all hover:opacity-90 active:scale-95"
             >
-              {user ? 'Go to Dashboard' : 'Sign in with Google'}
-              <Zap className="w-5 h-5 group-hover:fill-current" />
+              {user ? 'Dashboard' : 'Sign In'}
             </button>
-            {!user ? (
-              <button
-                onClick={handleGithubLogin}
-                className="w-full sm:w-auto px-10 py-4 bg-slate-900 dark:bg-slate-800 text-white font-bold rounded-2xl hover:bg-slate-800 dark:hover:bg-slate-700 transition-all shadow-xl shadow-slate-900/30 flex items-center justify-center gap-2"
-              >
-                Sign in with GitHub
-                <Github className="w-5 h-5" />
-              </button>
-            ) : (
-              <button
-                onClick={() => setShowLogoutModal(true)}
-                className="w-full sm:w-auto px-10 py-4 bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white font-bold rounded-2xl hover:bg-slate-200 dark:hover:bg-slate-800 transition-all flex items-center justify-center gap-2"
-              >
-                Sign Out
-              </button>
-            )}
           </div>
-        </motion.div>
+        </header>
 
-        {/* Feature Grid */}
-        <div className="grid md:grid-cols-3 gap-8 mt-32 text-left">
-          <FeatureCard
-            icon={<MessageSquare className="w-6 h-6 text-primary-500" />}
-            title="AI-Powered Q&A"
-            description="Understand complex codebases in minutes. Ask about architecture, patterns, or specific logic."
-          />
-          <FeatureCard
-            icon={<Globe className="w-6 h-6 text-indigo-500" />}
-            title="Import Any Git URL"
-            description="Works with GitHub, GitLab, and Bitbucket. Just paste the link and let our engine handle the rest."
-          />
-          <FeatureCard
-            icon={<Shield className="w-6 h-6 text-primary-500" />}
-            title="Privacy First"
-            description="Your code is never stored longer than needed. We only index metadata and public repositories."
-          />
-        </div>
-      </main>
+        <main className="flex-1">
+          {/* Hero Section */}
+          <div className="px-6 py-16 lg:py-24 max-w-7xl mx-auto flex flex-col items-center text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-col items-center"
+            >
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#0db9f2]/5 border border-[#0db9f2]/30 text-[#0db9f2] text-xs font-semibold mb-8 backdrop-blur-sm shadow-[0_0_15px_rgba(13,185,242,0.1)]">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0db9f2] opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0db9f2]" />
+                </span>
+                New: GPT-4o Support Integrated
+              </div>
 
-      {/* Footer */}
-      <footer className="relative z-10 py-12 border-t border-slate-100 dark:border-slate-900 mt-20 text-center text-slate-500">
-        <p>&copy; 2026 RepoChat — Built for Developers by Developers</p>
-      </footer>
+              <h1 className="text-slate-900 dark:text-white text-5xl lg:text-7xl font-black leading-tight tracking-tight mb-6 max-w-4xl">
+                Chat with any Git Repo{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0db9f2] via-blue-400 to-[#0db9f2] animate-text-shimmer bg-[length:200%_auto]">
+                  instantly
+                </span>{' '}
+                in your Words
+              </h1>
+
+              <p className="text-slate-600 dark:text-slate-400 text-lg lg:text-xl max-w-2xl mb-10">
+                Unlock the power of your codebase with AI-driven conversations. Understand complex logic, find bugs, and document code simply by asking.
+              </p>
+
+              {/* Auth Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                <button
+                  onClick={user ? () => navigate('/dashboard') : handleLoginClick}
+                  className="flex items-center justify-center gap-3 min-w-[240px] rounded-xl h-14 px-6 bg-white text-slate-900 border border-slate-200 shadow-sm hover:bg-slate-50 transition-all font-semibold hover:scale-[1.02] active:scale-[0.98] duration-200 shadow-lg hover:shadow-[#0db9f2]/10"
+                >
+                  <img
+                    alt="Google Logo"
+                    className="w-5 h-5"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwVIktmgQd-oiC_X1PGFYAOeRPr74jVpJntNpsji1N76BGWHqBOKf_gj50c-u_ZnESb2vmreSvghzGxUBrdY52ODpaSYgpAuM4E3AXUXBtDbs_7kOmV1cy0cRCTsMoheY6O9i4Y8jJVijpo-VcC0yPqwNuUxN7ItZcClWEO_XGTKna9lbVHcGnkezlIiZ5EZrmtKhpvnxmenGGmacs1uh-yHUvX9lV5FKvPjr8jsveHEVfESlSc336ooDB4H8uxFh6i6QGutOuupwM"
+                  />
+                  <span>{user ? 'Go to Dashboard' : 'Sign in with Google'}</span>
+                </button>
+
+                {!user ? (
+                  <button
+                    onClick={handleGithubLogin}
+                    className="flex items-center justify-center gap-3 min-w-[240px] rounded-xl h-14 px-6 bg-slate-900 text-white hover:bg-black transition-all font-semibold border border-slate-700 hover:scale-[1.02] active:scale-[0.98] duration-200 shadow-lg hover:shadow-[#0db9f2]/10"
+                  >
+                    <Github className="w-5 h-5" />
+                    <span>Sign in with GitHub</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setShowLogoutModal(true)}
+                    className="flex items-center justify-center gap-3 min-w-[240px] rounded-xl h-14 px-6 bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all font-semibold hover:scale-[1.02] active:scale-[0.98] duration-200"
+                  >
+                    Sign Out
+                  </button>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Dashboard Preview Mockup */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="mt-16 w-full max-w-5xl rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md p-3 overflow-hidden shadow-[0_0_50px_-12px_rgba(13,185,242,0.3)]"
+            >
+              <div className="rounded-lg bg-[#f5f8f8] dark:bg-[#101e22] aspect-video flex items-center justify-center border border-slate-200 dark:border-slate-800">
+                <img
+                  alt="Code Editor Interface with AI chat sidebar"
+                  className="w-full h-full object-cover rounded-lg opacity-80"
+                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdyJyA2L5YdzW4ald8daXsfbNOsjFeGLKPTsdkZBpCAtAMZ3c4cktuvyLlYSriPEhz5b_60KNqtF7EiIySjiJzwYbzzEwu_TVSQny-JsopYZEhMRCqePgMGQkagIonuJKzAsqkShynAY07x__37vEa376FLweBXj-Ez_x9K7IeuClXMRnLXITSESWn7uKr8yvdBwGy71BT5VQtg0qBzZoqN1zX2CPDxGDFRTiZV4fnwtQIzpgZs0C7LFObPKDSHf14_Le576dKGlwe"
+                />
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Features Section */}
+          <div className="px-6 py-20 lg:px-20 bg-slate-50 dark:bg-slate-900/50">
+            <div className="max-w-7xl mx-auto">
+              <div className="flex flex-col gap-4 mb-16">
+                <h2 className="text-slate-900 dark:text-white text-3xl lg:text-4xl font-black tracking-tight">
+                  Powerful Features
+                </h2>
+                <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl">
+                  Everything you need to understand complex repositories in seconds.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <FeatureCard
+                  icon="smart_toy"
+                  title="AI-Powered Q&A"
+                  description="Ask complex questions about your code and get instant, accurate answers backed by deep LLM context analysis."
+                />
+                <FeatureCard
+                  icon="link"
+                  title="Import Any Git URL"
+                  description="Simply paste any public or private GitHub, GitLab, or BitBucket URL to start chatting immediately."
+                />
+                <FeatureCard
+                  icon="verified_user"
+                  title="Privacy First"
+                  description="Your code stays yours. We prioritize end-to-end security and data privacy in every single interaction."
+                />
+              </div>
+            </div>
+          </div>
+        </main>
+
+        {/* Footer */}
+        <footer className="flex flex-col gap-10 px-6 py-12 lg:px-20 border-t border-slate-200 dark:border-slate-800 bg-[#f5f8f8] dark:bg-[#101e22]">
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-8 max-w-7xl mx-auto w-full">
+            <div className="flex items-center gap-3">
+              <div className="text-[#0db9f2]">
+                <span className="material-symbols-outlined text-3xl">account_tree</span>
+              </div>
+              <h2 className="text-slate-900 dark:text-white text-xl font-bold tracking-tight">RepoChat</h2>
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-8">
+              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium" href="#">Terms of Service</a>
+              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium" href="#">Privacy Policy</a>
+              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium" href="#">Contact Us</a>
+              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium" href="#">Documentation</a>
+            </div>
+          </div>
+          <div className="text-center">
+            <p className="text-slate-500 text-sm">
+              &copy; 2026 RepoChat Inc. Designed for developers who love to ship fast.
+            </p>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 };
 
 const FeatureCard = ({ icon, title, description }) => (
-  <div className="p-8 rounded-3xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 hover:border-primary-500/30 transition-all group">
-    <div className="w-12 h-12 rounded-2xl bg-white dark:bg-slate-800 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-sm">
-      {icon}
+  <div className="group flex flex-col gap-5 rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-[#101e22] p-8 transition-all hover:shadow-lg hover:border-[#0db9f2]/50">
+    <div className="w-12 h-12 rounded-xl bg-[#0db9f2]/10 flex items-center justify-center text-[#0db9f2] group-hover:bg-[#0db9f2] group-hover:text-[#101e22] transition-colors">
+      <span className="material-symbols-outlined text-3xl">{icon}</span>
     </div>
-    <h3 className="text-xl font-bold mb-3">{title}</h3>
-    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{description}</p>
+    <div className="flex flex-col gap-2">
+      <h3 className="text-slate-900 dark:text-white text-xl font-bold">{title}</h3>
+      <p className="text-slate-600 dark:text-slate-400 leading-relaxed">{description}</p>
+    </div>
   </div>
 );
 

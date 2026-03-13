@@ -1,0 +1,24 @@
+{
+  "content": [
+    {
+      "text": "{\"name\":\"projects/17312601772201490516/screens/16d6b20962d74d8c963b5214fe50a43b\",\"title\":\"Premium RepoChat Editor\",\"screenshot\":{\"name\":\"projects/17312601772201490516/files/871963a82dbb4382bbcfe6c7bc1cf3e0\",\"downloadUrl\":\"https://lh3.googleusercontent.com/aida/AOfcidVzqNUcc3shhPMAZwypOfXn_-CIPkMKaNMtHdgDKm__rSv9RqrCBwfGI4ifOD0bH2Fqzn4u2TEHLMLle22gI79VUBFWoOAEStt_9Ko8QqX-CgleQLXvNXIY9nSDoeeg24HKyUaERGpOXJ5A1zHjg3WJFg-HHW8nUKdhWDLiZm0mkyhawo3LdHjzhY-TIR_9NBs6Gz02y-pjKlUCeUqQbLVT1psqUSc_DatnRHuEgU3ZXuFyODdVafJMJL5V\"},\"htmlCode\":{\"name\":\"projects/17312601772201490516/files/b72deca465c24b14a3136a0e5b9bb964\",\"downloadUrl\":\"https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzQyYzEzODYxYTA2YjRkOGViZjM5YWU1ZGFhYjdiZDBmEgsSBxDcicO32QsYAZIBJAoKcHJvamVjdF9pZBIWQhQxNzMxMjYwMTc3MjIwMTQ5MDUxNg&filename=&opi=89354086\",\"mimeType\":\"text/html\"},\"width\":\"2560\",\"height\":\"2048\",\"deviceType\":\"DESKTOP\"}",
+      "type": "text"
+    }
+  ],
+  "structuredContent": {
+    "deviceType": "DESKTOP",
+    "height": "2048",
+    "htmlCode": {
+      "downloadUrl": "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ8Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpbCiVodG1sXzQyYzEzODYxYTA2YjRkOGViZjM5YWU1ZGFhYjdiZDBmEgsSBxDcicO32QsYAZIBJAoKcHJvamVjdF9pZBIWQhQxNzMxMjYwMTc3MjIwMTQ5MDUxNg&filename=&opi=89354086",
+      "mimeType": "text/html",
+      "name": "projects/17312601772201490516/files/b72deca465c24b14a3136a0e5b9bb964"
+    },
+    "name": "projects/17312601772201490516/screens/16d6b20962d74d8c963b5214fe50a43b",
+    "screenshot": {
+      "downloadUrl": "https://lh3.googleusercontent.com/aida/AOfcidVzqNUcc3shhPMAZwypOfXn_-CIPkMKaNMtHdgDKm__rSv9RqrCBwfGI4ifOD0bH2Fqzn4u2TEHLMLle22gI79VUBFWoOAEStt_9Ko8QqX-CgleQLXvNXIY9nSDoeeg24HKyUaERGpOXJ5A1zHjg3WJFg-HHW8nUKdhWDLiZm0mkyhawo3LdHjzhY-TIR_9NBs6Gz02y-pjKlUCeUqQbLVT1psqUSc_DatnRHuEgU3ZXuFyODdVafJMJL5V",
+      "name": "projects/17312601772201490516/files/871963a82dbb4382bbcfe6c7bc1cf3e0"
+    },
+    "title": "Premium RepoChat Editor",
+    "width": "2560"
+  }
+}
