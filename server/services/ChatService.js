@@ -5,7 +5,6 @@ const VectorIndexer = require('./VectorIndexer');
 const EmbeddingService = require('./EmbeddingService');
 const IntentDiscovery = require('./IntentDiscovery');
 const Orchestrator = require('./Orchestrator');
-const ToolRegistry = require('./ToolRegistry');
 const { decrypt } = require('./KeyEncryptor');
 const ClaudeProvider = require('../providers/ClaudeProvider');
 const OpenAIProvider = require('../providers/OpenAIProvider');
@@ -17,49 +16,43 @@ const GroqProvider = require('../providers/GroqProvider');
 const OpenRouterProvider = require('../providers/OpenRouterProvider');
 const TogetherProvider = require('../providers/TogetherProvider');
 
-// ── In-Memory Response Cache (LRU, 100 entries, 1hr TTL) ──
+// ── In-Memory Response Cache ──────────────────────────
 const CACHE_MAX = 100;
-const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+const CACHE_TTL = 60 * 60 * 1000;
 const responseCache = new Map();
-
-function getCacheKey(repoId, question) {
-  return `${repoId}:${question.trim().toLowerCase()}`;
-}
-
+function getCacheKey(repoId, question) { return `${repoId}:${question.trim().toLowerCase()}`; }
 function getCached(key) {
   const entry = responseCache.get(key);
   if (!entry) return null;
-  if (Date.now() - entry.timestamp > CACHE_TTL) {
-    responseCache.delete(key);
-    return null;
-  }
+  if (Date.now() - entry.timestamp > CACHE_TTL) { responseCache.delete(key); return null; }
   return entry.data;
 }
-
 function setCache(key, data) {
-  // Evict oldest if full
-  if (responseCache.size >= CACHE_MAX) {
-    const oldest = responseCache.keys().next().value;
-    responseCache.delete(oldest);
-  }
+  if (responseCache.size >= CACHE_MAX) responseCache.delete(responseCache.keys().next().value);
   responseCache.set(key, { data, timestamp: Date.now() });
 }
+// ─────────────────────────────────────────────────────
 
-/**
- * Service to handle AI chat queries with repo context.
- */
+// ── Token Safety ──────────────────────────────────────
+// Groq free tier: ~12,000 tokens per minute
+// 1 token ≈ 4 characters
+// We keep total context under 6,000 chars (~1,500 tokens) to be safe
+const MAX_CONTEXT_CHARS = 6000;
+const MAX_MAP_CHARS = 2000;
+const MAX_README_CHARS = 500;
+
+function truncate(str, maxChars) {
+  if (!str) return '';
+  if (str.length <= maxChars) return str;
+  return str.substring(0, maxChars) + '\n... [truncated to fit token limit]';
+}
+// ─────────────────────────────────────────────────────
+
 class ChatService {
-  /**
-   * Gets the appropriate AI provider instance for a user.
-   * @param {object} user - User document.
-   * @returns {AIProvider} - The initialized AI provider.
-   */
+
   getProvider(user) {
-    if (!user.apiKey && user.provider !== 'ollama') throw new Error('API key missing');
-
-    // Ollama doesn't need a real encrypted key
+    if (!user.apiKey && user.provider !== 'ollama') throw new Error('API key missing. Please add your API key from Dashboard.');
     const apiKey = user.provider === 'ollama' ? 'ollama' : decrypt(user.apiKey);
-
     switch (user.provider) {
       case 'claude': return new ClaudeProvider(apiKey);
       case 'openai': return new OpenAIProvider(apiKey);
@@ -70,31 +63,23 @@ class ChatService {
       case 'openrouter': return new OpenRouterProvider(apiKey);
       case 'together': return new TogetherProvider(apiKey);
       case 'ollama': return new OllamaProvider(apiKey);
-      case 'custom':
-        console.log('[CHAT] Using Custom (OpenAI-compatible) provider.');
-        return new OpenAIProvider(apiKey);
-      default:
-        console.error(`[CHAT] Unsupported provider requested: ${user.provider}`);
-        throw new Error(`Unsupported provider: ${user.provider}`);
+      case 'custom': return new OpenAIProvider(apiKey);
+      default: throw new Error(`Unsupported provider: ${user.provider}`);
     }
   }
 
-  /**
-   * Generates a structural map of the codebase for high-level reasoning.
-   */
+  // Only depth 2, max 2000 chars
   async generateCodebaseMap(localPath) {
     try {
       const buildMap = (dir, depth = 0) => {
-        if (depth > 3) return ''; // Limit depth to avoid token bloat
+        if (depth > 2) return ''; // Max depth 2 (not 3)
         let map = '';
         const list = fs.readdirSync(dir);
-
         list.forEach(file => {
-          if (['node_modules', '.git', '.next', 'dist', 'vendor', '__pycache__'].includes(file)) return;
+          if (['node_modules', '.git', '.next', 'dist', 'vendor', '__pycache__', 'build', 'coverage'].includes(file)) return;
           const fullPath = path.join(dir, file);
           const stat = fs.statSync(fullPath);
           const indent = '  '.repeat(depth);
-
           if (stat.isDirectory()) {
             map += `${indent}📁 ${file}/\n${buildMap(fullPath, depth + 1)}`;
           } else {
@@ -103,59 +88,15 @@ class ChatService {
         });
         return map;
       };
-
-      return buildMap(localPath);
+      const fullMap = buildMap(localPath);
+      return truncate(fullMap, MAX_MAP_CHARS); // Hard cap at 2000 chars
     } catch (err) {
-      console.error('[CHAT] Map generation failed:', err.message);
       return 'Codebase map unavailable.';
     }
   }
 
-  /**
-   * Fuzzy matches user query terms against actual file names to handle typos.
-   */
-  async findPotentialFiles(localPath, query) {
-    try {
-      const allFiles = [];
-      const scan = (dir) => {
-        const list = fs.readdirSync(dir);
-        list.forEach(file => {
-          if (['node_modules', '.git', '.next', 'dist', 'vendor', '__pycache__'].includes(file)) return;
-          const fullPath = path.join(dir, file);
-          if (fs.statSync(fullPath).isDirectory()) scan(fullPath);
-          else allFiles.push({ name: file, path: fullPath, relPath: path.relative(localPath, fullPath) });
-        });
-      };
-      scan(localPath);
-
-      const queryTerms = query.toLowerCase().split(/\s+/).filter(t => t.length > 3);
-      const matches = [];
-
-      for (const file of allFiles) {
-        const fileNameLower = file.name.toLowerCase();
-        for (const term of queryTerms) {
-          if (fileNameLower.startsWith(term.slice(0, 4)) || term.startsWith(fileNameLower.slice(0, 4))) {
-            matches.push(file);
-            break;
-          }
-        }
-      }
-      return matches.slice(0, 3);
-    } catch (err) {
-      return [];
-    }
-  }
-
-  /**
-   * Handles a chat message.
-   * @param {string} question - User's question.
-   * @param {string} repoId - Repository ID.
-   * @param {object} user - User document.
-   * @param {string} history - Recent conversation history.
-   * @returns {Promise<object>} - AI response with answer and file reference.
-   */
   async chat(question, repoId, user, history = "") {
-    // 0. Check cache first
+    // 1. Check cache
     const cacheKey = getCacheKey(repoId, question);
     const cached = getCached(cacheKey);
     if (cached) return { ...cached, cached: true };
@@ -165,57 +106,73 @@ class ChatService {
 
     const provider = this.getProvider(user);
 
-    // 1. Discover Intent & Normalize Language
+    // 2. Discover Intent
     const intent = await IntentDiscovery.discoverIntent(question, provider, user.model);
-    console.log(`[CHAT] Discovered Intent: ${intent.intent}`);
+    console.log(`[CHAT] Intent: ${intent.intent}`);
 
-    // 2. Orchestrate context gathering (Tool calls)
-    let gatheredContext = await Orchestrator.orchestrate(repoId, intent, provider, user.model, user._id);
+    // 3. Gather context — strictly limited
+    let gatheredContext = '';
+    try {
+      gatheredContext = await Orchestrator.orchestrate(repoId, intent, provider, user.model, user._id);
+      gatheredContext = truncate(gatheredContext, MAX_CONTEXT_CHARS);
+    } catch (err) {
+      console.warn('[CHAT] Orchestrator failed:', err.message);
+      gatheredContext = '';
+    }
 
-    // 2.1 PROACTIVE CONTEXT INJECTION (Safety Net)
+    // 4. If no context, add small codebase map only
     const broadIntents = ['OVERVIEW', 'EXPLAIN', 'SEARCH'];
     if (broadIntents.includes(intent.intent) || !gatheredContext.trim()) {
       const structuralMap = await this.generateCodebaseMap(repo.localPath);
-      gatheredContext = `### PROACTIVE CODEBASE MAP:\n${structuralMap}\n\n` + gatheredContext;
+      gatheredContext = `### CODEBASE STRUCTURE:\n${structuralMap}\n\n` + gatheredContext;
 
+      // Only add README first 500 chars
       if (intent.intent === 'OVERVIEW' || question.toLowerCase().includes('project')) {
         const readmePath = path.join(repo.localPath, 'README.md');
         if (fs.existsSync(readmePath)) {
-          gatheredContext = `### PROJECT README:\n${fs.readFileSync(readmePath, 'utf8')}\n\n` + gatheredContext;
+          const readme = truncate(fs.readFileSync(readmePath, 'utf8'), MAX_README_CHARS);
+          gatheredContext = `### README:\n${readme}\n\n` + gatheredContext;
         }
       }
     }
 
-    // 3. Fallback to basic search if tool context is STILL empty
-    let finalContext = gatheredContext;
+    // 5. Fallback vector search
+    let finalContext = truncate(gatheredContext, MAX_CONTEXT_CHARS);
     if (!finalContext.trim()) {
-      const queryVector = await EmbeddingService.generateEmbedding(intent.original_slang_fixed, user);
-      const chunks = await VectorIndexer.search(repoId, queryVector, 5, intent.original_slang_fixed);
-      finalContext = chunks.map((c, i) => `[Search ${i + 1}: ${c.metadata.filePath}]\n${c.content}`).join('\n\n---\n\n');
+      try {
+        const queryVector = await EmbeddingService.generateEmbedding(intent.original_slang_fixed, user);
+        const chunks = await VectorIndexer.search(repoId, queryVector, 3, intent.original_slang_fixed);
+        const searchContext = chunks.map((c, i) => `[${i + 1}: ${c.metadata.filePath}]\n${c.content}`).join('\n\n');
+        finalContext = truncate(searchContext, MAX_CONTEXT_CHARS);
+      } catch (err) {
+        finalContext = 'No relevant code context found.';
+      }
     }
 
     if (!finalContext.trim()) {
-      finalContext = "WARNING: No relevant code context found in the user's repository. Do not invent details.";
+      finalContext = 'No relevant code context found in the indexed files.';
     }
 
-    // 4. Final Reasoning Response — FIXED PROMPT
-    const prompt = `You are RepoChat, a helpful senior developer assistant. You help users understand their codebase.
+    // 6. Build prompt — kept SHORT
+    const historySection = history ? `Recent conversation:\n${truncate(history, 500)}\n\n` : '';
 
-STRICT RULES — follow these exactly:
-- Answer directly and naturally, like a senior developer talking to a teammate
-- NEVER start with phrases like "Given the user's query", "Based on the context", "The user's intent is", "It seems they are looking for"
-- NEVER mention words like "intent", "entities", "normalized query", or "codebase map" in your response
-- Do NOT repeat or restate the question back to the user
-- Just answer clearly, helpfully, and concisely
-- When referencing code, mention the file path naturally (e.g. "In app.js, the login route...")
-- If the Codebase context below says no context was found, gracefully tell the user you don't have enough info in the indexed files. DO NOT invent a project like "my-app" or assume any file structures.
+    const prompt = `You are RepoChat, a helpful senior developer assistant.
 
-${history ? `Recent conversation:\n${history}\n\n` : ''}Codebase context:\n${finalContext}
+${historySection}Codebase context:
+${finalContext}
 
-User's question: ${question}
+RULES:
+- Answer directly like a senior developer
+- Never start with "Based on the context" or "Given the query"
+- Reference file paths naturally
+- Be concise
 
+Question: ${question}
 Answer:`;
 
+    console.log(`[CHAT] Prompt length: ${prompt.length} chars (~${Math.round(prompt.length / 4)} tokens)`);
+
+    // 7. Generate response
     const result = await provider.generateResponse(prompt, user.model);
 
     const response = {
@@ -227,17 +184,12 @@ Answer:`;
       tokensUsed: result.tokensUsed
     };
 
-    // Try to attach a fileRef if the AI cited something specifically
     if (finalContext.includes('[File:')) {
       const match = finalContext.match(/\[File: (.*?)\]/);
-      if (match) {
-        response.fileRef = { path: match[1], startLine: 1, endLine: 20 };
-      }
+      if (match) response.fileRef = { path: match[1], startLine: 1, endLine: 20 };
     }
 
-    // 5. Cache the response
     setCache(cacheKey, response);
-
     return response;
   }
 }
