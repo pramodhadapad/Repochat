@@ -128,7 +128,7 @@ const Landing = () => {
                   <img
                     alt="Google Logo"
                     className="w-5 h-5"
-                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwVIktmgQd-oiC_X1PGFYAOeRPr74jVpJntNpsji1N76BGWHqBOKf_gj50c-u_ZnESb2vmreSvghzGxUBrdY52ODpaSYgpAuM4E3AXUXBtDbs_7kOmV1cy0cRCTsMoheY6O9i4Y8jJVijpo-VcC0yPqwNuUxN7ItZcClWEO_XGTKna9lbVHcGnkezlIiZ5EZrmtKhpvnxmenGGmacs1uh-yHUvX9lV5FKvPjr8jsveHEVfESlSc336ooDB4H8uxFh6i6QGutOuupwM"
+                    src="/google-logo.svg"
                   />
                   <span>{user ? 'Go to Dashboard' : 'Sign in with Google'}</span>
                 </button>
@@ -212,10 +212,10 @@ const Landing = () => {
               <h2 className="text-slate-900 dark:text-white text-xl font-bold tracking-tight">RepoChat</h2>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-8">
-              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium" href="#">Terms of Service</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium" href="#">Privacy Policy</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium" href="#">Contact Us</a>
-              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium" href="#">Documentation</a>
+              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium cursor-not-allowed opacity-50" aria-disabled="true" title="Coming soon">Terms of Service</a>
+              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium cursor-not-allowed opacity-50" aria-disabled="true" title="Coming soon">Privacy Policy</a>
+              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium" href="mailto:support@repochat.ai">Contact Us</a>
+              <a className="text-slate-600 dark:text-slate-400 hover:text-[#0db9f2] transition-colors text-sm font-medium" href="https://github.com/pramodhadapad/Repochat" target="_blank" rel="noopener noreferrer">Documentation</a>
             </div>
           </div>
           <div className="text-center">
