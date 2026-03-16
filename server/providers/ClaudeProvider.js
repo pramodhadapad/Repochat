@@ -10,7 +10,7 @@ class ClaudeProvider extends AIProvider {
   async generateResponse(prompt, model = 'claude-3-5-sonnet-20240620') {
     const response = await this.client.messages.create({
       model: model,
-      max_tokens: 1024,
+      max_tokens: 4096,
       messages: [{ role: 'user', content: prompt }],
     });
     

@@ -37,9 +37,9 @@ function setCache(key, data) {
 // Groq free tier: ~12,000 tokens per minute
 // 1 token ≈ 4 characters
 // We keep total context under 6,000 chars (~1,500 tokens) to be safe
-const MAX_CONTEXT_CHARS = 6000;
-const MAX_MAP_CHARS = 2000;
-const MAX_README_CHARS = 500;
+const MAX_CONTEXT_CHARS = 12000;
+const MAX_MAP_CHARS = 3000;
+const MAX_README_CHARS = 1500;
 
 function truncate(str, maxChars) {
   if (!str) return '';
@@ -153,19 +153,23 @@ class ChatService {
       finalContext = 'No relevant code context found in the indexed files.';
     }
 
-    // 6. Build prompt — kept SHORT
-    const historySection = history ? `Recent conversation:\n${truncate(history, 500)}\n\n` : '';
+    // 6. Build prompt — optimized for detailed responses
+    const historySection = history ? `Recent conversation:\n${truncate(history, 1000)}\n\n` : '';
 
-    const prompt = `You are RepoChat, a helpful senior developer assistant.
+    const prompt = `You are RepoChat, an expert senior software engineer helping developers deeply understand codebases.
 
 ${historySection}Codebase context:
 ${finalContext}
 
 RULES:
-- Answer directly like a senior developer
+- Give thorough, detailed answers like a senior developer doing a proper code review
+- Explain the "why" behind the code, not just the "what"
+- Use bullet points, numbered steps, or code snippets where helpful
+- Reference specific file paths and details when relevant
+- If explaining a concept, give examples from the actual codebase
 - Never start with "Based on the context" or "Given the query"
-- Reference file paths naturally
-- Be concise
+- Never cut your answer short — always complete your explanation fully
+- If the question is broad (like "explain the architecture"), break it into sections with clear headings
 
 Question: ${question}
 Answer:`;

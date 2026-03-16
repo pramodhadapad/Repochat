@@ -14,7 +14,7 @@ class OpenRouterProvider extends AIProvider {
         model: modelName,
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.3,
-        max_tokens: 2048,
+        max_tokens: 4096,
       }, {
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,
