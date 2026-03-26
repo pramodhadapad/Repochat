@@ -150,6 +150,54 @@ router.post('/message', protect, userRateLimiter, async (req, res) => {
 });
 
 /**
+ * @route POST /api/chat/scan-bugs
+ * @desc Scan the repository for bugs and security vulnerabilities
+ * @access Private
+ */
+router.post('/scan-bugs', protect, async (req, res) => {
+  const { repoId } = req.body;
+  if (!repoId) return res.status(400).json({ error: 'Repository ID is required' });
+  if (!req.user?.apiKey) return res.status(400).json({ error: 'API_KEY_REQUIRED', message: 'Please add your LLM API key first.' });
+
+  try {
+    const repo = await Repo.findOne({ _id: repoId, userId: req.user._id });
+    if (!repo || repo.status !== 'ready') return res.status(400).json({ error: 'Repository not ready or not found' });
+
+    const scanPrompt = `Analyze this codebase for potential bugs, security vulnerabilities, and code quality issues. Focus on:
+1. Security vulnerabilities (XSS, SQL injection, auth issues, exposed secrets)
+2. Common bugs (null refs, race conditions, memory leaks, unhandled errors)
+3. Performance anti-patterns (N+1 queries, blocking operations, missing caching)
+4. Code quality issues (dead code, unused imports, inconsistent patterns)
+
+For each issue found, provide:
+- **Severity**: Critical / High / Medium / Low
+- **File**: The specific file path
+- **Issue**: Clear description
+- **Fix**: How to resolve it
+
+If no major issues are found, say so honestly.`;
+
+    const aiResult = await ChatService.chat(scanPrompt, repoId, req.user);
+
+    await Message.create({
+      repoId,
+      userId: req.user._id,
+      username: req.user.name,
+      question: '[Bug Scan]',
+      answer: aiResult.answer,
+      provider: aiResult.provider,
+      model: aiResult.model,
+      tokensUsed: aiResult.tokensUsed
+    });
+
+    res.status(200).json({ report: aiResult.answer, provider: aiResult.provider, model: aiResult.model });
+  } catch (error) {
+    console.error('Bug Scan Error:', error);
+    res.status(500).json({ error: 'Failed to scan for bugs', message: error.message });
+  }
+});
+
+/**
  * @route GET /api/chat/:repoId/history
  * @desc Get chat history for a repo
  * @access Private

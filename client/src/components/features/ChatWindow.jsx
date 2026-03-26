@@ -1,10 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
-import { Send, User, Bot, Terminal, Users, Loader2, Mic, MicOff, Share2, Copy, Check, HelpCircle, RefreshCw } from 'lucide-react';
+import { Send, User, Bot, Terminal, Users, Loader2, Mic, MicOff, Share2, Copy, Check, HelpCircle, RefreshCw, Baby, Volume2, Square, Download, ShieldAlert } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { chatService, repoService } from '../../services/api';
 import useStore from '../../store/useStore';
 import socketService from '../../services/socket';
 import LLMSelector from './LLMSelector';
+import ChatTemplates from './ChatTemplates';
+import TypewriterMessage from './TypewriterMessage';
+import SmartMessage from './SmartMessage';
 import toast from 'react-hot-toast';
 
 const ChatWindow = ({ onFileSelect }) => {
@@ -17,6 +20,10 @@ const ChatWindow = ({ onFileSelect }) => {
   const [shareLoading, setShareLoading] = useState(false);
   const [quizLoading, setQuizLoading] = useState(false);
   const [reindexLoading, setReindexLoading] = useState(false);
+  const [isELI5, setIsELI5] = useState(false);
+  const [speakingText, setSpeakingText] = useState(null);
+  const [scanLoading, setScanLoading] = useState(false);
+  const [newMsgIds, setNewMsgIds] = useState(new Set());
   const scrollRef = useRef(null);
   const recognitionRef = useRef(null);
 
@@ -93,8 +100,7 @@ const ChatWindow = ({ onFileSelect }) => {
   const handleSend = async () => {
     if (!input.trim() || !currentRepo) return;
 
-    const question = input;
-    const userMsg = { id: Date.now(), role: 'user', content: question };
+    const userMsg = { id: Date.now(), role: 'user', content: input };
     setMessages(prev => [...prev, userMsg]);
     
     // Broadcast message to other collaborators
@@ -105,7 +111,11 @@ const ChatWindow = ({ onFileSelect }) => {
     setIsTyping(true);
 
     try {
-      const res = await chatService.sendMessage(currentRepo._id, question);
+      const questionToSend = isELI5 
+        ? `Explain this to me using simple analogies, as if I were a 5-year-old: ${input}`
+        : input;
+        
+      const res = await chatService.sendMessage(currentRepo._id, questionToSend);
       
       // Handle the 202 Indexing In Progress response
       if (res.status === 202 || res.data.error === 'INDEXING_IN_PROGRESS') {
@@ -117,13 +127,15 @@ const ChatWindow = ({ onFileSelect }) => {
         return;
       }
 
+      const aiMsgId = res.data.messageId || `ai_${Date.now()}`;
       const aiMsg = { 
-        id: res.data.messageId, 
+        id: aiMsgId, 
         role: 'assistant', 
         content: res.data.answer,
         fileRef: res.data.fileRef,
         timestamp: res.data.timestamp
       };
+      setNewMsgIds(prev => new Set(prev).add(aiMsgId));
       setMessages(prev => [...prev, aiMsg]);
 
       // MCP-Style Auto Redirection: If AI suggests a file, open it immediately
@@ -255,6 +267,74 @@ const ChatWindow = ({ onFileSelect }) => {
     }
   };
 
+  const handleSpeak = (text) => {
+    if (speakingText === text) {
+      window.speechSynthesis.cancel();
+      setSpeakingText(null);
+      return;
+    }
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onend = () => setSpeakingText(null);
+    setSpeakingText(text);
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const handleExport = () => {
+    const mdContent = messages.map(m => {
+      if (m.role === 'system') return `> **System:** ${m.content}\n`;
+      const sender = m.role === 'user' ? 'You' : 'AI';
+      let content = `### ${sender}\n${m.content}\n`;
+      if (m.fileRef) {
+        content += `*Reference: \`${m.fileRef.path}:${m.fileRef.startLine}\`*\n`;
+      }
+      return content;
+    }).join('\n---\n\n');
+    
+    const blob = new Blob(["# RepoChat Export\n\n" + mdContent], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `repochat-${currentRepo?.name || 'export'}-chat.md`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    toast.success('Chat exported to Markdown');
+  };
+
+  const handleScanBugs = async () => {
+    if (!currentRepo) return;
+    setScanLoading(true);
+    setMessages(prev => [...prev, { id: `scan_q_${Date.now()}`, role: 'user', content: '🔍 Scan this codebase for bugs and security vulnerabilities' }]);
+    setIsTyping(true);
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/chat/scan-bugs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${JSON.parse(localStorage.getItem('repochat-storage') || '{}')?.state?.token}`
+        },
+        body: JSON.stringify({ repoId: currentRepo._id })
+      });
+      const data = await res.json();
+      if (data.report) {
+        const scanMsgId = `scan_${Date.now()}`;
+        setNewMsgIds(prev => new Set(prev).add(scanMsgId));
+        setMessages(prev => [...prev, { id: scanMsgId, role: 'assistant', content: data.report }]);
+        toast.success('Bug scan complete!');
+      } else {
+        setMessages(prev => [...prev, { id: `scan_err_${Date.now()}`, role: 'assistant', content: data.message || 'Scan could not be completed.' }]);
+      }
+    } catch (err) {
+      console.error('Bug scan failed:', err);
+      toast.error('Bug scan failed');
+    } finally {
+      setScanLoading(false);
+      setIsTyping(false);
+    }
+  };
+
   return (
     <div className="flex flex-col h-full">
       <div className="px-6 py-3 bg-slate-900/50 border-b border-slate-800 flex items-center justify-between">
@@ -266,6 +346,18 @@ const ChatWindow = ({ onFileSelect }) => {
         </div>
         <div className="flex items-center gap-2">
             <LLMSelector />
+            <button
+              onClick={() => setIsELI5(!isELI5)}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold transition-all border ${
+                isELI5 
+                ? 'bg-purple-600/20 text-purple-400 border-purple-500/30 shadow-[0_0_10px_rgba(168,85,247,0.2)]' 
+                : 'bg-slate-800 hover:bg-slate-700 text-slate-300 border-slate-700'
+              }`}
+              title="Explain Like I'm 5"
+            >
+              <Baby className="w-3 h-3" />
+              ELI5
+            </button>
             {currentRepo?.status === 'failed' && (
               <button
                 onClick={handleRetryIndexing}
@@ -284,13 +376,29 @@ const ChatWindow = ({ onFileSelect }) => {
               {quizLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <HelpCircle className="w-3 h-3" />}
               Quiz Me
             </button>
+            <button
+              onClick={handleScanBugs}
+              disabled={scanLoading}
+              className="flex items-center gap-2 px-3 py-1.5 bg-red-600/10 hover:bg-red-600/20 text-red-400 rounded-xl text-xs font-bold transition-all border border-red-600/20"
+            >
+              {scanLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <ShieldAlert className="w-3 h-3" />}
+              Scan Bugs
+            </button>
             <button 
               onClick={handleShare}
               disabled={shareLoading}
               className="flex items-center gap-2 px-3 py-1.5 bg-primary-600/10 hover:bg-primary-600/20 text-primary-400 rounded-xl text-xs font-bold transition-all border border-primary-600/20"
             >
               {shareLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Share2 className="w-3 h-3" />}
-              Share Session
+              Share
+            </button>
+            <button 
+              onClick={handleExport}
+              className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition-all border border-slate-700"
+              title="Export to Markdown"
+            >
+              <Download className="w-3 h-3" />
+              Export
             </button>
         </div>
       </div>
@@ -318,12 +426,27 @@ const ChatWindow = ({ onFileSelect }) => {
               </div>
               
               <div className={`flex flex-col gap-2 max-w-[85%] ${msg.role === 'user' ? 'items-end' : ''}`}>
-                <div className={`px-4 py-3 rounded-2xl leading-relaxed text-sm ${
+                <div className={`px-4 py-3 rounded-2xl leading-relaxed text-sm relative group ${
                   msg.role === 'user' 
                   ? 'bg-primary-600 text-white rounded-tr-none shadow-lg shadow-primary-600/10' 
-                  : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none'
+                  : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none pr-10'
                 }`}>
-                  {msg.content}
+                  {msg.role === 'assistant' && newMsgIds.has(msg.id)
+                    ? <TypewriterMessage text={msg.content} />
+                    : msg.role === 'assistant'
+                      ? <SmartMessage content={msg.content} />
+                      : msg.content
+                  }
+                  
+                  {msg.role === 'assistant' && (
+                    <button 
+                      onClick={() => handleSpeak(msg.content)}
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 hover:bg-slate-800 rounded-lg text-slate-400 hover:text-white"
+                      title={speakingText === msg.content ? "Stop reading" : "Read aloud"}
+                    >
+                      {speakingText === msg.content ? <Square className="w-3.5 h-3.5 fill-current" /> : <Volume2 className="w-3.5 h-3.5" />}
+                    </button>
+                  )}
                 </div>
                 
                 {msg.fileRef && (
@@ -358,8 +481,10 @@ const ChatWindow = ({ onFileSelect }) => {
       </div>
 
       <div className="p-6 bg-slate-950 border-t border-slate-900">
+        {messages.length <= 1 && <ChatTemplates onSelect={(prompt) => setInput(prompt)} />}
         <div className="relative group">
           <textarea
+            id="chat-textarea"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => {

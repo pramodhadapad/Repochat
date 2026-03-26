@@ -6,6 +6,7 @@ import { repoService } from '../../services/api';
 import { Search, Bell, Settings, Sun, Moon, LogOut, RefreshCw } from 'lucide-react';
 import toast from 'react-hot-toast';
 import LogoutModal from '../auth/LogoutModal';
+import ThemeSelector from '../features/ThemeSelector';
 
 const TopBar = () => {
   const navigate = useNavigate();
@@ -63,12 +64,7 @@ const TopBar = () => {
       </div>
 
       <div className="flex items-center gap-4">
-        <button
-          onClick={toggleTheme}
-          className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-900 transition-colors"
-        >
-          {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-        </button>
+        <ThemeSelector />
 
         <div className="h-8 w-px bg-slate-800 mx-2"></div>
 

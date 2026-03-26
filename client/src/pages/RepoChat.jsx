@@ -4,6 +4,7 @@ import useStore from '../store/useStore';
 import socketService from '../services/socket';
 import { repoService } from '../services/api';
 import { toast } from 'react-hot-toast';
+import useKeyboardShortcuts from '../hooks/useKeyboardShortcuts';
 
 // VS Code Components
 import TopMenuBar from '../components/layout/TopMenuBar';
@@ -121,6 +122,26 @@ const RepoChat = () => {
         }
     }
   }, [navigate, isSidebarOpen, isBottomPanelOpen, currentRepo]);
+
+  useKeyboardShortcuts([
+    {
+      key: 'b',
+      ctrl: true,
+      action: () => executeCommand('VIEW_TOGGLE_SIDEBAR')
+    },
+    {
+      key: 'k',
+      ctrl: true,
+      allowInInput: true,
+      action: () => {
+        const chatInput = document.getElementById('chat-textarea');
+        if (chatInput) {
+          chatInput.focus();
+          toast('Chat focused', { icon: '⌨️', id: 'kb-chat', duration: 1500 });
+        }
+      }
+    }
+  ]);
 
   const handleFileSelect = async (fileInfo) => {
     const path = typeof fileInfo === 'string' ? fileInfo : fileInfo.path;

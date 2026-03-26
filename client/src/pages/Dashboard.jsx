@@ -9,6 +9,10 @@ import { Loader2 } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import OnboardingTour from '../components/features/OnboardingTour';
+import LanguageChart from '../components/features/LanguageChart';
+import RateLimitWidget from '../components/features/RateLimitWidget';
+import { analyzeLanguages } from '../utils/languageAnalyzer';
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -18,6 +22,10 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [uploadLoading, setUploadLoading] = useState(false);
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [showOnboarding, setShowOnboarding] = useState(
+    () => !localStorage.getItem('repochat-onboarding-done')
+  );
+  const [languageStats, setLanguageStats] = useState([]);
 
   const folderInputRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -27,6 +35,15 @@ const Dashboard = () => {
       try {
         const response = await repoService.getRepos();
         setRepos(response.data.repos);
+
+        // Fetch language stats for the most recent ready repo
+        const readyRepo = response.data.repos.find(r => r.status === 'ready');
+        if (readyRepo) {
+          try {
+            const treeRes = await repoService.getFileTree(readyRepo._id);
+            setLanguageStats(analyzeLanguages(treeRes.data.tree));
+          } catch (e) { /* silently ignore */ }
+        }
       } catch (error) {
         console.error('Failed to fetch repos:', error);
       } finally {
@@ -436,14 +453,16 @@ const Dashboard = () => {
                 <div className="h-full bg-[#0db9f2]" style={{ width: repos.length ? `${(indexingRepos / repos.length) * 100}%` : '0%' }} />
               </div>
             </div>
-            <div className="bg-white/5 dark:bg-slate-900/30 border border-white/[0.08] backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]">
-              <div className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase mb-1">API Status</div>
-              <div className="text-2xl font-bold text-green-500">{user?.apiKey ? 'Active' : 'Setup'}</div>
-              <div className="h-0.5 w-full bg-green-500/20 mt-3 rounded-full overflow-hidden">
-                <div className={`h-full ${user?.apiKey ? 'bg-green-500 w-full' : 'bg-amber-500 w-1/4'}`} />
-              </div>
-            </div>
+            <RateLimitWidget />
           </div>
+
+          {/* Language Breakdown */}
+          {languageStats.length > 0 && (
+            <div className="bg-white/5 dark:bg-slate-900/30 border border-white/[0.08] backdrop-blur-md p-6 rounded-2xl">
+              <h4 className="text-sm font-bold text-slate-300 mb-4 uppercase tracking-wider">Language Breakdown</h4>
+              <LanguageChart languages={languageStats} />
+            </div>
+          )}
         </main>
 
         {/* Footer */}
@@ -470,6 +489,9 @@ const Dashboard = () => {
             }} />
           </div>
         </div>
+      )}
+      {showOnboarding && (
+        <OnboardingTour onComplete={() => setShowOnboarding(false)} />
       )}
     </div>
   );

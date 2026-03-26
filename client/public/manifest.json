@@ -1,0 +1,20 @@
+{
+  "name": "RepoChat - AI Codebase Companion",
+  "short_name": "RepoChat",
+  "description": "Chat with any GitHub repository using AI. Understand, debug, and document code faster.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#0a1418",
+  "theme_color": "#0db9f2",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["developer tools", "productivity"],
+  "lang": "en"
+}
