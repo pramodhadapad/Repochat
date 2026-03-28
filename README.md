@@ -530,6 +530,4 @@ Ready to get started? Follow these steps:
 8. Start chatting!
 
 ---
-#   R e p o c h a t 
- 
- 
+#
