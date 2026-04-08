@@ -1,5 +1,6 @@
 const Collaboration = require('../models/Collaboration');
-const Message = require('../models/Message');
+
+const MAX_ROOM_SIZE = 5;
 
 /**
  * Handles real-time collaboration logic via Socket.io.
@@ -7,89 +8,104 @@ const Message = require('../models/Message');
 class CollaborationService {
   constructor(io) {
     this.io = io;
-    this.roomUsers = new Map(); // repoId -> Set of userIds
+    this.roomUsers = new Map();   // repoId -> Map<userId, username>
+    this.socketUser = new Map();  // socketId -> { userId, repoId, username }
   }
 
   handleConnection(socket) {
+
+    // ── Join Repo Room ──────────────────────────────
     socket.on('join-repo', async ({ repoId, userId, username }) => {
       try {
-        const users = this.roomUsers.get(repoId) || new Set();
-        
-        if (users.size >= 5) {
-          socket.emit('room-full', { count: users.size, max: 5 });
+        const room = this.roomUsers.get(repoId) || new Map();
+
+        if (room.size >= MAX_ROOM_SIZE && !room.has(userId)) {
+          socket.emit('room-full', { count: room.size, max: MAX_ROOM_SIZE });
           return;
         }
 
-        // Add user to room
-        users.add(userId);
-        this.roomUsers.set(repoId, users);
+        // Track user on socket for clean disconnect handling
+        this.socketUser.set(socket.id, { userId, repoId, username });
+
+        room.set(userId, username);
+        this.roomUsers.set(repoId, room);
         socket.join(repoId);
 
-        // Update DB session info
+        // Upsert DB session
         let session = await Collaboration.findOne({ repoId });
         if (!session) {
-           session = await Collaboration.create({
-               repoId,
-               hostUserId: userId,
-               participants: [userId],
-               isActive: true
-           });
-        } else if (!session.participants.includes(userId)) {
-           session.participants.push(userId);
-           await session.save();
+          session = await Collaboration.create({
+            repoId,
+            hostUserId: userId,
+            participants: [userId],
+            isActive: true
+          });
+        } else if (!session.participants.map(String).includes(String(userId))) {
+          session.participants.push(userId);
+          await session.save();
         }
 
-        this.io.to(repoId).emit('user-joined', { username, count: users.size });
-      } catch (error) {
-        console.error('Socket Join Error:', error);
+        this.io.to(repoId).emit('user-joined', { username, count: room.size });
+      } catch (err) {
+        console.error('[Collab] join-repo error:', err);
+        socket.emit('error', { message: 'Failed to join room.' });
       }
     });
 
-    socket.on('chat-message', async ({ repoId, message }) => {
-      // Broadcast message to all in room
+    // ── Chat Message Broadcast ──────────────────────
+    socket.on('chat-message', ({ repoId, message }) => {
+      // Real-time broadcast only — persistence handled by REST endpoint
       this.io.to(repoId).emit('new-message', message);
-      
-      // Messages sent in collaboration are already saved by the /chat/message REST endpoint
-      // primarily, but we handle the real-time broadcast here.
     });
 
-    socket.on('leave-repo', async ({ repoId, userId }) => {
-      const users = this.roomUsers.get(repoId);
-      if (users) {
-        users.delete(userId.toString());
-        socket.leave(repoId);
-        this.io.to(repoId).emit('user-left', { userId, count: users.size });
-      }
+    // ── Leave Room ──────────────────────────────────
+    socket.on('leave-repo', ({ repoId, userId }) => {
+      this._removeUserFromRoom(socket, repoId, userId);
     });
 
+    // ── Kick User (host only) ───────────────────────
     socket.on('kick-user', async ({ repoId, targetUserId, hostUserId }) => {
       try {
         const session = await Collaboration.findOne({ repoId });
-        if (session && session.hostUserId.toString() === hostUserId.toString()) {
-          const users = this.roomUsers.get(repoId);
-          if (users) {
-             users.delete(targetUserId.toString());
-             // We need a way to force the target socket to leave.
-             // In a real prod app, we'd find the specific socket by userId.
-             // For now, we emit a kicked event and the client should disconnect.
-             this.io.to(repoId).emit('user-kicked', { targetUserId });
-             this.io.to(repoId).emit('user-left', { userId: targetUserId, count: users.size });
-          }
+        if (!session || String(session.hostUserId) !== String(hostUserId)) {
+          socket.emit('error', { message: 'Only the host can kick users.' });
+          return;
         }
-      } catch (error) {
-        console.error('Kick User Error:', error);
+
+        const room = this.roomUsers.get(repoId);
+        if (room) room.delete(String(targetUserId));
+
+        // Notify target to disconnect — client must handle 'you-were-kicked'
+        this.io.to(repoId).emit('you-were-kicked', { targetUserId });
+        this.io.to(repoId).emit('user-left', { userId: targetUserId, count: room?.size ?? 0 });
+      } catch (err) {
+        console.error('[Collab] kick-user error:', err);
       }
     });
 
+    // ── Clean Disconnect ────────────────────────────
     socket.on('disconnecting', () => {
-      for (const room of socket.rooms) {
-        if (this.roomUsers.has(room)) {
-          const users = this.roomUsers.get(room);
-          // Note: we don't have the userId here easily unless we store it on the socket
-          // For now, this is a placeholder for more robust disconnect handling
-        }
+      const meta = this.socketUser.get(socket.id);
+      if (meta) {
+        this._removeUserFromRoom(socket, meta.repoId, meta.userId);
+        this.socketUser.delete(socket.id);
       }
     });
+  }
+
+  /** Shared cleanup logic for leave and disconnect. */
+  _removeUserFromRoom(socket, repoId, userId) {
+    const room = this.roomUsers.get(repoId);
+    if (!room) return;
+
+    room.delete(String(userId));
+    socket.leave(repoId);
+
+    if (room.size === 0) {
+      this.roomUsers.delete(repoId);
+    }
+
+    this.io.to(repoId).emit('user-left', { userId, count: room.size });
   }
 }
 

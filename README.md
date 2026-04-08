@@ -1,7 +1,7 @@
 # 🚀 RepoChat - Production Ready
 
 > **Enterprise-Grade AI-Powered Codebase Chat Application**  
-> Chat with any Git repository in any programming language - Production Ready.
+> Chat with any Git repository in any programming language - Production Ready
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org)
@@ -530,4 +530,5 @@ Ready to get started? Follow these steps:
 8. Start chatting!
 
 ---
-#
+#   R e p o c h a t  
+ 
