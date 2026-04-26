@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* FerrariSans fallback — since it's proprietary, we alias to a clean sans-serif */
+@font-face {
+  font-family: 'FerrariSans';
+  src: local('Arial');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FerrariSans';
+  src: local('Arial');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FerrariSans';
+  src: local('Arial');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'FerrariSans';
+  src: local('Arial');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Body-Font';
+  src: local('Arial');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --background: 255, 255, 255; /* Pure White */
+    --foreground: 24, 24, 24; /* Near Black #181818 */
+    --surface: 255, 255, 255;
+    --border: 210, 210, 210; /* Light Gray #D2D2D2 */
+    --muted: 143, 143, 143; /* Mid Gray #8F8F8F */
+    --primary: 218, 41, 28; /* Ferrari Red #DA291C */
+    --primary-rgb: 218, 41, 28;
+  }
+
+  .dark {
+    --background: 0, 0, 0; /* Absolute Black */
+    --foreground: 255, 255, 255;
+    --surface: 48, 48, 48; /* Dark Surface #303030 */
+    --border: 48, 48, 48;
+    --muted: 150, 150, 150; /* Silver #969696 */
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+}
+
+@layer utilities {
+  .glass {
+    @apply backdrop-blur-md transition-all duration-300;
+    background-color: rgba(var(--surface), 0.7);
+    border: 1px solid rgba(var(--border), 0.5);
+  }
+
+  .dark .glass {
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--glass-border);
+  }
+}
+
+/* Material Symbols must have font-variation-settings to render as icons */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+body {
+  color: rgb(var(--foreground));
+  background-color: rgb(var(--background));
+  @apply transition-colors duration-300;
+  min-height: 100vh;
+  font-family: 'FerrariSans', Arial, Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgb(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(var(--border));
+  @apply rounded-full;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #303030;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #666666;
+}
+
+/* Pause animation on hover for Marquee */
+.pause-on-hover:hover .animate-marquee-l,
+.pause-on-hover:hover .animate-marquee-r {
+  animation-play-state: paused;
+}

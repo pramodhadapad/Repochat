@@ -1,0 +1,64 @@
+name: RepoChat CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [20.x]
+        
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        
+    - name: Install Root Dependencies
+      run: npm install
+      
+    - name: Install Server Dependencies
+      run: |
+        cd server
+        npm install
+        
+    - name: Install Client Dependencies
+      run: |
+        cd client
+        npm install
+        
+    - name: Build Client
+      run: |
+        cd client
+        npm run build
+        
+    # Example test command - assuming tests are added in the future
+    # - name: Run Backend Tests
+    #   run: |
+    #     cd server
+    #     npm test
+        
+    # - name: Run Frontend Tests
+    #   run: |
+    #     cd client
+    #     npm test
+
+  docker-build:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Build Docker Compose Stack
+      run: docker-compose build

@@ -1,0 +1,50 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        
+    - name: Install dependencies (Server)
+      run: cd server && npm ci
+      
+    - name: Run Linting (Server)
+      run: cd server && npm run test -- --passWithNoTests
+      
+    - name: Install dependencies (Client)
+      run: cd client && npm ci
+      
+    - name: Build (Client)
+      run: cd client && npm run build
+
+  build-images:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: actions/setup-docker-action@v2
+      
+    - name: Build and push Server Image
+      run: |
+        docker build -t repochat-server:latest ./server
+        # docker push your-registry/repochat-server:latest
+        
+    - name: Build and push Client Image
+      run: |
+        docker build -t repochat-client:latest ./client
+        # docker push your-registry/repochat-client:latest
