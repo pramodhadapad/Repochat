@@ -14,6 +14,7 @@ const themes = {
       '--theme-accent': '#DA291C',
       '--theme-text': '#FFFFFF',
       '--theme-muted': '#8F8F8F',
+      '--theme-border': '#303030',
     }
   },
   github: {
@@ -26,6 +27,7 @@ const themes = {
       '--theme-accent': '#B01E0A',
       '--theme-text': '#181818',
       '--theme-muted': '#666666',
+      '--theme-border': '#E5E5E5',
     }
   },
   dracula: {
@@ -38,6 +40,7 @@ const themes = {
       '--theme-accent': '#ff79c6',
       '--theme-text': '#f8f8f2',
       '--theme-muted': '#6272a4',
+      '--theme-border': '#44475a',
     }
   },
   nord: {
@@ -50,6 +53,7 @@ const themes = {
       '--theme-accent': '#81a1c1',
       '--theme-text': '#eceff4',
       '--theme-muted': '#4c566a',
+      '--theme-border': '#3b4252',
     }
   },
   monokai: {
@@ -62,6 +66,7 @@ const themes = {
       '--theme-accent': '#f92672',
       '--theme-text': '#f8f8f2',
       '--theme-muted': '#75715e',
+      '--theme-border': '#3e3d32',
     }
   },
   solarized: {
@@ -74,9 +79,9 @@ const themes = {
       '--theme-accent': '#cb4b16',
       '--theme-text': '#839496',
       '--theme-muted': '#586e75',
+      '--theme-border': '#073642',
     }
   }
 };
 
 export default themes;
-

@@ -7,6 +7,12 @@ const ThemeContext = createContext();
 export const ThemeProvider = ({ children }) => {
   const { theme, setTheme } = useStore();
 
+  // Normalize legacy values: 'dark' → 'default', 'light' → 'github'
+  useEffect(() => {
+    if (theme === 'dark') setTheme('default');
+    if (theme === 'light') setTheme('github');
+  }, []);
+
   useEffect(() => {
     const root = window.document.documentElement;
     const themeConfig = themes[theme] || themes.default;
@@ -37,7 +43,9 @@ export const ThemeProvider = ({ children }) => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme(theme === 'default' ? 'github' : 'default');
+    // If current theme is any dark-base theme, switch to light. Otherwise switch to dark.
+    const currentConfig = themes[theme] || themes.default;
+    setTheme(currentConfig.base === 'dark' ? 'github' : 'default');
   };
 
   const setNamedTheme = (name) => {

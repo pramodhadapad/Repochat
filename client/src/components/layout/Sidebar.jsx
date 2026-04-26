@@ -66,7 +66,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className={`h-screen border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex flex-col transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'} sticky top-0 hidden md:flex`}>
+    <aside className={`h-screen flex flex-col transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'} sticky top-0 hidden md:flex`} style={{ backgroundColor: 'var(--theme-bg)', borderRight: '1px solid var(--theme-border)' }}>
       <div className={`p-6 flex items-center ${collapsed ? 'justify-center' : 'justify-between'}`}>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-primary-600 rounded-xl flex-shrink-0 flex items-center justify-center font-bold text-xl shadow-lg shadow-primary-600/20">

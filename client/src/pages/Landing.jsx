@@ -50,7 +50,10 @@ const Landing = () => {
   };
 
   return (
-    <div className="relative min-h-screen w-full flex flex-col overflow-x-hidden bg-ferrari-black font-ferrari text-white antialiased">
+    <div
+      className="relative min-h-screen w-full flex flex-col overflow-x-hidden font-ferrari antialiased transition-colors duration-300"
+      style={{ backgroundColor: 'var(--theme-bg)', color: 'var(--theme-text)' }}
+    >
       <LogoutModal
         isOpen={showLogoutModal}
         onClose={() => setShowLogoutModal(false)}
@@ -59,27 +62,32 @@ const Landing = () => {
 
       <div className="layout-container flex h-full grow flex-col relative z-10">
         {/* Top Navigation */}
-        <header className="flex items-center justify-between px-6 py-4 lg:px-20 bg-ferrari-black border-b border-ferrari-surface">
+        <header
+          className="flex items-center justify-between px-6 py-4 lg:px-20 transition-colors duration-300"
+          style={{ backgroundColor: 'var(--theme-bg)', borderBottom: '1px solid var(--theme-border)' }}
+        >
           <div className="flex items-center gap-3">
-            <div className="text-white">
+            <div style={{ color: 'var(--theme-text)' }}>
               <span className="material-symbols-outlined text-4xl">account_tree</span>
             </div>
-            <h2 className="text-white text-xl font-medium tracking-[0.08px]">RepoChat</h2>
+            <h2 className="text-xl font-medium tracking-[0.08px]" style={{ color: 'var(--theme-text)' }}>RepoChat</h2>
           </div>
           <div className="flex items-center gap-4">
             <button
               onClick={toggleTheme}
-              className="p-2.5 rounded border border-ferrari-surface bg-transparent hover:bg-ferrari-surface transition-colors"
+              className="p-2.5 rounded transition-colors hover:opacity-80"
+              style={{ border: '1px solid var(--theme-border)' }}
               aria-label="Toggle Theme"
             >
-              {theme === 'dark' ? <Sun className="w-5 h-5 text-white" /> : <Moon className="w-5 h-5 text-white" />}
+              {theme === 'github'
+                ? <Moon className="w-5 h-5" style={{ color: 'var(--theme-text)' }} />
+                : <Sun className="w-5 h-5" style={{ color: 'var(--theme-text)' }} />
+              }
             </button>
             <button
               onClick={user ? () => navigate('/dashboard') : handleLoginClick}
-              className="flex min-w-[100px] cursor-pointer items-center justify-center rounded h-[44px] px-[10px] py-[12px] text-white text-[16px] font-normal tracking-[1.28px] transition-all"
-              style={{ backgroundColor: '#DA291C' }}
-              onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#B01E0A'}
-              onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#DA291C'}
+              className="flex min-w-[100px] cursor-pointer items-center justify-center rounded h-[44px] px-[10px] py-[12px] text-white text-[16px] font-normal tracking-[1.28px] transition-all hover:opacity-90"
+              style={{ backgroundColor: 'var(--theme-primary)' }}
             >
               {user ? 'DASHBOARD' : 'SIGN IN'}
             </button>
@@ -87,23 +95,26 @@ const Landing = () => {
         </header>
 
         <main className="flex-1">
-          {/* Hero Section (Absolute Black) */}
-          <div className="px-6 pt-20 pb-0 lg:pt-[80px] lg:pb-0 w-full flex flex-col items-center text-center bg-ferrari-black text-white">
+          {/* Hero Section */}
+          <div
+            className="px-6 pt-20 pb-0 lg:pt-[80px] lg:pb-0 w-full flex flex-col items-center text-center transition-colors duration-300"
+            style={{ backgroundColor: 'var(--theme-bg)', color: 'var(--theme-text)' }}
+          >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               className="flex flex-col items-center w-full max-w-7xl mx-auto"
             >
-              <div className="uppercase font-body text-[12px] tracking-[1px] text-ferrari-silver mb-8">
+              <div className="uppercase font-body text-[12px] tracking-[1px] mb-8" style={{ color: 'var(--theme-muted)' }}>
                 New: GPT-4o Support Integrated
               </div>
 
-              <h1 className="text-white text-[32px] md:text-[52px] font-medium leading-[1.20] tracking-normal mb-6 max-w-4xl">
+              <h1 className="text-[32px] md:text-[52px] font-medium leading-[1.20] tracking-normal mb-6 max-w-4xl" style={{ color: 'var(--theme-text)' }}>
                 Chat with any Git Repo instantly in your Words
               </h1>
 
-              <p className="text-ferrari-silver text-[14px] md:text-[16px] font-normal leading-[1.50] max-w-2xl mb-10 tracking-[0.195px]">
+              <p className="text-[14px] md:text-[16px] font-normal leading-[1.50] max-w-2xl mb-10 tracking-[0.195px]" style={{ color: 'var(--theme-muted)' }}>
                 Unlock the power of your codebase with AI-driven conversations. Understand complex logic, find bugs, and document code simply by asking.
               </p>
 
@@ -111,8 +122,8 @@ const Landing = () => {
               <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                 <button
                   onClick={user ? () => navigate('/dashboard') : handleLoginClick}
-                  className="flex items-center justify-center gap-3 min-w-[240px] rounded h-[44px] px-[10px] py-[12px] border font-normal tracking-[1.28px] transition-colors"
-                  style={{ backgroundColor: '#FFFFFF', color: '#000000', borderColor: '#000000' }}
+                  className="flex items-center justify-center gap-3 min-w-[240px] rounded h-[44px] px-[10px] py-[12px] font-normal tracking-[1.28px] transition-colors hover:opacity-90"
+                  style={{ backgroundColor: 'var(--theme-text)', color: 'var(--theme-bg)', border: '1px solid var(--theme-text)' }}
                 >
                   <img
                     alt="Google Logo"
@@ -125,7 +136,8 @@ const Landing = () => {
                 {!user ? (
                   <button
                     onClick={handleGithubLogin}
-                    className="flex items-center justify-center gap-3 min-w-[240px] rounded h-[44px] px-[10px] py-[12px] bg-transparent text-white hover:bg-ferrari-surface transition-colors font-normal border border-white tracking-[1.28px]"
+                    className="flex items-center justify-center gap-3 min-w-[240px] rounded h-[44px] px-[10px] py-[12px] bg-transparent transition-colors font-normal tracking-[1.28px] hover:opacity-80"
+                    style={{ color: 'var(--theme-text)', border: '1px solid var(--theme-text)' }}
                   >
                     <Github className="w-5 h-5" />
                     <span>SIGN IN WITH GITHUB</span>
@@ -133,7 +145,8 @@ const Landing = () => {
                 ) : (
                   <button
                     onClick={() => setShowLogoutModal(true)}
-                    className="flex items-center justify-center gap-3 min-w-[240px] rounded h-[44px] px-[10px] py-[12px] bg-transparent text-white hover:bg-ferrari-surface transition-colors font-normal border border-white tracking-[1.28px]"
+                    className="flex items-center justify-center gap-3 min-w-[240px] rounded h-[44px] px-[10px] py-[12px] bg-transparent transition-colors font-normal tracking-[1.28px] hover:opacity-80"
+                    style={{ color: 'var(--theme-text)', border: '1px solid var(--theme-text)' }}
                   >
                     SIGN OUT
                   </button>
@@ -148,7 +161,10 @@ const Landing = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="mt-[80px] w-full max-w-5xl"
             >
-              <div className="aspect-video flex items-center justify-center bg-ferrari-black border border-ferrari-surface">
+              <div
+                className="aspect-video flex items-center justify-center"
+                style={{ backgroundColor: 'var(--theme-bg)', border: '1px solid var(--theme-border)' }}
+              >
                 <video
                   autoPlay
                   loop
@@ -163,7 +179,10 @@ const Landing = () => {
             </motion.div>
           </div>
 
-          <div className="w-full flex flex-col items-center bg-ferrari-black pb-[60px] border-b border-ferrari-surface">
+          <div
+            className="w-full flex flex-col items-center pb-[60px] transition-colors duration-300"
+            style={{ backgroundColor: 'var(--theme-bg)', borderBottom: '1px solid var(--theme-border)' }}
+          >
             <div className="w-full mt-4 md:mt-6 lg:mt-8">
               <TechMarquee row={1} />
             </div>
@@ -172,14 +191,17 @@ const Landing = () => {
             </div>
           </div>
 
-          {/* Features Section (Pure White Editorial) */}
-          <div className="px-6 py-[80px] lg:px-20" style={{ backgroundColor: '#FFFFFF', color: '#181818' }}>
+          {/* Features Section */}
+          <div
+            className="px-6 py-[80px] lg:px-20 transition-colors duration-300"
+            style={{ backgroundColor: 'var(--theme-surface)' }}
+          >
             <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col gap-4 mb-16 border-l-4 pl-6" style={{ borderLeftColor: '#DA291C' }}>
-                <h2 className="text-[26px] font-medium tracking-normal" style={{ color: '#181818' }}>
+              <div className="flex flex-col gap-4 mb-16 pl-6" style={{ borderLeft: '4px solid var(--theme-primary)' }}>
+                <h2 className="text-[26px] font-medium tracking-normal" style={{ color: 'var(--theme-text)' }}>
                   Powerful Features
                 </h2>
-                <p className="font-body uppercase text-[12px] tracking-[1px]" style={{ color: '#8F8F8F' }}>
+                <p className="font-body uppercase text-[12px] tracking-[1px]" style={{ color: 'var(--theme-muted)' }}>
                   Everything you need to understand complex repositories in seconds.
                 </p>
               </div>
@@ -206,23 +228,26 @@ const Landing = () => {
         </main>
 
         {/* Footer */}
-        <footer className="flex flex-col gap-10 px-6 py-[40px] lg:px-[25px] bg-ferrari-surface text-white">
+        <footer
+          className="flex flex-col gap-10 px-6 py-[40px] lg:px-[25px] transition-colors duration-300"
+          style={{ backgroundColor: 'var(--theme-surface)', color: 'var(--theme-text)' }}
+        >
           <div className="flex flex-col lg:flex-row items-center justify-between gap-8 max-w-7xl mx-auto w-full">
             <div className="flex items-center gap-3">
-              <div className="text-white">
+              <div style={{ color: 'var(--theme-text)' }}>
                 <span className="material-symbols-outlined text-3xl">account_tree</span>
               </div>
-              <h2 className="text-white text-[16px] font-medium tracking-[0.08px]">RepoChat</h2>
+              <h2 className="text-[16px] font-medium tracking-[0.08px]" style={{ color: 'var(--theme-text)' }}>RepoChat</h2>
             </div>
             <div className="flex flex-wrap items-center justify-center gap-8">
-              <a className="font-body uppercase text-ferrari-silver hover:text-white transition-colors text-[12px] tracking-[1px] cursor-not-allowed opacity-50" aria-disabled="true" title="Coming soon">Terms of Service</a>
-              <a className="font-body uppercase text-ferrari-silver hover:text-white transition-colors text-[12px] tracking-[1px] cursor-not-allowed opacity-50" aria-disabled="true" title="Coming soon">Privacy Policy</a>
-              <a className="font-body uppercase text-ferrari-silver hover:text-white transition-colors text-[12px] tracking-[1px]" href="mailto:support@repochat.ai">Contact Us</a>
-              <a className="font-body uppercase text-ferrari-silver hover:text-white transition-colors text-[12px] tracking-[1px]" href="https://github.com/pramodhadapad/Repochat" target="_blank" rel="noopener noreferrer">Documentation</a>
+              <a className="font-body uppercase text-[12px] tracking-[1px] cursor-not-allowed opacity-50 transition-colors" style={{ color: 'var(--theme-muted)' }} aria-disabled="true" title="Coming soon">Terms of Service</a>
+              <a className="font-body uppercase text-[12px] tracking-[1px] cursor-not-allowed opacity-50 transition-colors" style={{ color: 'var(--theme-muted)' }} aria-disabled="true" title="Coming soon">Privacy Policy</a>
+              <a className="font-body uppercase text-[12px] tracking-[1px] transition-colors hover:opacity-80" style={{ color: 'var(--theme-muted)' }} href="mailto:support@repochat.ai">Contact Us</a>
+              <a className="font-body uppercase text-[12px] tracking-[1px] transition-colors hover:opacity-80" style={{ color: 'var(--theme-muted)' }} href="https://github.com/pramodhadapad/Repochat" target="_blank" rel="noopener noreferrer">Documentation</a>
             </div>
           </div>
           <div className="text-center mt-[40px]">
-            <p className="font-body uppercase text-ferrari-midGray text-[11px] tracking-[1px]">
+            <p className="font-body uppercase text-[11px] tracking-[1px]" style={{ color: 'var(--theme-muted)' }}>
               &copy; 2026 RepoChat Inc. Designed for developers who love to ship fast.
             </p>
           </div>
@@ -233,13 +258,13 @@ const Landing = () => {
 };
 
 const FeatureCard = ({ icon, title, description }) => (
-  <div className="group flex flex-col gap-5 pb-6 transition-all" style={{ backgroundColor: '#FFFFFF', borderBottom: '1px solid #969696' }}>
-    <div className="w-12 h-12 flex items-center" style={{ color: '#181818' }}>
+  <div className="group flex flex-col gap-5 pb-6 transition-all bg-transparent" style={{ borderBottom: '1px solid var(--theme-border)' }}>
+    <div className="w-12 h-12 flex items-center" style={{ color: 'var(--theme-text)' }}>
       <span className="material-symbols-outlined text-3xl">{icon}</span>
     </div>
     <div className="flex flex-col gap-2">
-      <h3 className="text-[24px] font-normal" style={{ color: '#181818' }}>{title}</h3>
-      <p className="text-[13px] font-normal leading-[1.50] tracking-[0.195px]" style={{ color: '#666666' }}>{description}</p>
+      <h3 className="text-[24px] font-normal" style={{ color: 'var(--theme-text)' }}>{title}</h3>
+      <p className="text-[13px] font-normal leading-[1.50] tracking-[0.195px]" style={{ color: 'var(--theme-muted)' }}>{description}</p>
     </div>
   </div>
 );

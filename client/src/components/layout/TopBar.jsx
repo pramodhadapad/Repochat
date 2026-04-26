@@ -41,7 +41,7 @@ const TopBar = () => {
   };
 
   return (
-    <header className="h-16 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 flex items-center justify-between px-6 sticky top-0 z-30">
+    <header className="h-16 flex items-center justify-between px-6 sticky top-0 z-30 transition-colors duration-300" style={{ backgroundColor: 'var(--theme-bg)', borderBottom: '1px solid var(--theme-border)' }}>
       <div className="flex items-center gap-4">
         <div className="text-lg font-bold truncate max-w-[300px]">
           {currentRepo ? currentRepo.name : 'RepoChat Dashboard'}

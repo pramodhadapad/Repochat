@@ -6,7 +6,7 @@ const useStore = create(
     (set) => ({
       user: null,
       token: null,
-      theme: 'dark',
+      theme: 'default',
       isSidebarCollapsed: false,
       currentRepo: null,
       messages: [],

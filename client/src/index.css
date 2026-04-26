@@ -80,8 +80,8 @@
 }
 
 body {
-  color: rgb(var(--foreground));
-  background-color: rgb(var(--background));
+  color: var(--theme-text, rgb(var(--foreground)));
+  background-color: var(--theme-bg, rgb(var(--background)));
   @apply transition-colors duration-300;
   min-height: 100vh;
   font-family: 'FerrariSans', Arial, Helvetica, sans-serif;
