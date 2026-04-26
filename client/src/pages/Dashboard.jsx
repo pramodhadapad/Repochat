@@ -233,7 +233,7 @@ const Dashboard = () => {
   const indexingRepos = repos.filter(r => r.status === 'indexing').length;
 
   return (
-    <div className="relative flex min-h-screen bg-white dark:bg-black text-slate-900 dark:text-slate-100 font-ferrari">
+    <div className="relative flex min-h-screen font-ferrari transition-colors duration-300" style={{ backgroundColor: 'var(--theme-bg)', color: 'var(--theme-text)' }}>
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar />
@@ -241,7 +241,7 @@ const Dashboard = () => {
         <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 space-y-8 overflow-y-auto">
           {/* API Key Setup Card */}
           {user && !user.apiKey && (
-            <section className="relative overflow-hidden rounded-2xl border border-white/[0.08] bg-white/5 dark:bg-slate-900/40 backdrop-blur-md p-6 sm:p-10 shadow-[0_20px_25px_-5px_rgba(0,0,0,0.2),0_10px_10px_-5px_rgba(0,0,0,0.1)]">
+            <section className="relative overflow-hidden rounded-2xl backdrop-blur-md p-6 sm:p-10 shadow-[0_20px_25px_-5px_rgba(0,0,0,0.2),0_10px_10px_-5px_rgba(0,0,0,0.1)]" style={{ backgroundColor: 'var(--theme-surface)', border: '1px solid var(--theme-border)' }}>
               <div className="absolute -top-24 -left-24 w-64 h-64 bg-[#DA291C]/10 rounded-full blur-[100px] pointer-events-none" />
               <div className="absolute -bottom-24 -right-24 w-64 h-64 bg-blue-600/10 rounded-full blur-[100px] pointer-events-none" />
               <div className="relative">
@@ -254,7 +254,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-2xl font-bold">Your Repositories</h3>
-              <p className="text-slate-500 dark:text-slate-400 text-sm">Manage and chat with your synchronized codebases</p>
+              <p className="text-sm" style={{ color: 'var(--theme-muted)' }}>Manage and chat with your synchronized codebases</p>
             </div>
 
             {/* Hidden file inputs */}
@@ -277,7 +277,8 @@ const Dashboard = () => {
             <div className="flex items-center gap-3">
               <button 
                 onClick={() => fileInputRef.current.click()}
-                className="px-4 py-2 rounded-lg border border-white/[0.08] bg-white/5 backdrop-blur-md text-slate-300 font-semibold flex items-center gap-2 hover:bg-white/10 hover:border-[#DA291C]/40 transition-all text-sm"
+                className="px-4 py-2 rounded-lg backdrop-blur-md font-semibold flex items-center gap-2 hover:opacity-80 transition-all text-sm"
+                style={{ backgroundColor: 'var(--theme-surface)', border: '1px solid var(--theme-border)', color: 'var(--theme-text)' }}
                 disabled={uploadLoading}
               >
                 <span className="material-symbols-outlined text-sm">upload_file</span>
@@ -286,7 +287,8 @@ const Dashboard = () => {
 
               <button 
                 onClick={() => folderInputRef.current.click()}
-                className="px-4 py-2 rounded-lg border border-white/[0.08] bg-white/5 backdrop-blur-md text-slate-300 font-semibold flex items-center gap-2 hover:bg-white/10 hover:border-[#DA291C]/40 transition-all text-sm"
+                className="px-4 py-2 rounded-lg backdrop-blur-md font-semibold flex items-center gap-2 hover:opacity-80 transition-all text-sm"
+                style={{ backgroundColor: 'var(--theme-surface)', border: '1px solid var(--theme-border)', color: 'var(--theme-text)' }}
                 disabled={uploadLoading}
               >
                 <span className="material-symbols-outlined text-sm">drive_folder_upload</span>
@@ -295,7 +297,8 @@ const Dashboard = () => {
 
               <button 
                 onClick={() => setShowImport(true)}
-                className="bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:opacity-90 transition-opacity"
+                className="px-4 py-2 rounded-lg font-semibold flex items-center gap-2 hover:opacity-90 transition-opacity text-white"
+                style={{ backgroundColor: 'var(--theme-primary)' }}
                 disabled={uploadLoading}
               >
                 <span className="material-symbols-outlined text-sm">add</span>
@@ -320,7 +323,8 @@ const Dashboard = () => {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     exit={{ opacity: 0, scale: 0.9 }}
-                    className="group border border-white/[0.08] bg-white/5 dark:bg-slate-900/30 backdrop-blur-md rounded-2xl p-6 hover:border-[#DA291C]/40 hover:bg-white/10 transition-all duration-300 flex flex-col hover:-translate-y-1 hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.2),0_10px_10px_-5px_rgba(0,0,0,0.1)]"
+                    className="group backdrop-blur-md rounded-2xl p-6 transition-all duration-300 flex flex-col hover:-translate-y-1 hover:shadow-[0_20px_25px_-5px_rgba(0,0,0,0.2),0_10px_10px_-5px_rgba(0,0,0,0.1)] hover:opacity-90"
+                    style={{ backgroundColor: 'var(--theme-surface)', border: '1px solid var(--theme-border)' }}
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div className="p-2 rounded-lg bg-[#DA291C]/10 text-[#DA291C]">
@@ -330,7 +334,7 @@ const Dashboard = () => {
                     </div>
 
                     <h4 className="text-lg font-bold mb-1 truncate">{repo.name}</h4>
-                    <p className="text-sm text-slate-500 dark:text-slate-400 mb-4 truncate">{repo.owner}</p>
+                    <p className="text-sm mb-4 truncate" style={{ color: 'var(--theme-muted)' }}>{repo.owner}</p>
 
                     <div className="flex items-center gap-4 mb-6">
                       <div className="flex items-center gap-1 text-xs text-slate-500">
@@ -432,21 +436,21 @@ const Dashboard = () => {
 
           {/* Dashboard Stats */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-8">
-            <div className="bg-white/5 dark:bg-slate-900/30 border border-white/[0.08] backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]">
+            <div className="backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]" style={{ backgroundColor: 'var(--theme-surface)', border: '1px solid var(--theme-border)' }}>
               <div className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase mb-1">Total Repos</div>
               <div className="text-2xl font-bold">{repos.length}</div>
               <div className="h-0.5 w-full bg-slate-500/20 mt-3 rounded-full overflow-hidden">
                 <div className="h-full bg-slate-400 w-1/2" />
               </div>
             </div>
-            <div className="bg-white/5 dark:bg-slate-900/30 border border-white/[0.08] backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]">
+            <div className="backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]" style={{ backgroundColor: 'var(--theme-surface)', border: '1px solid var(--theme-border)' }}>
               <div className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase mb-1">Ready</div>
               <div className="text-2xl font-bold text-green-500">{readyRepos}</div>
               <div className="h-0.5 w-full bg-green-500/20 mt-3 rounded-full overflow-hidden">
                 <div className="h-full bg-green-500" style={{ width: repos.length ? `${(readyRepos / repos.length) * 100}%` : '0%' }} />
               </div>
             </div>
-            <div className="bg-white/5 dark:bg-slate-900/30 border border-white/[0.08] backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]">
+            <div className="backdrop-blur-md p-5 rounded-xl transition-transform hover:scale-[1.02]" style={{ backgroundColor: 'var(--theme-surface)', border: '1px solid var(--theme-border)' }}>
               <div className="text-slate-500 dark:text-slate-400 text-xs font-bold uppercase mb-1">Indexing</div>
               <div className="text-2xl font-bold text-[#DA291C]">{indexingRepos}</div>
               <div className="h-0.5 w-full bg-[#DA291C]/20 mt-3 rounded-full overflow-hidden">
@@ -458,7 +462,7 @@ const Dashboard = () => {
 
           {/* Language Breakdown */}
           {languageStats.length > 0 && (
-            <div className="bg-white/5 dark:bg-slate-900/30 border border-white/[0.08] backdrop-blur-md p-6 rounded-2xl">
+            <div className="backdrop-blur-md p-6 rounded-2xl" style={{ backgroundColor: 'var(--theme-surface)', border: '1px solid var(--theme-border)' }}>
               <h4 className="text-sm font-bold text-slate-300 mb-4 uppercase tracking-wider">Language Breakdown</h4>
               <LanguageChart languages={languageStats} />
             </div>
@@ -466,7 +470,7 @@ const Dashboard = () => {
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-slate-200 dark:border-slate-800 py-6 mt-auto bg-black/10 backdrop-blur-sm">
+        <footer className="py-6 mt-auto backdrop-blur-sm" style={{ borderTop: '1px solid var(--theme-border)', backgroundColor: 'var(--theme-surface)' }}>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-500">
             <p>&copy; 2026 RepoChat Dashboard. Build with precision.</p>
             <div className="flex gap-6">

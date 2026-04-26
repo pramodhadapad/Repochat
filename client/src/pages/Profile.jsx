@@ -11,7 +11,7 @@ const Profile = () => {
   const [apiKey, setApiKey] = useState('');
 
   return (
-    <div className="relative flex min-h-screen bg-white dark:bg-black text-slate-900 dark:text-slate-100 font-ferrari">
+    <div className="relative flex min-h-screen font-ferrari transition-colors duration-300" style={{ backgroundColor: 'var(--theme-bg)', color: 'var(--theme-text)' }}>
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar />
