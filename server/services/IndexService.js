@@ -39,18 +39,23 @@ class IndexService {
       const embeddings = [];
       console.log(`[INDEX] Generating embeddings for ${allChunks.length} chunks...`);
       
-      for (let i = 0; i < allChunks.length; i++) {
-        const chunk = allChunks[i];
-        try {
-          const vector = await embeddingService.generateEmbedding(chunk.content, user);
-          embeddings.push(vector);
-          if (i % 20 === 0 && i > 0) {
-            console.log(`[INDEX] Chunks processed: ${i}/${allChunks.length}`);
+      const BATCH_SIZE = 50;
+      for (let i = 0; i < allChunks.length; i += BATCH_SIZE) {
+        const batch = allChunks.slice(i, i + BATCH_SIZE);
+        
+        const batchPromises = batch.map(async (chunk, index) => {
+          try {
+            return await embeddingService.generateEmbedding(chunk.content, user);
+          } catch (e) {
+            console.warn(`[INDEX] Failed to generate embedding for chunk ${i + index}: ${e.message}. Using mock fallback.`);
+            return embeddingService.getDeterministicMockVector(chunk.content);
           }
-        } catch (e) {
-          console.warn(`[INDEX] Failed to generate embedding for chunk ${i}: ${e.message}. Using mock fallback.`);
-          embeddings.push(embeddingService.getDeterministicMockVector(chunk.content));
-        }
+        });
+
+        const batchVectors = await Promise.all(batchPromises);
+        embeddings.push(...batchVectors);
+
+        console.log(`[INDEX] Chunks processed: ${Math.min(i + BATCH_SIZE, allChunks.length)}/${allChunks.length}`);
       }
 
       await vectorIndexer.indexChunks(repo._id, allChunks, embeddings);
