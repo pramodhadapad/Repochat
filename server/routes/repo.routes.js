@@ -191,7 +191,7 @@ router.post('/upload-file', protect, upload.single('document'), async (req, res)
 /**
  * @route GET /api/repo/:id
  */
-router.get('/:id', protect, cacheResponse(300), async (req, res) => {
+router.get('/:id', protect, async (req, res) => {
   try {
     const repo = await Repo.findOne({ _id: req.params.id, userId: req.user._id });
     if (!repo) {
@@ -425,6 +425,7 @@ router.get('/:id/tree', protect, async (req, res) => {
     };
 
     const tree = buildTree(repo.localPath);
+    res.set('Cache-Control', 'no-store');
     res.status(200).json({ tree });
   } catch (error) {
     console.error('Get File Tree Error:', error);
