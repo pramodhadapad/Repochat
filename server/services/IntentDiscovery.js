@@ -58,7 +58,7 @@ User Query: "${question}"
 JSON Output:`;
 
     try {
-      const result = await provider.generateResponse(prompt, model);
+      const result = await provider.generateResponse(prompt, model, { maxTokens: 150 });
       let content = result.answer.trim();
 
       // Strip markdown code fences if the AI wrapped the JSON

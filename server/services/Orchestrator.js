@@ -37,7 +37,7 @@ JSON Array:`;
     let plan = null;
 
     try {
-      const planRes = await provider.generateResponse(planningPrompt, model);
+      const planRes = await provider.generateResponse(planningPrompt, model, { maxTokens: 250 });
       let planContent = planRes.answer.trim();
 
       // Strip markdown fences

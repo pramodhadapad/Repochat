@@ -8,7 +8,7 @@ class GroqProvider extends AIProvider {
     this.baseUrl = 'https://api.groq.com/openai/v1'; // Groq provides OpenAI-compatible endpoints
   }
 
-  async generateResponse(prompt, modelName = 'llama-3.3-70b-versatile') {
+  async generateResponse(prompt, modelName = 'llama-3.3-70b-versatile', options = {}) {
     // Remap decommissioned models to their new equivalents
     let targetModel = modelName || 'llama-3.3-70b-versatile';
     if (targetModel.includes('llama3-70b')) targetModel = 'llama-3.3-70b-versatile';
@@ -20,7 +20,7 @@ class GroqProvider extends AIProvider {
         model: targetModel,
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.3,
-        max_tokens: 4096,
+        max_tokens: options.maxTokens || 1024,
       }, {
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,
