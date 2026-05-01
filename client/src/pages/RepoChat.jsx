@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import useStore from '../store/useStore';
 import socketService from '../services/socket';
@@ -50,10 +50,13 @@ const RepoChat = () => {
   const [highlightLine, setHighlightLine] = useState(null);
   const [fileTree, setFileTree] = useState([]);
   const [loading, setLoading] = useState(!currentRepo);
-  const [activeTab, setActiveTab] = useState('explorer'); // Activity bar selection
+  const [activeTab, setActiveTab] = useState('explorer');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isBottomPanelOpen, setIsBottomPanelOpen] = useState(false);
   const [isNewFile, setIsNewFile] = useState(false);
+  const [isRestoring, setIsRestoring] = useState(false);
+
+  const pollTimerRef = useRef(null);
 
   useEffect(() => {
     const init = async () => {
@@ -61,10 +64,29 @@ const RepoChat = () => {
         setLoading(true);
         const res = await repoService.getRepo(repoId);
         setCurrentRepo(res.data);
-        const treeRes = await repoService.getFileTree(repoId);
-        setFileTree(treeRes.data.tree);
+        
+        const fetchTree = async () => {
+          if (pollTimerRef.current) clearTimeout(pollTimerRef.current);
+          
+          try {
+            const treeRes = await repoService.getFileTree(repoId);
+            if (treeRes.status === 202 || treeRes.data.recloning) {
+              setIsRestoring(true);
+              setFileTree([]);
+              pollTimerRef.current = setTimeout(fetchTree, 5000);
+            } else {
+              setFileTree(treeRes.data.tree);
+              setIsRestoring(false);
+            }
+          } catch (err) {
+            console.error('Fetch tree failed:', err);
+          }
+        };
+
+        await fetchTree();
       } catch (err) {
         console.error('Failed to initialize workspace:', err);
+        toast.error('Failed to load workspace structure');
       } finally {
         setLoading(false);
       }
@@ -77,6 +99,7 @@ const RepoChat = () => {
     }
 
     return () => {
+      if (pollTimerRef.current) clearTimeout(pollTimerRef.current);
       if (user && repoId) {
         socketService.leaveRepo(repoId, user.id || user._id);
         socketService.disconnect();
@@ -194,7 +217,12 @@ const RepoChat = () => {
         {isSidebarOpen && (
             <div className="flex-none">
                 {activeTab === 'explorer' && (
-                    <Explorer tree={fileTree} activeFile={activeFile} onFileSelect={handleFileSelect} />
+                    <Explorer 
+                      tree={fileTree} 
+                      activeFile={activeFile} 
+                      onFileSelect={handleFileSelect} 
+                      isRestoring={isRestoring}
+                    />
                 )}
                 {activeTab === 'search' && <SearchPanel />}
                 {activeTab === 'git' && <SourceControlPanel />}

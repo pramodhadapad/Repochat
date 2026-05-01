@@ -188,7 +188,7 @@ const TreeItem = ({ item, depth = 0, expanded, toggleFolder, onFileSelect, activ
 };
 
 // ── Main Explorer ──────────────────────────────────────────
-const Explorer = ({ tree, onFileSelect, activeFile }) => {
+const Explorer = ({ tree, onFileSelect, activeFile, isRestoring }) => {
   const [expanded, setExpanded] = React.useState({ root: true });
 
   const toggleFolder = (path) => {
@@ -244,9 +244,17 @@ const Explorer = ({ tree, onFileSelect, activeFile }) => {
         ))}
 
         {(!tree || tree.length === 0) && (
-          <p style={{ padding: '40px 16px', textAlign: 'center', color: '#858585', fontSize: 12 }}>
-            No files found or indexing...
-          </p>
+          <div style={{ padding: '40px 16px', textAlign: 'center', color: '#858585', fontSize: 12 }}>
+            {isRestoring ? (
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-6 h-6 border-2 border-[#007acc]/20 border-t-[#007acc] rounded-full animate-spin" />
+                <p>Restoring repository files...</p>
+                <p className="text-[10px] opacity-60">This happens occasionally after server inactivity.</p>
+              </div>
+            ) : (
+              <p>No files found or indexing...</p>
+            )}
+          </div>
         )}
       </div>
     </div>
