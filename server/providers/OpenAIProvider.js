@@ -7,10 +7,11 @@ class OpenAIProvider extends AIProvider {
     this.client = new OpenAI({ apiKey });
   }
 
-  async generateResponse(prompt, model = 'gpt-4o') {
+  async generateResponse(prompt, model = 'gpt-4o', options = {}) {
     const response = await this.client.chat.completions.create({
       model: model,
       messages: [{ role: 'user', content: prompt }],
+      max_tokens: options.maxTokens || 8192,
     });
 
     return {

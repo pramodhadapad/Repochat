@@ -27,9 +27,10 @@ class GeminiProvider extends AIProvider {
     return Math.pow(2, attempt + 1) * 1000;
   }
 
-  async generateResponse(prompt, modelName = 'gemini-2.0-flash') {
+  async generateResponse(prompt, modelName = 'gemini-2.0-flash', options = {}) {
     const model = this.client.getGenerativeModel({ 
       model: modelName,
+      generationConfig: { maxOutputTokens: options.maxTokens || 8192 },
       safetySettings: [
         { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_NONE' },
         { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_NONE' },

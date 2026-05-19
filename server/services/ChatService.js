@@ -262,7 +262,7 @@ Answer:`;
     const prompt = this.buildPrompt(intentLabel, trimmedQuestion, finalContext, history);
     console.log(`[CHAT] Prompt: ${prompt.length} chars (~${Math.round(prompt.length / 4)} tokens)`);
 
-    const result = await provider.generateResponse(prompt, user.model, { maxTokens: 1500 });
+    const result = await provider.generateResponse(prompt, user.model, { maxTokens: 8192 });
 
     // ── 9. Extract optional file reference from context ──
     let fileRef = null;

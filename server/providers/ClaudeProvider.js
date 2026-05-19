@@ -7,10 +7,10 @@ class ClaudeProvider extends AIProvider {
     this.client = new Anthropic({ apiKey });
   }
 
-  async generateResponse(prompt, model = 'claude-3-5-sonnet-20240620') {
+  async generateResponse(prompt, model = 'claude-3-5-sonnet-20240620', options = {}) {
     const response = await this.client.messages.create({
       model: model,
-      max_tokens: 4096,
+      max_tokens: options.maxTokens || 8192,
       messages: [{ role: 'user', content: prompt }],
     });
     

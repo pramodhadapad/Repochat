@@ -327,14 +327,29 @@ router.post('/:id/readme', protect, async (req, res) => {
     const repo = await Repo.findOne({ _id: req.params.id, userId: req.user._id });
     if (!repo) return res.status(404).json({ error: 'Repo not found' });
 
-    const readmeContent = await ReadmeGenerator.generateReadme(repo._id, req.user);
+    // Auto re-clone if files are missing (Render ephemeral filesystem)
+    const filesExist = await ensureRepoFiles(repo, req.user);
+    if (!filesExist) {
+      return res.status(202).json({
+        error: 'RECLONING',
+        message: 'Repository files are being restored. Please wait 30 seconds and try again.'
+      });
+    }
+
+    const readmeContent = await ReadmeGenerator.generateReadme(repo._id, req.user, repo.localPath);
     repo.hasReadme = true;
+    repo.generatedReadme = readmeContent;
     await repo.save();
 
     res.status(200).json({ content: readmeContent });
   } catch (error) {
     console.error('README Generation Error:', error);
-    res.status(500).json({ error: 'Failed to generate README', details: error.message });
+    const userMessage = error.message.includes('rate limit')
+      ? 'AI provider rate limit hit. Please wait 60 seconds and try again, or switch to Google Gemini in settings.'
+      : error.message.includes('NO_CONTEXT')
+        ? 'No indexed code found. Please re-index the repository first.'
+        : `Generation failed: ${error.message}`;
+    res.status(500).json({ error: 'Failed to generate README', details: userMessage });
   }
 });
 

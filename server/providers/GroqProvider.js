@@ -20,7 +20,7 @@ class GroqProvider extends AIProvider {
         model: targetModel,
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.3,
-        max_tokens: options.maxTokens || 1024,
+        max_tokens: options.maxTokens || 8192,
       }, {
         headers: {
           'Authorization': `Bearer ${this.apiKey}`,

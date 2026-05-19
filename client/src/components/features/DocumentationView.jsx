@@ -31,11 +31,16 @@ const DocumentationView = ({ repoId }) => {
     setGenerating(true);
     try {
       const res = await repoService.generateReadme(repoId);
+      if (res.data.error === 'RECLONING') {
+        toast('Repository files are being restored. Please wait 30 seconds and try again.', { icon: '⏳' });
+        return;
+      }
       setRepo(prev => ({ ...prev, hasReadme: true, generatedReadme: res.data.content }));
       toast.success('Documentation generated successfully!');
     } catch (err) {
       console.error('Generation failed:', err);
-      toast.error('Failed to generate documentation');
+      const details = err.response?.data?.details;
+      toast.error(details || 'Failed to generate documentation');
     } finally {
       setGenerating(false);
     }
