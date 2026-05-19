@@ -81,7 +81,7 @@ class ReadmeGenerator {
     }
 
     if (contextChunks.length === 0) {
-      throw new Error('NO_CONTEXT_FOR_README: No code context could be retrieved. Please re-index the repository.');
+      console.warn('[README] NO_CONTEXT_FOR_README: No code context could be retrieved.');
     }
 
     // ── 3. Build context string (truncated to prevent token overflow) ──
@@ -137,10 +137,28 @@ ${contextString}
 
 Response (Markdown Only):`;
 
-    const provider = ChatService.getProvider(user);
-    const result = await provider.generateResponse(prompt, user.model, { maxTokens: 8192 });
+    try {
+      const provider = ChatService.getProvider(user);
+      const result = await provider.generateResponse(prompt, user.model, { maxTokens: 8192 });
+      return result.answer;
+    } catch (err) {
+      console.error('[README] AI Provider generation failed:', err.message);
+      // Absolute fallback: Return a basic template so the UI never fails
+      return `# Repository Documentation
 
-    return result.answer;
+> ⚠️ **Note:** The AI documentation generation encountered an error: *${err.message || 'Unknown provider error'}*.
+> Below is the automated structural analysis of your project as a fallback.
+
+## Project Structure
+
+\`\`\`text
+${treeString || 'No project structure could be resolved.'}
+\`\`\`
+
+---
+*Tip: If this is a rate limit error, wait a moment and click "Generate Documentation" again.*
+`;
+    }
   }
 }
 
