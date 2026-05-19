@@ -39,7 +39,7 @@ class ReadmeGenerator {
     Response (Markdown Only):`;
 
     const provider = ChatService.getProvider(user);
-    const result = await provider.generateResponse(prompt, user.model);
+    const result = await provider.generateResponse(prompt, user.model, { maxTokens: 4096 });
 
     return result.answer;
   }
