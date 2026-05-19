@@ -334,7 +334,7 @@ router.post('/:id/readme', protect, async (req, res) => {
     res.status(200).json({ content: readmeContent });
   } catch (error) {
     console.error('README Generation Error:', error);
-    res.status(500).json({ error: 'Failed to generate README' });
+    res.status(500).json({ error: 'Failed to generate README', details: error.message });
   }
 });
 
