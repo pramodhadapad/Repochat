@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="./banner.svg" alt="RepoChat banner" width="100%" />
+
 
 <br/>
 
