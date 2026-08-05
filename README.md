@@ -68,8 +68,7 @@ User message
   <img src="./assets/model-selector.png" alt="Model Selector with Token Balance" width="800"/>
 </p>
 
-> Replace the file names above with your actual screenshots, saved inside an
-> `assets/` folder at the root of the repo.
+
 
 ---
 
