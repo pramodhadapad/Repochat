@@ -200,10 +200,8 @@ Visit `http://localhost:5173`.
 
 **Pramod Hadapad**
 Final-year MCA, Chetan Business School (CBS), Hubli — Karnatak University Dharwad (KUD)
-[GitHub](https://github.com/pramodhadapad) · [LinkedIn](#)
+[GitHub](https://github.com/pramodhadapad) · [LinkedIn](www.linkedin.com/in/pramod-hadapad-287627224)
 
 ---
 
-## 📄 License
 
-This project is available under the MIT License.
